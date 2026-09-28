@@ -81,8 +81,8 @@ export default function Footer({ setAuthScreen }) {
       <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "20px" }}>
         
         <div>
-          <h3 style={{ fontFamily: "Georgia, serif", margin: "0 0 5px 0", fontSize: "20px", color: "#F3EEE3" }}>Cyberbriefs</h3>
-          <p style={{ fontSize: "12px", color: "#C9C1B0", margin: 0 }}>© {currentYear} The Cyberbriefs Desk. All rights reserved.</p>
+          <h3 style={{ fontFamily: "Georgia, serif", margin: "0 0 5px 0", fontSize: "20px", color: "#F3EEE3" }}>Cancerbriefs</h3>
+          <p style={{ fontSize: "12px", color: "#C9C1B0", margin: 0 }}>© {currentYear} The Cancerbriefs Desk. All rights reserved.</p>
         </div>
 
         <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>

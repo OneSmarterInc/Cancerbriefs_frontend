@@ -3,31 +3,38 @@ import { API_BASE_URL } from "../config";
 import { cleanSummary } from "../utils/summaryFilter";
 
 const PROF_NAMES = [
-  "Arion Vale", "Lyra Sen", "Kael Nore", "Elara Quinn", 
-  "Dorian Kade", "Mira Solen", "Orion Blake", "Seraphina Rowe"
+  "Alexander Cole",
+  "Marcus Reed",
+  "Daniel Hayes",
+  "Ethan Brooks",
+  "Sophia Bennett",
+  "Olivia Carter",
+  "Amelia Parker",
+  "Isabella Morgan"
 ];
 
-// Updated to match the new backend AI, Finance, and Cyber-Physical roles
+// Updated to match the Oncology Board roles
 const PROF_POSITIONS = [
-  "Security Operations (SOC)",
-  "Vulnerability & Application Security",
-  "Threat Intelligence & Research",
-  "Malware & Ransomware Security",
-  "AI & Machine Learning Security",
-  "Financial Cybersecurity & FinTech",
-  "Cloud & Supply Chain Security",
-  "Core Security & Cyber-Physical Defense"
+  "Cancer Research & Oncology",
+  "Cancer Types & Disease Specialties",
+  "Cancer Diagnosis & Screening",
+  "Cancer Treatment & Therapy",
+  "Cancer Drugs & Clinical Trials",
+  "Cancer Genetics & Precision Medicine",
+  "Cancer Prevention & Survivorship",
+  "Cancer Organizations, Statistics & Policy"
 ];
 
+// Updated descriptions to match the clinical/oncology theme
 const PROF_DESCRIPTIONS = [
-  "A specialized look into real-time threat detection, incident response workflows, SIEM analytics, and security operations center readiness.",
-  "Deep dives into zero-day vulnerabilities, application security flaws, code injection vectors, and enterprise patch management strategies.",
-  "Tracking advanced persistent threat (APT) groups, threat actor tracking, dark web intelligence disclosures, and indicator telemetry.",
-  "Analyzing emerging ransomware strains, infostealers, Trojans, rootkits, and reverse-engineering malicious payloads.",
-  "Analyzing adversarial machine learning, LLM vulnerabilities, generative AI risks, and defending against automated AI-powered attacks.",
-  "Investigating fintech breaches, smart contract vulnerabilities, payment network exploits, and financial fraud vectors.",
-  "Examining multi-cloud security posture, container and Kubernetes vulnerabilities, and software supply chain risks.",
-  "Covering cyber warfare, critical infrastructure defense, OT/ICS security, and national security implications."
+  "A specialized look into fundamental cancer research, tumor biology, and broad oncology advancements.",
+  "Deep dives into specific cancer pathologies, rare malignancies, and organ-site disease specialties.",
+  "Tracking breakthroughs in early detection, biomarker screening, and advanced diagnostic imaging.",
+  "Analyzing emerging therapeutic approaches, surgical oncology, radiation techniques, and comprehensive care.",
+  "Investigating new pharmaceutical developments, immunotherapy drugs, and ongoing clinical trial results.",
+  "Examining the role of genetic mutations, hereditary risks, and targeted precision medicine in oncology.",
+  "Covering lifestyle factors, risk reduction strategies, and holistic survivorship care for cancer patients.",
+  "Monitoring global cancer statistics, public health policies, and the impact of major cancer organizations."
 ];
 
 const STAFF_VOICE_PROFILES = {
@@ -132,7 +139,7 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
         }, 1500);
       } else {
         setSubmitStatus(null);
-        alert("Failed to send query to the editor. Please try again.");
+        alert("Failed to send query to the specialist. Please try again.");
       }
     } catch {
       setSubmitStatus(null);
@@ -398,8 +405,8 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
       {queryArticle && (
         <div className="app-modal-overlay" onClick={(e) => { e.stopPropagation(); setQueryArticle(null); }}>
           <div className="app-modal-content" onClick={e => e.stopPropagation()}>
-            <h3 style={{ margin: "0 0 15px 0", fontFamily: "Georgia, serif", color: "#161412" }}>Submit Query to Editor</h3>
-            <p style={{ fontSize: "12px", color: "#5E574C", marginBottom: "15px" }}>Ask a question or report an issue regarding this specific story.</p>
+            <h3 style={{ margin: "0 0 15px 0", fontFamily: "Georgia, serif", color: "#161412" }}>Submit Query to Specialist</h3>
+            <p style={{ fontSize: "12px", color: "#5E574C", marginBottom: "15px" }}>Ask a question or report an issue regarding this specific study.</p>
             
             <textarea 
               value={queryText}
@@ -446,7 +453,7 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
             </div>
             
             <h1 className="newsroom-title">
-              Intelligence Briefings by {getProfName(profId)}
+              Clinical Briefings by {getProfName(profId)}
             </h1>
             
             <p className="newsroom-desc">
@@ -461,7 +468,7 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
 
         <div style={{ borderBottom: "3px solid #161412", marginBottom: "40px", paddingBottom: "10px" }}>
           <span style={{ fontSize: "14px", fontWeight: "bold", color: "#161412", letterSpacing: "2px", textTransform: "uppercase" }}>
-            MORE FROM THE WIRE
+            MORE FROM THE CLINICAL WIRE
           </span>
         </div>
 
@@ -483,8 +490,9 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
                     className="article-img"
                   />
                   <div className="article-content">
+                    {/* Replaced 'article.category' with 'article.source' to completely remove "CYBERSECURITY" */}
                     <div style={{ fontSize: "11px", color: "#8F7118", fontWeight: "bold", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "10px" }}>
-                      {article.category || "TECHNOLOGY"} &nbsp; {formatToEST(article.published).toUpperCase()}
+                      {article.source || "ONCOLOGY DESK"} &nbsp;•&nbsp; {formatToEST(article.published).toUpperCase()}
                     </div>
                     <h3 style={{ fontFamily: "Georgia, serif", fontSize: "24px", margin: "0 0 12px 0", color: "#161412", lineHeight: "1.2" }}>
                       {article.original_title || article.title}
@@ -521,7 +529,7 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
                       </div>
 
                       <div className="article-author-tag">
-                        BY {getProfName(profId).toUpperCase()}, CORRESPONDENT
+                        BY {getProfName(profId).toUpperCase()}, SPECIALIST
                       </div>
                     </div>
                   </div>
@@ -530,7 +538,7 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
             })
           ) : (
             <div style={{ textAlign: "center", padding: "60px", color: "#5E574C", fontStyle: "italic", fontSize: "18px" }}>
-              No articles are currently assigned to {getProfName(profId)}'s desk.
+              No research updates are currently assigned to {getProfName(profId)}'s desk.
             </div>
           )}
         </div>

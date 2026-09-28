@@ -3,8 +3,14 @@ import { API_BASE_URL } from "../config";
 import { cleanSummary, isValidArticle } from "../utils/summaryFilter";
 
 const PROF_NAMES = [
-  "Arion Vale", "Lyra Sen", "Kael Nore", "Elara Quinn", 
-  "Dorian Kade", "Mira Solen", "Orion Blake", "Seraphina Rowe"
+  "Alexander Cole",
+  "Marcus Reed",
+  "Daniel Hayes",
+  "Ethan Brooks",
+  "Sophia Bennett",
+  "Olivia Carter",
+  "Amelia Parker",
+  "Isabella Morgan"
 ];
 
 // Fallback logic requires strict number parsing
@@ -257,8 +263,8 @@ export default function NewsCard({ article, index, onArticleClick }) {
 
         <div className="news-content">
           <div className="meta">
-            <span className="category">{(article?.category || "NEWS").toUpperCase()}</span>
-            <span>{article?.source || "NEWS DESK"}</span><i />
+            {/* REMOVED the .category span that displayed "CYBERSECURITY" */}
+            <span style={{ fontWeight: "bold", color: "#161412" }}>{article?.source || "CLINICAL DESK"}</span><i />
             
             <span style={{ color: "#C9A227", fontWeight: "bold" }}>{fullName.toUpperCase()}</span><i />
             
@@ -270,7 +276,6 @@ export default function NewsCard({ article, index, onArticleClick }) {
           
           <p>{getProcessedSummary(article?.summary)}</p>
 
-          {/* ADDED zIndex: 2 to ensure buttons are strictly on top of the card's click area */}
           <div className="card-bottom" style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center", marginTop: "auto", paddingTop: "15px", position: "relative", zIndex: 2 }}>
             
             <button 

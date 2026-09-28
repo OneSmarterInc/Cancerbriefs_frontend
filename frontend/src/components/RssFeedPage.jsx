@@ -12,15 +12,15 @@ const PROF_NAMES = [
   "Arion Vale", "Lyra Sen", "Kael Nore", "Elara Quinn", 
   "Dorian Kade", "Mira Solen", "Orion Blake", "Seraphina Rowe"
 ];
-const getProfName = (id) => PROF_NAMES[(id || 1) - 1] || PROF_NAMES[0];
+const getProfName = (id) => PROF_NAMES[(parseInt(id) || 1) - 1] || PROF_NAMES[0];
 
 const getArticleImage = (article) => {
   if (!article) return "/images/Proff_1.png";
-  const profId = article.professor_id || 1; 
+  const profId = parseInt(article.professor_id) || 1; 
   return `/images/Proff_${profId}.png`; 
 };
 
-// Added Voice Profiles for TTS
+// Voice Profiles for TTS
 const STAFF_VOICE_PROFILES = {
   1: { gender: "male", pitch: 0.85, rate: 0.95, voiceOffset: 0 },
   2: { gender: "female", pitch: 1.15, rate: 1.05, voiceOffset: 1 },
@@ -106,7 +106,7 @@ export default function RssFeedPage({ articles, onBack }) {
     return validArticles.find(a => String(a.id) === String(selectedArticleId)) || null;
   }, [validArticles, selectedArticleId]);
 
-  // Combine database sources and article sources, counting news volume, and sorting highest stories first
+  // Combine database sources and article sources, counting volume, and sorting highest stories first
   const uniqueSources = useMemo(() => {
     const sourceCounts = {};
     validArticles.forEach(a => {
@@ -251,7 +251,7 @@ export default function RssFeedPage({ articles, onBack }) {
         }, 1500);
       } else {
         setSubmitStatus(null);
-        alert("Failed to send query to the editor. Please try again.");
+        alert("Failed to send query to the specialist. Please try again.");
       }
     } catch {
       setSubmitStatus(null);
@@ -501,8 +501,8 @@ export default function RssFeedPage({ articles, onBack }) {
       {queryArticle && (
         <div className="app-modal-overlay" onClick={(e) => { e.stopPropagation(); setQueryArticle(null); }}>
           <div className="app-modal-content" onClick={e => e.stopPropagation()}>
-            <h3 style={{ margin: "0 0 15px 0", fontFamily: "Georgia, serif", color: "#161412" }}>Submit Query to Editor</h3>
-            <p style={{ fontSize: "12px", color: "#5E574C", marginBottom: "15px" }}>Ask a question or report an issue regarding this specific story.</p>
+            <h3 style={{ margin: "0 0 15px 0", fontFamily: "Georgia, serif", color: "#161412" }}>Submit Query to Specialist</h3>
+            <p style={{ fontSize: "12px", color: "#5E574C", marginBottom: "15px" }}>Ask a question or report an issue regarding this specific research update.</p>
             
             <textarea 
               value={queryText}
@@ -537,7 +537,7 @@ export default function RssFeedPage({ articles, onBack }) {
           (() => {
             const displayImage = getArticleImage(selectedArticle);
             let hash = 0;
-            const sourceName = selectedArticle.source || "News";
+            const sourceName = selectedArticle.source || "Updates";
             for (let i = 0; i < sourceName.length; i++) hash = sourceName.charCodeAt(i) + ((hash << 5) - hash);
             const avatarColor = "#" + "00000".substring(0, 6 - (hash & 0x00FFFFFF).toString(16).toUpperCase().length) + (hash & 0x00FFFFFF).toString(16).toUpperCase();
             
@@ -592,7 +592,7 @@ export default function RssFeedPage({ articles, onBack }) {
                             onMouseOver={e => e.currentTarget.style.opacity = "0.7"}
                             onMouseOut={e => e.currentTarget.style.opacity = "1"}
                           >
-                            Original Article 
+                            Original Study 
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                               <polyline points="15 3 21 3 21 9"></polyline>
@@ -633,7 +633,7 @@ export default function RssFeedPage({ articles, onBack }) {
                         onMouseOver={e => e.currentTarget.style.backgroundColor = "#b71c1c"}
                         onMouseOut={e => e.currentTarget.style.backgroundColor = "#d32f2f"}
                       >
-                        <span style={{ fontSize: "16px", marginBottom: "2px" }}>←</span> Back to Articles
+                        <span style={{ fontSize: "16px", marginBottom: "2px" }}>←</span> Back to Updates
                       </button>
                     </div>
                   </div>
@@ -692,7 +692,7 @@ export default function RssFeedPage({ articles, onBack }) {
             <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
               <input 
                 type="text" 
-                placeholder="Search news by title or summary..." 
+                placeholder="Search updates by title or summary..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 style={{ 
@@ -712,7 +712,7 @@ export default function RssFeedPage({ articles, onBack }) {
 
             <div style={{ display: "flex", flexDirection: "column", gap: "35px" }}>
               {sourceArticles.length === 0 ? (
-                <p style={{ textAlign: "center", color: "#5E574C", fontSize: "18px", marginTop: "20px" }}>No valid articles match your search or this source has not fetched articles yet.</p>
+                <p style={{ textAlign: "center", color: "#5E574C", fontSize: "18px", marginTop: "20px" }}>No valid updates match your search or this source has not fetched studies yet.</p>
               ) : (
                 sourceArticles.map((article) => {
                   const displayImage = getArticleImage(article);
@@ -764,7 +764,7 @@ export default function RssFeedPage({ articles, onBack }) {
                               onClick={(e) => e.stopPropagation()}
                               className="original-link"
                             >
-                              Original Article 
+                              Original Study 
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                                 <polyline points="15 3 21 3 21 9"></polyline>

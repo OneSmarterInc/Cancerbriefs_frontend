@@ -29,7 +29,7 @@ export default function AdminDashboard({ user, articles, token, onRefresh, onBac
   const [feeds, setFeeds] = useState([]);
   const [newFeedName, setNewFeedName] = useState("");
   const [newFeedUrl, setNewFeedUrl] = useState("");
-  const [newFeedCategory, setNewFeedCategory] = useState("Cybersecurity");
+  const [newFeedCategory, setNewFeedCategory] = useState("Cancer Research");
 
   const [socialForm, setSocialForm] = useState({
     twitter: "", youtube: "", email: "", insta: "", facebook: "", linkedin: ""
@@ -324,7 +324,7 @@ export default function AdminDashboard({ user, articles, token, onRefresh, onBac
             ADMIN DESK
             <span className="close-menu-btn" onClick={() => setMobileMenuOpen(false)} style={{ display: window.innerWidth <= 900 ? 'block' : 'none', cursor: 'pointer', fontSize: '16px' }}>✕</span>
           </div>
-          <h2 style={{ margin: 0, fontFamily: "Georgia, serif" }}>Cyberbriefs</h2>
+          <h2 style={{ margin: 0, fontFamily: "Georgia, serif" }}>Cancerbriefs</h2>
         </div>
 
         <nav style={{ flex: 1, padding: "0 20px", overflowY: "auto" }}>
@@ -532,7 +532,7 @@ export default function AdminDashboard({ user, articles, token, onRefresh, onBac
               <input type="text" placeholder="Feed Name (e.g. Wired)" value={newFeedName} onChange={e => setNewFeedName(e.target.value)} required style={{ padding: "10px", flex: "1 1 200px", border: "1px solid #C9C1B0", minWidth: "150px" }} />
               <input type="url" placeholder="RSS URL (https://...)" value={newFeedUrl} onChange={e => setNewFeedUrl(e.target.value)} required style={{ padding: "10px", flex: "2 1 300px", border: "1px solid #C9C1B0", minWidth: "200px" }} />
               <select value={newFeedCategory} onChange={e => setNewFeedCategory(e.target.value)} style={{ padding: "10px", border: "1px solid #C9C1B0", flex: "1 1 150px" }}>
-                <option value="Cybersecurity">Cybersecurity</option>
+                <option value="Cancer Research">Cancer Research</option>
               </select>
               <button type="submit" style={{ padding: "10px 20px", backgroundColor: "#161412", color: "#F3EEE3", border: "none", fontWeight: "bold", cursor: "pointer", flex: "1 1 100%" }}>Add Feed</button>
             </form>

@@ -47,21 +47,21 @@ export default function CookieSettings({ onBack }) {
         </p>
 
         <p style={paragraphStyle}>
-          CyberBriefs uses limited browser storage to provide essential website functionality, maintain secure administrative sessions, and remember certain interface settings.
+          Cancerbriefs uses limited browser storage to provide essential website functionality, maintain secure administrative sessions, and remember certain interface settings.
         </p>
 
         <p style={paragraphStyle}>
-          CyberBriefs does not currently use third-party advertising cookies, cross-site advertising trackers, or third-party analytics cookies.
+          Cancerbriefs does not currently use third-party advertising cookies, cross-site advertising trackers, or third-party analytics cookies.
         </p>
 
         <h3 style={headingStyle}>1. Cookies and Browser Storage</h3>
         <p style={paragraphStyle}>
-          Cookies are small files that websites may store on your device. CyberBriefs may also use local storage and session storage, which provide similar functionality within your browser.
+          Cookies are small files that websites may store on your device. Cancerbriefs may also use local storage and session storage, which provide similar functionality within your browser.
         </p>
 
         <h3 style={headingStyle}>2. Technologies We Use</h3>
         <p style={paragraphStyle}>
-          CyberBriefs currently uses essential browser storage for:
+          Cancerbriefs currently uses essential browser storage for:
         </p>
         <ul style={listStyle}>
           <li>Maintaining authenticated administrative sessions</li>
@@ -77,20 +77,20 @@ export default function CookieSettings({ onBack }) {
           Essential storage supports login, authentication, navigation, security, and administrative functionality. Disabling or clearing this storage may sign you out or prevent restricted features from working correctly.
         </p>
         <p style={paragraphStyle}>
-          CyberBriefs does not use this storage to create advertising profiles or track your activity across unrelated websites.
+          Cancerbriefs does not use this storage to create advertising profiles or track your activity across unrelated websites.
         </p>
 
         <h3 style={headingStyle}>4. RSS Feeds and AI Processing</h3>
         <p style={paragraphStyle}>
-          CyberBriefs collects news from RSS and publisher-provided feeds. Automated systems and artificial intelligence may organize, categorize, and summarize that content.
+          Cancerbriefs collects news from RSS and publisher-provided feeds. Automated systems and artificial intelligence may organize, categorize, and summarize that content.
         </p>
         <p style={paragraphStyle}>
-          RSS collection and AI processing occur through CyberBriefs' backend systems. These processes do not require cookies or browser storage on your device.
+          RSS collection and AI processing occur through Cancerbriefs' backend systems. These processes do not require cookies or browser storage on your device.
         </p>
 
         <h3 style={headingStyle}>5. Analytics and Advertising</h3>
         <p style={paragraphStyle}>
-          CyberBriefs does not currently use third-party analytics or advertising cookies.
+          Cancerbriefs does not currently use third-party analytics or advertising cookies.
         </p>
         <p style={paragraphStyle}>
           If analytics, advertising, or other optional tracking technologies are introduced, this page will be updated. Where required by law, users will be given an appropriate consent choice before non-essential technologies are activated.
@@ -98,10 +98,10 @@ export default function CookieSettings({ onBack }) {
 
         <h3 style={headingStyle}>6. External Websites</h3>
         <p style={paragraphStyle}>
-          CyberBriefs links to original news publishers and other external websites. When you open an external link, that website may use its own cookies or tracking technologies.
+          Cancerbriefs links to original news publishers and other external websites. When you open an external link, that website may use its own cookies or tracking technologies.
         </p>
         <p style={paragraphStyle}>
-          CyberBriefs does not control the cookie practices of external websites. Please review their privacy and cookie policies for more information.
+          Cancerbriefs does not control the cookie practices of external websites. Please review their privacy and cookie policies for more information.
         </p>
 
         <h3 style={headingStyle}>7. Managing Browser Storage</h3>
@@ -109,22 +109,22 @@ export default function CookieSettings({ onBack }) {
           You can view, delete, or restrict cookies and browser storage through your browser's privacy or site-data settings.
         </p>
         <p style={paragraphStyle}>
-          Clearing CyberBriefs' site data may sign you out and reset saved navigation or interface settings.
+          Clearing Cancerbriefs' site data may sign you out and reset saved navigation or interface settings.
         </p>
 
         <h3 style={headingStyle}>8. Changes to These Settings</h3>
         <p style={paragraphStyle}>
-          CyberBriefs may update this page if its use of cookies, browser storage, analytics, or other technologies changes. The date at the top will show when the page was most recently revised.
+          Cancerbriefs may update this page if its use of cookies, browser storage, analytics, or other technologies changes. The date at the top will show when the page was most recently revised.
         </p>
 
         <h3 style={headingStyle}>9. Related Policies</h3>
         <p style={paragraphStyle}>
-          This Cookie Settings page should be read together with the CyberBriefs Privacy Policy and Terms of Use.
+          This Cookie Settings page should be read together with the Cancerbriefs Privacy Policy and Terms of Use.
         </p>
 
         <h3 style={headingStyle}>10. Contact Us</h3>
         <p style={paragraphStyle}>
-          If you have questions about cookies, browser storage, or CyberBriefs' privacy practices, please contact us using the contact information available on the CyberBriefs website.
+          If you have questions about cookies, browser storage, or Cancerbriefs' privacy practices, please contact us using the contact information available on the Cancerbriefs website.
         </p>
 
         <div
@@ -137,7 +137,7 @@ export default function CookieSettings({ onBack }) {
             lineHeight: "1.7",
           }}
         >
-          <strong>CyberBriefs</strong>
+          <strong>Cancerbriefs</strong>
           <br />
           News discovery powered by RSS feeds and AI-assisted content processing.
         </div>

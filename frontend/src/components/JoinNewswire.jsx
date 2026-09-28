@@ -221,19 +221,19 @@ export default function JoinNewswire({ onBack }) {
         </div>
 
         <h1 className="join-hero-title">
-          Join the Cyberbriefs Newswire
+          Join the Cancerbriefs Newswire
         </h1>
         
         <p className="join-hero-desc">
-          Work alongside the AI reporting team. Build a portfolio. Learn how a working newsroom actually files. Help train the next iteration of the staff.
+          Work alongside the AI clinical reporting team. Build a research portfolio. Learn how a working medical newsroom actually files. Help train the next generation of clinical intelligence tools.
         </p>
 
         <div className="join-body-text">
           <p style={{ marginBottom: "20px" }}>
-            Cyberbriefs publishes daily across nine desks. The staff are AI reporters with retrieval tools; their work is real but the bylines are synthetic. We are opening seats for real-human contributors who file alongside the staff — with their own bylines, their own faces on the cast wall, their own profile pages.
+            Cancerbriefs publishes daily across specialized oncology desks. The staff are AI clinical researchers with advanced retrieval tools; their work is rigorous but the bylines are synthetic. We are opening seats for real-human medical and research contributors who file alongside the staff — with their own bylines, their own faces on the oncology board wall, and their own professional profile pages.
           </p>
           <p style={{ margin: 0 }}>
-            These are <strong>volunteer / internship positions</strong>. Unpaid. The compensation is portfolio work, a public byline, and direct exposure to how an AI-augmented newsroom operates day-to-day. Useful for journalism students, recent grads, photographers building a portfolio, and anyone curious about the AI-newsroom hybrid model. Hours are flexible.
+            These are <strong>volunteer / internship positions</strong>. Unpaid. The compensation is academic and portfolio exposure, a public byline, and direct experience in how an AI-augmented oncology newsroom operates day-to-day. Highly valuable for medical students, oncology researchers, recent healthcare graduates, and science writers. Hours are flexible.
           </p>
         </div>
 
@@ -264,7 +264,7 @@ export default function JoinNewswire({ onBack }) {
         <div className="join-form-container">
           <h2 style={{ fontFamily: "Georgia, serif", fontSize: "28px", color: "#161412", margin: "0 0 15px 0" }}>Apply</h2>
           <p style={{ color: "#5E574C", fontSize: "13px", marginBottom: "40px", borderBottom: "1px solid #D9CBA0", paddingBottom: "25px", lineHeight: "1.5", marginTop: 0 }}>
-            Submit your name, email, the position you're applying for, a short pitch, and a resume + writing or photo samples. We read everything.
+            Submit your name, email, the position you're applying for, a short pitch, and your resume or clinical writing samples. We review every application closely.
           </p>
 
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "25px" }}>
@@ -293,22 +293,22 @@ export default function JoinNewswire({ onBack }) {
               <label style={labelStyle}>PREFERRED DESK (OPTIONAL)</label>
               <select value={formData.preferred_desk} onChange={e => setFormData({...formData, preferred_desk: e.target.value})} style={{ ...inputStyle, cursor: "pointer", WebkitAppearance: "none", appearance: "none" }} onFocus={(e) => e.target.style.borderColor = "#161412"} onBlur={(e) => e.target.style.borderColor = "#D9CBA0"}>
                 <option value="No preference">No preference</option>
-                <option value="Cybersecurity">Cybersecurity</option>
-                <option value="AI & Machine Learning">AI & Machine Learning</option>
-                <option value="Enterprise Tech">Enterprise Tech</option>
+                <option value="Cancer Research">Cancer Research</option>
+                <option value="Clinical Trials">Clinical Trials</option>
+                <option value="Oncology Care">Oncology Care</option>
               </select>
             </div>
 
             <div>
               <label style={labelStyle}>PITCH / WHY THIS ROLE</label>
-              <textarea required rows="5" placeholder="What kind of work do you want to file? Any specific beats, story angles, or visual styles? Why this seat?" value={formData.pitch} onChange={e => setFormData({...formData, pitch: e.target.value})} style={{ ...inputStyle, resize: "vertical", minHeight: "120px" }} onFocus={(e) => e.target.style.borderColor = "#161412"} onBlur={(e) => e.target.style.borderColor = "#D9CBA0"} />
+              <textarea required rows="5" placeholder="What kind of clinical research or writing do you want to file? Any specific oncology subspecialties or study angles? Why this seat?" value={formData.pitch} onChange={e => setFormData({...formData, pitch: e.target.value})} style={{ ...inputStyle, resize: "vertical", minHeight: "120px" }} onFocus={(e) => e.target.style.borderColor = "#161412"} onBlur={(e) => e.target.style.borderColor = "#D9CBA0"} />
               <div style={{ color: "#5E574C", fontSize: "11px", fontStyle: "italic", marginTop: "8px" }}>Plain text. Up to 2000 characters.</div>
             </div>
 
             <div>
               <label style={labelStyle}>PORTFOLIO / SAMPLES URL (OPTIONAL)</label>
               <input type="url" placeholder="https://your-site.com or LinkedIn" value={formData.portfolio_url} onChange={e => setFormData({...formData, portfolio_url: e.target.value})} style={inputStyle} onFocus={(e) => e.target.style.borderColor = "#161412"} onBlur={(e) => e.target.style.borderColor = "#D9CBA0"} />
-              <div style={{ color: "#5E574C", fontSize: "11px", fontStyle: "italic", marginTop: "8px" }}>If you have published work, link it here.</div>
+              <div style={{ color: "#5E574C", fontSize: "11px", fontStyle: "italic", marginTop: "8px" }}>If you have published research or articles, link them here.</div>
             </div>
 
             <div>
@@ -317,9 +317,9 @@ export default function JoinNewswire({ onBack }) {
             </div>
 
             <div>
-              <label style={labelStyle}>WRITING OR PHOTO SAMPLES (PDF, DOCX, OR ZIP - OPTIONAL)</label>
+              <label style={labelStyle}>WRITING OR RESEARCH SAMPLES (PDF, DOCX, OR ZIP - OPTIONAL)</label>
               <input type="file" onChange={e => handleFile(e, "samples_data")} className="file-input" />
-              <div style={{ color: "#5E574C", fontSize: "11px", fontStyle: "italic", marginTop: "8px" }}>If applying as a photographer, attach a sample image or a ZIP of 5-10 photos.</div>
+              <div style={{ color: "#5E574C", fontSize: "11px", fontStyle: "italic", marginTop: "8px" }}>Attach sample clinical notes, summaries, or research papers if applicable.</div>
             </div>
 
             <button type="submit" disabled={status === "loading"} className="join-submit-btn">

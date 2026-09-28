@@ -5,20 +5,25 @@ import { API_BASE_URL } from "../config";
 import { cleanSummary, isValidArticle } from "../utils/summaryFilter";
 
 const PROF_NAMES = [
-  "Arion Vale", "Lyra Sen", "Kael Nore", "Elara Quinn", 
-  "Dorian Kade", "Mira Solen", "Orion Blake", "Seraphina Rowe"
+  "Alexander Cole",
+  "Marcus Reed",
+  "Daniel Hayes",
+  "Ethan Brooks",
+  "Sophia Bennett",
+  "Olivia Carter",
+  "Amelia Parker",
+  "Isabella Morgan"
 ];
-
-// Updated to match the new backend AI, Finance, and Cyber-Physical roles
+// Updated to match the Cancer and Oncology roles
 const PROF_POSITIONS = [
-  "Security Operations (SOC)",
-  "Vulnerability & Application Security",
-  "Threat Intelligence & Research",
-  "Malware & Ransomware Security",
-  "AI & Machine Learning Security",
-  "Financial Cybersecurity & FinTech",
-  "Cloud & Supply Chain Security",
-  "Core Security & Cyber-Physical Defense"
+  "Cancer Research & Oncology",
+  "Cancer Types & Disease Specialties",
+  "Cancer Diagnosis & Screening",
+  "Cancer Treatment & Therapy",
+  "Cancer Drugs & Clinical Trials",
+  "Cancer Genetics & Precision Medicine",
+  "Cancer Prevention & Survivorship",
+  "Cancer Organizations, Statistics & Policy"
 ];
 
 const STAFF_VOICE_PROFILES = {
@@ -185,7 +190,7 @@ export default function HomeFeed({
         }, 1500);
       } else {
         setSubmitStatus(null);
-        setModal({ show: true, title: "Submission Error", message: "Failed to send query to the editor. Please try again." });
+        setModal({ show: true, title: "Submission Error", message: "Failed to send query to the specialist. Please try again." });
       }
     } catch {
       setSubmitStatus(null);
@@ -313,7 +318,7 @@ export default function HomeFeed({
   if (selectedArticle) {
     const displayImage = getArticleImage(selectedArticle);
     let hash = 0;
-    const sourceName = selectedArticle.source || "News";
+    const sourceName = selectedArticle.source || "Updates";
     for (let i = 0; i < sourceName.length; i++) hash = sourceName.charCodeAt(i) + ((hash << 5) - hash);
     const avatarColor = "#" + "00000".substring(0, 6 - (hash & 0x00FFFFFF).toString(16).toUpperCase().length) + (hash & 0x00FFFFFF).toString(16).toUpperCase();
     
@@ -327,8 +332,8 @@ export default function HomeFeed({
               style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(22,20,18,0.9)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999, padding: "20px", cursor: "default" }}
             >
               <div style={{ backgroundColor: "#F3EEE3", padding: "30px", width: "100%", maxWidth: "400px", border: "2px solid #C9A227", borderRadius: "4px" }}>
-                <h3 style={{ margin: "0 0 15px 0", fontFamily: "Georgia, serif", color: "#161412" }}>Submit Query to Editor</h3>
-                <p style={{ fontSize: "12px", color: "#5E574C", marginBottom: "15px" }}>Ask a question or report an issue regarding this specific story.</p>
+                <h3 style={{ margin: "0 0 15px 0", fontFamily: "Georgia, serif", color: "#161412" }}>Submit Query to Specialist</h3>
+                <p style={{ fontSize: "12px", color: "#5E574C", marginBottom: "15px" }}>Ask a question or report an issue regarding this specific research update.</p>
                 
                 <textarea 
                   value={queryText}
@@ -439,7 +444,7 @@ export default function HomeFeed({
               
               <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
                 <a href={selectedArticle.link} target="_blank" rel="noopener noreferrer" style={{ color: "#d32f2f", textDecoration: "none", fontSize: "14px", display: "flex", alignItems: "center", gap: "6px", transition: "opacity 0.2s", fontWeight: "bold", marginRight: "10px" }}>
-                  Original Article 
+                  Original Study 
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                 </a>
                 
@@ -487,7 +492,7 @@ export default function HomeFeed({
               </div>
 
               <button onClick={handleCloseArticle} style={{ backgroundColor: "#d32f2f", color: "#ffffff", border: "none", padding: "10px 20px", fontWeight: "bold", cursor: "pointer", borderRadius: "4px", fontSize: "14px", display: "flex", alignItems: "center", gap: "8px" }}>
-                <span style={{ fontSize: "16px", marginBottom: "2px" }}>←</span> Back to Feed
+                <span style={{ fontSize: "16px", marginBottom: "2px" }}>←</span> Back to Updates
               </button>
             </div>
           </div>
@@ -559,14 +564,14 @@ export default function HomeFeed({
           <section className="page-header" style={{ marginBottom: "15px", borderBottom: "none", paddingBottom: 0 }}>
             <h1 style={{ fontFamily: "Georgia, serif", fontSize: "36px", color: "#161412", margin: 0, display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: "10px" }}>
               <span style={{ fontFamily: "Arial, sans-serif", fontSize: "14px", fontWeight: "bold", color: "#8F7118", letterSpacing: "1.5px", textTransform: "uppercase", marginRight: "5px" }}>
-                THE DAILY BRIEF
+                THE CLINICAL BRIEF
               </span>
-              {searchQuery ? `Search Results: "${searchQuery}"` : "Today’s News Desk"}
+              {searchQuery ? `Search Results: "${searchQuery}"` : "Today’s Oncology Desk"}
             </h1>
           </section>
 
           {loading ? (
-            <div className="state"><div className="loader" /><p>Loading the latest stories...</p></div>
+            <div className="state"><div className="loader" /><p>Loading the latest research updates...</p></div>
           ) : error ? (
             <div className="state">
               <p className="error">{error}</p>
@@ -575,7 +580,7 @@ export default function HomeFeed({
           ) : (
             <section className="news-list">
               {validArticles.length === 0 ? (
-                <div className="state"><p>{searchQuery ? "No valid stories match your search." : "No valid stories in this category."}</p></div>
+                <div className="state"><p>{searchQuery ? "No valid studies match your search." : "No valid studies in this category."}</p></div>
               ) : (
                 <>
                   {mainArticles.map((article, index) => (
@@ -586,7 +591,7 @@ export default function HomeFeed({
                     <section style={{ marginTop: "50px", paddingTop: "30px", borderTop: "2px solid #161412" }}>
                       <div style={{ display: "flex", alignItems: "baseline", gap: "15px", marginBottom: "25px" }}>
                         <h2 style={{ fontFamily: "Georgia, serif", fontSize: "26px", color: "#161412", margin: 0 }}>Discover More Articles</h2>
-                        <span style={{ fontSize: "13px", color: "#5E574C" }}>ranked by how many outlets are on the story</span>
+                        <span style={{ fontSize: "13px", color: "#5E574C" }}>ranked by how many journals are on the story</span>
                       </div>
                       
                       <div className="most-covered-grid">
@@ -605,7 +610,7 @@ export default function HomeFeed({
 
                               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
                                 <span style={{ color: "#C9A227", fontSize: "13px", fontWeight: "bold" }}>
-                                  {article.category || "News"} • {getProfName(article.professor_id).toUpperCase()}
+                                  {article.category || "Research"} • {getProfName(article.professor_id).toUpperCase()}
                                 </span>
                                 <button 
                                   onClick={(e) => handleCardListen(e, article)}
@@ -634,7 +639,7 @@ export default function HomeFeed({
                               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #C9C1B0", paddingTop: "12px", marginTop: "auto" }}>
                                 <span style={{ fontSize: "12px", color: "#5E574C", display: "flex", alignItems: "center", gap: "6px" }}>
                                   <span style={{ backgroundColor: "#161412", color: "#F3EEE3", width: "18px", height: "18px", borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "bold" }}>{randomSources}</span>
-                                  sources
+                                  journals
                                 </span>
                                 <span style={{ fontSize: "12px", color: "#5E574C" }}>Updated {formatToEST(article.published)}</span>
                               </div>
@@ -665,7 +670,7 @@ export default function HomeFeed({
           {briefArticles.length > 0 && (
             <section style={{ marginTop: "40px", paddingTop: "10px" }}>
               <h2 style={{ fontFamily: "Georgia, serif", fontSize: "26px", color: "#161412", margin: "0 0 10px 0" }}>In brief</h2>
-              <p style={{ fontSize: "14px", color: "#5E574C", marginBottom: "25px" }}>Stories carried by fewer outlets, summarized in one line each.</p>
+              <p style={{ fontSize: "14px", color: "#5E574C", marginBottom: "25px" }}>Studies covered by fewer journals, summarized in one line each.</p>
               <div style={{ display: "flex", flexDirection: "column" }}>
                 {briefArticles.map((article, idx) => (
                   <div onClick={() => handleOpenArticle(article)} key={article.id} className="clickable-card" style={{ gap: "15px", borderBottom: "1px solid #C9C1B0", paddingBottom: "15px", marginBottom: "15px" }}>
@@ -712,7 +717,7 @@ export default function HomeFeed({
       <section style={{ padding: "40px 20px 80px 20px", backgroundColor: "#EBE4D5", borderTop: "1px solid #C9C1B0", marginTop: "0px" }}>
         <div style={{ maxWidth: "1450px", margin: "0 auto" }}>
           <h2 style={{ fontFamily: "Georgia, serif", color: "#161412", textAlign: "center", marginBottom: "50px", fontSize: "36px", fontWeight: "bold" }}>
-            Meet the Newsroom
+            Meet the Oncology Board
           </h2>
           
           <div className="professors-grid">
@@ -793,11 +798,11 @@ export default function HomeFeed({
           >
             <div style={{ display: "flex", alignItems: "center", gap: "15px", flexWrap: "wrap" }}>
               <span style={{ color: "#8F7118", letterSpacing: "2px", fontSize: "12px", fontWeight: "bold", textTransform: "uppercase" }}>
-                Volunteer / Internship seats now open
+                Clinical Volunteer / Internship seats now open
               </span>
               <span style={{ color: "#8F7118", display: window.innerWidth < 600 ? "none" : "inline" }}>—</span>
               <span style={{ color: "#161412", fontFamily: "Georgia, serif", fontSize: "24px", fontWeight: "bold" }}>
-                Join the Newswire
+                Join the Research Network
               </span>
             </div>
             <div style={{ color: "#161412", letterSpacing: "2px", fontSize: "12px", fontWeight: "bold", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "5px" }}>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { API_BASE_URL } from "../config";
 
 export default function LoginScreen({ onLogin, onBack }) {
-  const [view, setView] = useState("LOGIN"); // LOGIN, REGISTER, FORGOT, RESET_CONFIRM, SETUP, VERIFY
+  const [view, setView] = useState("LOGIN"); // LOGIN, FORGOT, RESET_CONFIRM, SETUP, VERIFY
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -71,43 +71,6 @@ export default function LoginScreen({ onLogin, onBack }) {
         }
       } else {
         setError(data.error || "Invalid username or password.");
-      }
-    } catch (err) {
-      setError("Network error. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-    setLoading(true);
-    setError("");
-
-    try {
-      const res = await fetch(`${API_BASE_URL}/register/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password })
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        if (data.token) {
-          onLogin(data);
-        } else {
-          setSuccessMsg("Account created successfully! Please log in.");
-          setView("LOGIN");
-          setPassword("");
-          setConfirmPassword("");
-        }
-      } else {
-        setError(data.error || "Registration failed. Username or email may already exist.");
       }
     } catch (err) {
       setError("Network error. Please try again.");
@@ -248,25 +211,8 @@ export default function LoginScreen({ onLogin, onBack }) {
       <div style={{ backgroundColor: "#fff", padding: "40px", borderRadius: "8px", border: "2px solid #161412", maxWidth: "420px", width: "100%", textAlign: "center", boxShadow: "0 10px 25px rgba(0,0,0,0.05)" }}>
         
         <h2 style={{ fontFamily: "Georgia, serif", margin: "0 0 25px 0", fontSize: "28px" }}>
-          {view === "REGISTER" ? "Join Cyberbriefs" : view === "FORGOT" ? "Reset Password" : view === "RESET_CONFIRM" ? "Set New Password" : "Welcome Back"}
+          {view === "FORGOT" ? "Reset Password" : view === "RESET_CONFIRM" ? "Set New Password" : "Admin Login"}
         </h2>
-
-        {(view === "LOGIN" || view === "REGISTER") && (
-          <div style={{ display: "flex", marginBottom: "25px", borderBottom: "2px solid #EBE4D5" }}>
-            <button
-              onClick={() => switchView("LOGIN")}
-              style={{ flex: 1, padding: "10px", background: "none", border: "none", borderBottom: view === "LOGIN" ? "2px solid #161412" : "none", fontWeight: "bold", color: view === "LOGIN" ? "#161412" : "#A39E93", cursor: "pointer", marginBottom: "-2px" }}
-            >
-              SIGN IN
-            </button>
-            <button
-              onClick={() => switchView("REGISTER")}
-              style={{ flex: 1, padding: "10px", background: "none", border: "none", borderBottom: view === "REGISTER" ? "2px solid #161412" : "none", fontWeight: "bold", color: view === "REGISTER" ? "#161412" : "#A39E93", cursor: "pointer", marginBottom: "-2px" }}
-            >
-              CREATE ACCOUNT
-            </button>
-          </div>
-        )}
 
         {error && (
           <div style={{ backgroundColor: "#ffebee", color: "#D32F2F", padding: "10px", marginBottom: "20px", fontSize: "14px", fontWeight: "bold", border: "1px solid #ffcdd2" }}>
@@ -313,6 +259,7 @@ export default function LoginScreen({ onLogin, onBack }) {
           </form>
         )}
 
+        {/* LOGIN FORM */}
         {view === "LOGIN" && (
           <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
             <input type="text" placeholder="Username" required value={username} onChange={e => setUsername(e.target.value)} style={{ padding: "14px", border: "1px solid #161412", outline: "none", fontSize: "15px", boxSizing: "border-box" }} />
@@ -336,28 +283,7 @@ export default function LoginScreen({ onLogin, onBack }) {
           </form>
         )}
 
-        {view === "REGISTER" && (
-          <form onSubmit={handleRegister} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-            <input type="email" placeholder="Email Address" required value={email} onChange={e => setEmail(e.target.value)} style={{ padding: "14px", border: "1px solid #161412", outline: "none", fontSize: "15px", boxSizing: "border-box" }} />
-            <input type="text" placeholder="Choose a Username" required value={username} onChange={e => setUsername(e.target.value)} style={{ padding: "14px", border: "1px solid #161412", outline: "none", fontSize: "15px", boxSizing: "border-box" }} />
-
-            <div style={{ position: "relative", width: "100%" }}>
-              <input type={showPassword ? "text" : "password"} placeholder="Create Password" required value={password} onChange={e => setPassword(e.target.value)} style={{ padding: "14px 45px 14px 14px", border: "1px solid #161412", outline: "none", fontSize: "15px", width: "100%", boxSizing: "border-box" }} />
-              <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#5E574C", padding: 0 }}>
-                <EyeIcon show={showPassword} />
-              </button>
-            </div>
-
-            <div style={{ position: "relative", width: "100%" }}>
-              <input type={showPassword ? "text" : "password"} placeholder="Confirm Password" required value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} style={{ padding: "14px 45px 14px 14px", border: "1px solid #161412", outline: "none", fontSize: "15px", width: "100%", boxSizing: "border-box" }} />
-            </div>
-
-            <button type="submit" disabled={loading} style={{ padding: "14px", backgroundColor: "#C9A227", color: "#161412", border: "none", fontWeight: "bold", cursor: "pointer", transition: "0.2s" }}>
-              {loading ? "Creating Account..." : "SIGN UP"}
-            </button>
-          </form>
-        )}
-
+        {/* 2FA SETUP FORM */}
         {view === "SETUP" && (
           <div>
             <p style={{ fontSize: "14px", color: "#5E574C", marginBottom: "20px", lineHeight: "1.5" }}>
@@ -373,6 +299,7 @@ export default function LoginScreen({ onLogin, onBack }) {
           </div>
         )}
 
+        {/* 2FA VERIFY FORM */}
         {view === "VERIFY" && (
           <form onSubmit={handleVerify} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
             <p style={{ fontSize: "14px", color: "#5E574C", marginBottom: "5px" }}>Enter the 2FA code from your authenticator app.</p>

@@ -29,7 +29,7 @@ const formatTimeSeconds = (secs) => {
 
 export default function Navbar({ 
   selectedCategory, setSelectedCategory, user, onSignin, onLogout,
-  onHome, onRss, onAbout, onBlogs, onBooks, onAdmin, onSubscribe, 
+  onHome, onRss, onClinicalTrials, onAbout, onAdmin, onSubscribe, 
   latestHeadline, latestSummary, latestPublished, latestSource, latestCategory, latestId,
   totalStories = 0, totalSources = 0, onSearch 
 }) {
@@ -91,7 +91,7 @@ export default function Navbar({
     
     const triggerScroll = () => {
       const headings = Array.from(document.querySelectorAll('h2'));
-      const newsroomHeading = headings.find(h => h.textContent.includes('Meet the Newsroom') || h.textContent.includes('Newsroom'));
+      const newsroomHeading = headings.find(h => h.textContent.includes('Meet the Oncology Board') || h.textContent.includes('Oncology Board') || h.textContent.includes('Meet the Newsroom'));
       
       if (newsroomHeading) {
         newsroomHeading.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -175,13 +175,13 @@ export default function Navbar({
   };
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText("https://cyberbrief-new-15-sep-2026.vercel.app/");
+    navigator.clipboard.writeText("https://cancerbrief.vercel.app/");
     setLinkCopied(true);
     setTimeout(() => setLinkCopied(false), 2000);
   };
 
   const handleCopyEmbed = () => {
-    const embedCode = `<iframe src="https://cyberbrief-new-15-sep-2026.vercel.app/" width="680" height="120" style="border:0;" loading="lazy" title="Cyberbriefs Newsletter"></iframe>`;
+    const embedCode = `<iframe src="https://cancerbrief.vercel.app/" width="680" height="120" style="border:0;" loading="lazy" title="Cancerbriefs Newsletter"></iframe>`;
     navigator.clipboard.writeText(embedCode);
     setEmbedCopied(true);
     setTimeout(() => setEmbedCopied(false), 2000);
@@ -209,7 +209,7 @@ export default function Navbar({
   }, [latestPublished, now]);
 
   const displaySummary = useMemo(() => {
-    if (!latestSummary) return "AI-powered news intelligence from your live RSS feeds. Each item links back to the reporting it was built from.";
+    if (!latestSummary) return "AI-powered clinical intelligence from your live RSS feeds. Each item links back to the reporting it was built from.";
     const words = latestSummary.split(" ");
     if (words.length > 28) {
       return words.slice(0, 28).join(" ") + "...";
@@ -351,17 +351,17 @@ export default function Navbar({
       <div className={`side-drawer ${drawerOpen ? "open" : ""}`}>
         <button className="drawer-close" onClick={() => setDrawerOpen(false)}>✕</button>
         <a className="drawer-link" onClick={goHome}>Home</a>
-        <a className="drawer-link" onClick={scrollToNewsroom}>Newsroom</a>
+        <a className="drawer-link" onClick={scrollToNewsroom}>Oncology Board</a>
         <a className="drawer-link" onClick={(e) => handleNavClick(e, "/rss", onRss)}>RSS Feed</a>
-        <a className="drawer-link" onClick={(e) => handleNavClick(e, "/how", onAbout)}>About the Cyberbriefs</a>
-        <a className="drawer-link" onClick={(e) => handleNavClick(e, "/blogs", onBlogs)}>Blogs</a>
-        <a className="drawer-link" onClick={(e) => handleNavClick(e, "/books", onBooks)}>Books</a>
+        
+        {/* Clinical Trials Link */}
+        <a className="drawer-link" href="/clinicaltrials" onClick={(e) => handleNavClick(e, "/clinicaltrials", onClinicalTrials)}>Clinical Trials</a>
+        
+        <a className="drawer-link" onClick={(e) => handleNavClick(e, "/how", onAbout)}>About the Cancerbriefs</a>
         <a className="drawer-link" onClick={(e) => handleNavClick(e, "/join", null)}>Careers</a>
         
-        {/* Mobile Authentication State: Only show Sign In if logged out */}
-        {!user ? (
-          <a className="drawer-link" style={{ color: "#C9A227", marginTop: "15px" }} onClick={(e) => handleNavClick(e, "/login", onSignin)}>Sign In</a>
-        ) : (
+        {/* Render Sign Out & Username only if logged in - Sign In removed */}
+        {user && (
           <>
             <div 
               className="drawer-link" 
@@ -401,14 +401,14 @@ export default function Navbar({
         </div>
  
         <div className="aggregate-top-right">
-          <a className="aggregate-top-link" href="/how" onClick={(e) => handleNavClick(e, "/how", onAbout)}>About the Cyberbriefs</a>
-          <a className="aggregate-top-link" href="/blogs" onClick={(e) => handleNavClick(e, "/blogs", onBlogs)}>Blogs</a>
-          <a className="aggregate-top-link" href="/books" onClick={(e) => handleNavClick(e, "/books", onBooks)}>Books</a>
           
-          {/* Desktop Authentication State: Only show Sign In if logged out */}
-          {!user ? (
-            <a className="aggregate-top-link" href="/login" onClick={(e) => handleNavClick(e, "/login", onSignin)}>Sign In</a>
-          ) : (
+          {/* Clinical Trials Link */}
+          <a className="aggregate-top-link" href="/clinicaltrials" onClick={(e) => handleNavClick(e, "/clinicaltrials", onClinicalTrials)}>Clinical Trials</a>
+          
+          <a className="aggregate-top-link" href="/how" onClick={(e) => handleNavClick(e, "/how", onAbout)}>About the Cancerbriefs</a>
+          
+          {/* Render Sign Out & Username only if logged in - Sign In removed */}
+          {user && (
             <div style={{ display: "flex", alignItems: "center", gap: "10px", paddingLeft: "13px", paddingRight: "13px" }}>
               <span 
                 style={{ fontSize: "13px", fontWeight: "bold", color: "#161412", display: "flex", alignItems: "center", gap: "6px", cursor: "help" }}
@@ -436,8 +436,8 @@ export default function Navbar({
 
       <div className="aggregate-masthead">
         <button className="aggregate-brand-container" type="button" onClick={goHome}>
-          <img src="/images/logo.png" alt="Cyberbriefs Logo" className="aggregate-logo-img" />
-          <h1 className="aggregate-brand">Cyberbriefs</h1>
+          <img src="/images/logo.png" alt="Cancerbriefs Logo" className="aggregate-logo-img" />
+          <h1 className="aggregate-brand">Cancerbriefs</h1>
         </button>
       </div>
 

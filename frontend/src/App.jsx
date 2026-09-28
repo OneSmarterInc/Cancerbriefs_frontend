@@ -9,16 +9,14 @@ import TermsOfUse from "./components/TermsOfUse";
 import CookieSettings from "./components/CookieSettings";
 import Footer from "./components/Footer";
 import HomeFeed from "./components/HomeFeed";
-import BlogPage from "./components/BlogPage";
-import BookPage from "./components/BookPage"; 
 import RssFeedPage from "./components/RssFeedPage";
 import NewsroomPage from "./components/NewsroomPage"; 
 import JoinNewswire from "./components/JoinNewswire";
-import CyberbriefChat from "./components/CyberbriefChat";
+import ClinicalTrials from "./components/ClinicalTrials";
 import { isValidArticle } from "./utils/summaryFilter";
 
-const TOKEN_KEY = "newsai_token";
-const USER_KEY = "newsai_user";
+const TOKEN_KEY = "cancerbrief_token";
+const USER_KEY = "cancerbrief_user";
 const ITEMS_PER_PAGE = 14; 
 
 export default function App() {
@@ -28,8 +26,20 @@ export default function App() {
   });
   const [token, setToken] = useState(() => sessionStorage.getItem(TOKEN_KEY));
   
-  const [authScreen, setAuthScreen] = useState(() => {
-    const savedScreen = sessionStorage.getItem("newsai_screen");
+  const [currentScreen, setCurrentScreen] = useState(() => {
+    // Check the actual browser URL path first so direct and refreshed routes work instantly
+    const path = window.location.pathname.replace(/\/$/, "");
+    if (path === "/join") return "join";
+    if (path === "/clinicaltrials") return "clinicaltrials";
+    if (path === "/rss") return "rss";
+    if (path === "/newsroom") return "newsroom";
+    if (path === "/how") return "about";
+    if (path === "/privacy") return "privacy";
+    if (path === "/terms") return "terms";
+    if (path === "/cookies") return "cookies";
+    if (path === "/login") return "login";
+
+    const savedScreen = sessionStorage.getItem("cancerbrief_screen");
     const savedUser = JSON.parse(sessionStorage.getItem(USER_KEY) || "null");
     if (savedScreen === "admin" && (!savedUser || !savedUser.is_admin)) return null;
     return savedScreen || null;
@@ -37,9 +47,9 @@ export default function App() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    if (authScreen) sessionStorage.setItem("newsai_screen", authScreen);
-    else sessionStorage.removeItem("newsai_screen");
-  }, [authScreen]);
+    if (currentScreen) sessionStorage.setItem("cancerbrief_screen", currentScreen);
+    else sessionStorage.removeItem("cancerbrief_screen");
+  }, [currentScreen]);
 
   const [articles, setArticles] = useState([]);
   const [totalSources, setTotalSources] = useState(0); 
@@ -70,7 +80,7 @@ export default function App() {
         window.history.replaceState({}, "", cleanPath);
       }
 
-      let path = window.location.pathname;
+      let path = window.location.pathname.replace(/\/$/, "") || "/";
       const searchParams = new URLSearchParams(window.location.search);
       setCurrentPage(1);
 
@@ -83,42 +93,44 @@ export default function App() {
         const currentToken = sessionStorage.getItem(TOKEN_KEY);
         const savedUser = JSON.parse(sessionStorage.getItem(USER_KEY) || "null");
         if (currentToken && savedUser && savedUser.is_admin) {
-          setAuthScreen("admin");
+          setCurrentScreen("admin");
         } else {
           window.history.replaceState({}, "", "/login");
-          setAuthScreen("login");
+          setCurrentScreen("login");
         }
       } else if (path === "/login") {
-        setAuthScreen("login");
-      } else if (path === "/blogs" || path === "/blog") {
-        setAuthScreen("blog");
-      } else if (path === "/books" || path === "/book") { 
-        setAuthScreen("book");
+        setCurrentScreen("login");
+      } else if (path === "/clinicaltrials") {
+        setCurrentScreen("clinicaltrials");
       } else if (path === "/rss") {
-        setAuthScreen("rss");
+        setCurrentScreen("rss");
       } else if (path === "/newsroom") { 
-        setAuthScreen("newsroom");
+        setCurrentScreen("newsroom");
       } else if (path === "/join") { 
-        setAuthScreen("join");
+        setCurrentScreen("join");
       } else if (path === "/how") {
-        setAuthScreen("about");
+        setCurrentScreen("about");
       } else if (path === "/privacy") {
-        setAuthScreen("privacy");
+        setCurrentScreen("privacy");
       } else if (path === "/terms") {
-        setAuthScreen("terms");
+        setCurrentScreen("terms");
       } else if (path === "/cookies") {
-        setAuthScreen("cookies");
+        setCurrentScreen("cookies");
       } else if (path.startsWith("/section/")) {
-        setAuthScreen(null);
+        setCurrentScreen(null);
         const slug = path.replace("/section/", "");
-        const cats = { "cybersecurity": "Cybersecurity" };
+        const cats = { 
+          "oncology": "Oncology", 
+          "cancer-research": "Cancer Research", 
+          "clinical-trials": "Clinical Trials" 
+        };
         setSelectedCategory(cats[slug] || "All");
         setSearchQuery("");
       } else if (path === "/search") {
-        setAuthScreen(null);
+        setCurrentScreen(null);
         setSearchQuery(searchParams.get("q") || "");
       } else {
-        setAuthScreen(null);
+        setCurrentScreen(null);
         setSelectedCategory("All");
         setSearchQuery("");
       }
@@ -176,7 +188,7 @@ export default function App() {
       setArticles(result.articles || []);
       if (result.total_sources !== undefined) setTotalSources(result.total_sources);
     } catch {
-      setError("Unable to load news. Check that the Django server is running.");
+      setError("Unable to load updates. Check that the server is running.");
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -193,14 +205,14 @@ export default function App() {
     const searchParams = new URLSearchParams(window.location.search);
     const isSubscriber = searchParams.get("sub") === "true";
     if (isSubscriber) sessionStorage.setItem("hasSeenPopup", "true");
-    if (!authScreen && !sessionStorage.getItem("hasSeenPopup")) {
+    if (!currentScreen && !sessionStorage.getItem("hasSeenPopup")) {
       const timer = setTimeout(() => {
         setShowSubPopup(true);
         sessionStorage.setItem("hasSeenPopup", "true");
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [authScreen]);
+  }, [currentScreen]);
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
@@ -293,7 +305,8 @@ export default function App() {
 
   return (
     <div className="app" style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-      {authScreen !== "admin" && (
+      
+      {currentScreen !== "admin" && currentScreen !== "login" && (
         <Navbar
           selectedCategory={selectedCategory}
           setSelectedCategory={handleCategorySelect} 
@@ -302,11 +315,9 @@ export default function App() {
           onLogout={handleLogout}
           onHome={handleHome} 
           onRss={() => navigate("/rss")}
+          onClinicalTrials={() => navigate("/clinicaltrials")}
           onAbout={() => navigate("/how")}
-          onBlogs={() => navigate("/blogs")}
-          onBooks={() => navigate("/books")}
           onNewsroom={() => navigate("/newsroom")}
-          onAdmin={() => navigate("/admin")} 
           onSubscribe={() => setShowSubPopup(true)} 
           onSearch={handleSearch} 
           latestHeadline={latestArticle?.title || ""}
@@ -319,12 +330,12 @@ export default function App() {
       )}
 
       <div style={{ flex: 1 }}>
-        {authScreen === "login" ? <LoginScreen onLogin={saveSession} onBack={() => navigate("/")} />
-        : authScreen === "blog" ? <BlogPage onBack={() => navigate("/")} />
-        : authScreen === "book" ? <BookPage onBack={() => navigate("/")} />
-        : authScreen === "join" ? <JoinNewswire onBack={() => navigate("/")} />
-        : authScreen === "newsroom" ? <NewsroomPage articles={articles} onBack={() => navigate("/")} onArticleClick={(a) => navigate(`/?article_id=${a.id}`)} /> 
-        : authScreen === "rss" ? (
+        {currentScreen === "login" ? <LoginScreen onLogin={saveSession} onBack={() => navigate("/")} />
+        : currentScreen === "admin" && user?.is_admin ? <AdminDashboard user={user} articles={articles} token={token} onRefresh={() => fetchNews(true)} onBack={() => navigate("/")} onLogout={handleLogout} />
+        : currentScreen === "clinicaltrials" ? <ClinicalTrials />
+        : currentScreen === "join" ? <JoinNewswire onBack={() => navigate("/")} />
+        : currentScreen === "newsroom" ? <NewsroomPage articles={articles} onBack={() => navigate("/")} onArticleClick={(a) => navigate(`/?article_id=${a.id}`)} /> 
+        : currentScreen === "rss" ? (
             loading ? (
               <div style={{ textAlign: "center", padding: "80px", fontFamily: "Georgia, serif", fontSize: "16px", color: "#5E574C" }}>
                 Loading intelligence sources...
@@ -333,11 +344,10 @@ export default function App() {
               <RssFeedPage articles={articles} onBack={() => navigate("/")} />
             )
           )
-        : authScreen === "about" ? <AboutDesk onBack={() => navigate("/")} />
-        : authScreen === "privacy" ? <PrivacyPolicy onBack={() => navigate("/")} />
-        : authScreen === "terms" ? <TermsOfUse onBack={() => navigate("/")} />
-        : authScreen === "cookies" ? <CookieSettings onBack={() => navigate("/")} />
-        : authScreen === "admin" && user?.is_admin ? <AdminDashboard user={user} articles={articles} token={token} onRefresh={() => fetchNews(true)} onBack={() => navigate("/")} onLogout={handleLogout} />
+        : currentScreen === "about" ? <AboutDesk onBack={() => navigate("/")} />
+        : currentScreen === "privacy" ? <PrivacyPolicy onBack={() => navigate("/")} />
+        : currentScreen === "terms" ? <TermsOfUse onBack={() => navigate("/")} />
+        : currentScreen === "cookies" ? <CookieSettings onBack={() => navigate("/")} />
         : (
           <HomeFeed 
             selectedCategory={selectedCategory} 
@@ -358,13 +368,8 @@ export default function App() {
         )}
       </div>
 
-      {authScreen !== "admin" && authScreen !== "login" && (
+      {currentScreen !== "admin" && currentScreen !== "login" && (
         <Footer currentYear={currentYear} setAuthScreen={handleFooterNavigation} />
-      )}
-
-      {/* RENDER THE CHATBOT ONLY WHEN USER IS LOGGED IN */}
-      {user && authScreen !== "admin" && authScreen !== "login" && (
-        <CyberbriefChat articles={articles} />
       )}
 
       {showSubPopup && (
@@ -384,9 +389,9 @@ export default function App() {
               </>
             ) : (
               <>
-                <div style={{ fontSize: "12px", color: "#C9A227", fontWeight: "bold", letterSpacing: "1px", marginBottom: "10px" }}>GET THE BRIEFING</div>
+                <div style={{ fontSize: "12px", color: "#C9A227", fontWeight: "bold", letterSpacing: "1px", marginBottom: "10px" }}>GET THE CLINICAL BRIEFING</div>
                 <h2 style={{ fontFamily: "Georgia, serif", color: "#161412", fontSize: "32px", margin: "0 0 15px 0", lineHeight: "1.1" }}>Your daily desk,<br/>delivered.</h2>
-                <p style={{ color: "#5E574C", fontSize: "15px", marginBottom: "25px" }}>Subscribe to receive the top 5 Cybersecurity stories formatted perfectly for your inbox.</p>
+                <p style={{ color: "#5E574C", fontSize: "15px", marginBottom: "25px" }}>Subscribe to receive the top 5 Oncology stories formatted perfectly for your inbox.</p>
                 <form onSubmit={handleSubscribe} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
                   <input type="email" required value={subEmail} onChange={(e) => setSubEmail(e.target.value)} placeholder="Enter your email address" style={{ padding: "15px", border: "1px solid #161412", fontSize: "15px", outline: "none", textAlign: "center" }} />
                   {subStatus === "error" && <div style={{ color: "#D32F2F", fontSize: "13px", fontWeight: "bold" }}>{subError}</div>}

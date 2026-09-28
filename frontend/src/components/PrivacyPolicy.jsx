@@ -54,7 +54,7 @@ export default function PrivacyPolicy({ onBack }) {
             marginBottom: "25px",
           }}
         >
-          Welcome to CyberBriefs, a news discovery and aggregation platform. This Privacy Policy explains how we collect, use, store, protect, and disclose information when you access or use our website, applications, newsletter, news discovery features, and related services.
+          Welcome to Cancerbriefs, a clinical news discovery and aggregation platform. This Privacy Policy explains how we collect, use, store, protect, and disclose information when you access or use our website, applications, newsletter, news discovery features, and related services.
         </p>
 
         <p
@@ -65,7 +65,7 @@ export default function PrivacyPolicy({ onBack }) {
             marginBottom: "30px",
           }}
         >
-          CyberBriefs is designed to make it easier for users to discover current news and information from multiple publishers in one place. Our platform may use RSS feeds, publisher-provided feeds, publicly available information, automated processing, and artificial intelligence technologies to organize and summarize news content.
+          Cancerbriefs is designed to make it easier for users to discover current news and information from multiple publishers in one place. Our platform may use RSS feeds, publisher-provided feeds, publicly available information, automated processing, and artificial intelligence technologies to organize and summarize news content.
         </p>
 
         <p
@@ -76,13 +76,13 @@ export default function PrivacyPolicy({ onBack }) {
             marginBottom: "35px",
           }}
         >
-          By using CyberBriefs, you acknowledge that you have read and understood this Privacy Policy. If you do not agree with this policy, please discontinue use of the website.
+          By using Cancerbriefs, you acknowledge that you have read and understood this Privacy Policy. If you do not agree with this policy, please discontinue use of the website.
         </p>
 
         <h3 style={headingStyle}>1. Information We Collect</h3>
 
         <p style={paragraphStyle}>
-          We collect information that is necessary to operate, maintain, and improve CyberBriefs. The information we collect depends on how you interact with our platform.
+          We collect information that is necessary to operate, maintain, and improve Cancerbriefs. The information we collect depends on how you interact with our platform.
         </p>
 
         <p style={paragraphStyle}>This information may include:</p>
@@ -109,7 +109,7 @@ export default function PrivacyPolicy({ onBack }) {
         <h3 style={headingStyle}>2. Information You Provide</h3>
 
         <p style={paragraphStyle}>
-          You may voluntarily provide personal information when using certain features of CyberBriefs. For example, if you subscribe to our newsletter, we may collect your email address so that we can deliver the requested communications.
+          You may voluntarily provide personal information when using certain features of Cancerbriefs. For example, if you subscribe to our newsletter, we may collect your email address so that we can deliver the requested communications.
         </p>
 
         <p style={paragraphStyle}>
@@ -119,7 +119,7 @@ export default function PrivacyPolicy({ onBack }) {
         <h3 style={headingStyle}>3. RSS Feeds and News Sources</h3>
 
         <p style={paragraphStyle}>
-          CyberBriefs obtains information from RSS feeds and other publisher-provided or publicly available sources. These feeds may contain headlines, article descriptions, publication dates, source names, categories, images, and links to original articles.
+          Cancerbriefs obtains information from RSS feeds and other publisher-provided or publicly available sources. These feeds may contain headlines, article descriptions, publication dates, source names, categories, images, and links to original articles.
         </p>
 
         <p style={paragraphStyle}>
@@ -127,13 +127,13 @@ export default function PrivacyPolicy({ onBack }) {
         </p>
 
         <p style={paragraphStyle}>
-          CyberBriefs does not represent itself as the original publisher of third-party news articles unless explicitly stated. Copyright, trademarks, and other intellectual property rights in original publisher content remain with their respective owners.
+          Cancerbriefs does not represent itself as the original publisher of third-party news articles unless explicitly stated. Copyright, trademarks, and other intellectual property rights in original publisher content remain with their respective owners.
         </p>
 
         <h3 style={headingStyle}>4. AI-Generated Content and Summaries</h3>
 
         <p style={paragraphStyle}>
-          CyberBriefs may use artificial intelligence and automated processing technologies to analyze news information obtained from available sources.
+          Cancerbriefs may use artificial intelligence and automated processing technologies to analyze news information obtained from available sources.
         </p>
 
         <p style={paragraphStyle}>
@@ -151,7 +151,7 @@ export default function PrivacyPolicy({ onBack }) {
         <h3 style={headingStyle}>5. How We Use Information</h3>
 
         <p style={paragraphStyle}>
-          Information collected through CyberBriefs may be used for the following purposes:
+          Information collected through Cancerbriefs may be used for the following purposes:
         </p>
 
         <ul style={listStyle}>
@@ -170,7 +170,7 @@ export default function PrivacyPolicy({ onBack }) {
         <h3 style={headingStyle}>6. Newsletter and Email Communications</h3>
 
         <p style={paragraphStyle}>
-          If you subscribe to CyberBriefs newsletter, your email address may be used to send news briefings, headlines, summaries, product updates, or other communications related to CyberBriefs.
+          If you subscribe to Cancerbriefs newsletter, your email address may be used to send news briefings, headlines, summaries, product updates, or other communications related to Cancerbriefs.
         </p>
 
         <p style={paragraphStyle}>
@@ -184,7 +184,7 @@ export default function PrivacyPolicy({ onBack }) {
         <h3 style={headingStyle}>7. Cookies and Similar Technologies</h3>
 
         <p style={paragraphStyle}>
-          CyberBriefs may use cookies, browser storage, pixels, and similar technologies to support website functionality and understand how visitors interact with our services.
+          Cancerbriefs may use cookies, browser storage, pixels, and similar technologies to support website functionality and understand how visitors interact with our services.
         </p>
 
         <p style={paragraphStyle}>
@@ -198,7 +198,7 @@ export default function PrivacyPolicy({ onBack }) {
         <h3 style={headingStyle}>8. Analytics and Usage Information</h3>
 
         <p style={paragraphStyle}>
-          We may collect aggregated or technical usage information to understand how visitors use CyberBriefs. This can help us identify popular features, improve page performance, understand navigation patterns, and identify technical problems.
+          We may collect aggregated or technical usage information to understand how visitors use Cancerbriefs. This can help us identify popular features, improve page performance, understand navigation patterns, and identify technical problems.
         </p>
 
         <p style={paragraphStyle}>
@@ -218,11 +218,11 @@ export default function PrivacyPolicy({ onBack }) {
         <h3 style={headingStyle}>10. External Links and Publishers</h3>
 
         <p style={paragraphStyle}>
-          CyberBriefs contains links to external websites, news publishers, organizations, and other third-party services.
+          Cancerbriefs contains links to external websites, news publishers, organizations, and other third-party services.
         </p>
 
         <p style={paragraphStyle}>
-          When you click an external link, you may leave CyberBriefs and interact directly with the third-party website. We do not control the privacy practices, security, content, or policies of external websites.
+          When you click an external link, you may leave Cancerbriefs and interact directly with the third-party website. We do not control the privacy practices, security, content, or policies of external websites.
         </p>
 
         <p style={paragraphStyle}>
@@ -236,7 +236,7 @@ export default function PrivacyPolicy({ onBack }) {
         </p>
 
         <p style={paragraphStyle}>
-          We may share limited information with service providers that help us operate CyberBriefs. We may also disclose information when reasonably necessary to comply with legal obligations, respond to lawful requests, protect our systems, enforce our agreements, or protect the rights, safety, and security of users or others.
+          We may share limited information with service providers that help us operate Cancerbriefs. We may also disclose information when reasonably necessary to comply with legal obligations, respond to lawful requests, protect our systems, enforce our agreements, or protect the rights, safety, and security of users or others.
         </p>
 
         <h3 style={headingStyle}>12. Data Security</h3>
@@ -287,7 +287,7 @@ export default function PrivacyPolicy({ onBack }) {
         <h3 style={headingStyle}>15. Children's Privacy</h3>
 
         <p style={paragraphStyle}>
-          CyberBriefs is not intended to knowingly collect personal information from children where such collection is prohibited by applicable law.
+          Cancerbriefs is not intended to knowingly collect personal information from children where such collection is prohibited by applicable law.
         </p>
 
         <p style={paragraphStyle}>
@@ -297,7 +297,7 @@ export default function PrivacyPolicy({ onBack }) {
         <h3 style={headingStyle}>16. International Users</h3>
 
         <p style={paragraphStyle}>
-          Depending on where you access CyberBriefs from, your information may be processed or stored in countries other than the country in which you reside.
+          Depending on where you access Cancerbriefs from, your information may be processed or stored in countries other than the country in which you reside.
         </p>
 
         <p style={paragraphStyle}>
@@ -307,7 +307,7 @@ export default function PrivacyPolicy({ onBack }) {
         <h3 style={headingStyle}>17. News Content Accuracy</h3>
 
         <p style={paragraphStyle}>
-          CyberBriefs is a news discovery and aggregation service. We do not guarantee that every headline, description, publication date, summary, categorization, or other piece of information displayed on the platform is complete, current, or error-free.
+          Cancerbriefs is a news discovery and aggregation service. We do not guarantee that every headline, description, publication date, summary, categorization, or other piece of information displayed on the platform is complete, current, or error-free.
         </p>
 
         <p style={paragraphStyle}>
@@ -317,7 +317,7 @@ export default function PrivacyPolicy({ onBack }) {
         <h3 style={headingStyle}>18. Content Removal and Corrections</h3>
 
         <p style={paragraphStyle}>
-          If you are a publisher, rights holder, or other authorized party and believe that information displayed by CyberBriefs should be corrected, removed, or otherwise reviewed, you may contact us with the relevant details.
+          If you are a publisher, rights holder, or other authorized party and believe that information displayed by Cancerbriefs should be corrected, removed, or otherwise reviewed, you may contact us with the relevant details.
         </p>
 
         <p style={paragraphStyle}>
@@ -337,7 +337,7 @@ export default function PrivacyPolicy({ onBack }) {
         <h3 style={headingStyle}>20. Contact Us</h3>
 
         <p style={paragraphStyle}>
-          If you have questions about this Privacy Policy, our data practices, newsletter communications, RSS aggregation, content displayed on CyberBriefs, or a privacy-related request, please contact us using the contact information provided on the website.
+          If you have questions about this Privacy Policy, our data practices, newsletter communications, RSS aggregation, content displayed on Cancerbriefs, or a privacy-related request, please contact us using the contact information provided on the website.
         </p>
 
         <div
@@ -350,9 +350,9 @@ export default function PrivacyPolicy({ onBack }) {
             lineHeight: "1.7",
           }}
         >
-          <strong>CyberBriefs</strong>
+          <strong>Cancerbriefs</strong>
           <br />
-          News discovery powered by RSS feeds and automated content processing.
+          Clinical news discovery powered by RSS feeds and automated content processing.
         </div>
       </div>
     </div>
