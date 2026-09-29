@@ -564,7 +564,7 @@ export default function HomeFeed({
           <section className="page-header" style={{ marginBottom: "15px", borderBottom: "none", paddingBottom: 0 }}>
             <h1 style={{ fontFamily: "Georgia, serif", fontSize: "36px", color: "#161412", margin: 0, display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: "10px" }}>
               <span style={{ fontFamily: "Arial, sans-serif", fontSize: "14px", fontWeight: "bold", color: "#8F7118", letterSpacing: "1.5px", textTransform: "uppercase", marginRight: "5px" }}>
-                THE CLINICAL BRIEF
+                THE CANCERBRIEFS BRIEF
               </span>
               {searchQuery ? `Search Results: "${searchQuery}"` : "Today’s Oncology Desk"}
             </h1>
