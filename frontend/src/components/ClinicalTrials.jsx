@@ -17,7 +17,28 @@ export default function ClinicalTrials() {
           throw new Error(`Error: ${response.status}`);
         }
         const data = await response.json();
-        setTrials(data.studies || []);
+        const rawStudies = data.studies || [];
+
+        // Strictly sort so that RECRUITING trials appear first
+        const sortedStudies = rawStudies.sort((a, b) => {
+          const getStatusText = (study) => {
+            const protocol = study.protocolSection || {};
+            const statusModule = protocol.statusModule || {};
+            return (statusModule.overallStatus || "").trim().toUpperCase();
+          };
+
+          const statusA = getStatusText(a);
+          const statusB = getStatusText(b);
+
+          const aIsRecruiting = statusA === "RECRUITING";
+          const bIsRecruiting = statusB === "RECRUITING";
+
+          if (aIsRecruiting && !bIsRecruiting) return -1; // A comes first
+          if (!aIsRecruiting && bIsRecruiting) return 1;  // B comes first
+          return 0;
+        });
+
+        setTrials(sortedStudies);
       } catch (err) {
         setError(err.message || "Failed to fetch clinical trials.");
       } finally {
@@ -74,12 +95,26 @@ export default function ClinicalTrials() {
               const summary = descriptionModule.briefSummary || "No summary available for this trial.";
               const sponsorName = leadSponsor.name || "Sponsor not specified";
               
+              const isRecruiting = status.trim().toUpperCase() === "RECRUITING";
               const truncatedSummary = summary.length > 150 ? summary.substring(0, 150) + "..." : summary;
 
               return (
                 <div 
                   key={nctId} 
                   className="trial-card"
+                  style={{
+                    backgroundColor: "#FFFFFF", 
+                    border: isRecruiting ? "2px solid #C9A227" : "2px solid #161412", 
+                    borderRadius: "4px", 
+                    padding: "25px", 
+                    display: "flex", 
+                    flexDirection: "column",
+                    boxShadow: isRecruiting ? "0 10px 25px rgba(201,162,39,0.15)" : "0 8px 20px rgba(0,0,0,0.05)",
+                    transition: "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
+                    cursor: "default",
+                    boxSizing: "border-box",
+                    height: "100%"
+                  }}
                   onMouseOver={(e) => {
                     if (window.innerWidth > 768) {
                       e.currentTarget.style.transform = "translateY(-4px)";
@@ -90,14 +125,14 @@ export default function ClinicalTrials() {
                   onMouseOut={(e) => {
                     if (window.innerWidth > 768) {
                       e.currentTarget.style.transform = "translateY(0)";
-                      e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.05)";
-                      e.currentTarget.style.borderColor = "#161412";
+                      e.currentTarget.style.boxShadow = isRecruiting ? "0 10px 25px rgba(201,162,39,0.15)" : "0 8px 20px rgba(0,0,0,0.05)";
+                      e.currentTarget.style.borderColor = isRecruiting ? "#C9A227" : "#161412";
                     }
                   }}
                 >
                   {/* Status & ID Row */}
                   <div className="trial-card-top">
-                    <span className={`trial-status-badge ${status.toLowerCase().includes("recruiting") ? "recruiting" : "other"}`}>
+                    <span className={`trial-status-badge ${isRecruiting ? "recruiting" : "other"}`}>
                       {status}
                     </span>
                     <span className="trial-nct-id">
@@ -231,20 +266,6 @@ export default function ClinicalTrials() {
           gap: 25px;
           width: 100%;
           box-sizing: border-box;
-        }
-
-        .trial-card {
-          background-color: #FFFFFF;
-          border: 2px solid #161412;
-          border-radius: 4px;
-          padding: 25px;
-          display: flex;
-          flex-direction: column;
-          box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-          transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-          cursor: default;
-          box-sizing: border-box;
-          height: 100%;
         }
 
         .trial-card-top {
