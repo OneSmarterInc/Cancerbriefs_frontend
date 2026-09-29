@@ -11,7 +11,7 @@ export default function ClinicalTrials() {
       setError(null);
       try {
         const response = await fetch(
-          "https://clinicaltrials.gov/api/v2/studies?query.cond=cancer&pageSize=10"
+          "https://clinicaltrials.gov/api/v2/studies?query.cond=cancer&pageSize=20"
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
@@ -19,8 +19,17 @@ export default function ClinicalTrials() {
         const data = await response.json();
         const rawStudies = data.studies || [];
 
-        // Strictly sort so that RECRUITING trials appear first
-        const sortedStudies = rawStudies.sort((a, b) => {
+        // 1. Filter to keep ONLY Recruiting and Not Yet Recruiting trials
+        const filteredStudies = rawStudies.filter((study) => {
+          const protocol = study.protocolSection || {};
+          const statusModule = protocol.statusModule || {};
+          const status = (statusModule.overallStatus || "").trim().toUpperCase();
+          
+          return status === "RECRUITING" || status === "NOT_YET_RECRUITING";
+        });
+
+        // 2. Sort so that "RECRUITING" comes before "NOT_YET_RECRUITING"
+        const sortedStudies = filteredStudies.sort((a, b) => {
           const getStatusText = (study) => {
             const protocol = study.protocolSection || {};
             const statusModule = protocol.statusModule || {};
@@ -30,11 +39,8 @@ export default function ClinicalTrials() {
           const statusA = getStatusText(a);
           const statusB = getStatusText(b);
 
-          const aIsRecruiting = statusA === "RECRUITING";
-          const bIsRecruiting = statusB === "RECRUITING";
-
-          if (aIsRecruiting && !bIsRecruiting) return -1; // A comes first
-          if (!aIsRecruiting && bIsRecruiting) return 1;  // B comes first
+          if (statusA === "RECRUITING" && statusB !== "RECRUITING") return -1;
+          if (statusA !== "RECRUITING" && statusB === "RECRUITING") return 1;
           return 0;
         });
 
@@ -74,7 +80,7 @@ export default function ClinicalTrials() {
           </div>
         ) : trials.length === 0 ? (
           <div className="clinical-trials-empty">
-            No clinical trials found for this condition.
+            No recruiting clinical trials found.
           </div>
         ) : (
           /* Grid Layout */
