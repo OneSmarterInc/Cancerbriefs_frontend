@@ -245,14 +245,14 @@ export default function Navbar({
  
         /* MASTHEAD */
         .aggregate-masthead { padding: 25px 20px; border-bottom: 1px solid #161412; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .aggregate-brand-container { border: 0; background: transparent; padding: 0; margin: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 20px; transition: opacity .2s ease, transform .2s ease; }
+        .aggregate-brand-container { border: 0; background: transparent; padding: 0; margin: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 16px; transition: opacity .2s ease, transform .2s ease; }
         .aggregate-brand-container:hover { opacity: 0.9; }
         .aggregate-brand-container:active { transform: scale(.995); }
  
         .aggregate-brand { font-family: Georgia, "Times New Roman", serif; font-size: clamp(38px, 6vw, 78px); line-height: .83; font-weight: 900; letter-spacing: -2px; color: #161412; margin: 0; }
         
-        /* Substantially increased logo dimensions */
-        .aggregate-logo-img { width: clamp(70px, 10vw, 135px); height: clamp(70px, 10vw, 135px); object-fit: contain; border-radius: 10px; }
+        /* Adjusted logo dimensions to a balanced intermediate size */
+        .aggregate-logo-img { width: clamp(48px, 6.5vw, 92px); height: clamp(48px, 6.5vw, 92px); object-fit: contain; border-radius: 8px; }
 
         /* BRIEFING */
         .aggregate-briefing { padding: 14px 0; background: #EBE4D5; border-bottom: 1px solid #161412; }
@@ -323,7 +323,7 @@ export default function Navbar({
           
           .aggregate-masthead { padding: 16px 15px; }
           .aggregate-brand { font-size: clamp(32px, 9vw, 48px); letter-spacing: -1.5px; }
-          .aggregate-logo-img { width: 75px; height: 75px; }
+          .aggregate-logo-img { width: 55px; height: 55px; }
           
           .aggregate-briefing { padding: 12px 0; }
           .aggregate-briefing-inner { gap: 12px; }
