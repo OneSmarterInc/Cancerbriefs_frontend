@@ -1,8 +1,14 @@
 import React, { useMemo } from "react";
 
 const PROF_NAMES = [
-  "Arion Vale", "Lyra Sen", "Kael Nore", "Elara Quinn", 
-  "Dorian Kade", "Mira Solen", "Orion Blake", "Seraphina Rowe"
+  "Alexander Cole",
+  "Marcus Reed",
+  "Daniel Hayes",
+  "Ethan Brooks",
+  "Sophia Bennett",
+  "Olivia Carter",
+  "Amelia Parker",
+  "Isabella Morgan"
 ];
 const getProfName = (id) => PROF_NAMES[(id || 1) - 1] || PROF_NAMES[0];
 
