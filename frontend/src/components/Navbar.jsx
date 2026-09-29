@@ -175,13 +175,13 @@ export default function Navbar({
   };
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText("https://cancerbrief.vercel.app/");
+    navigator.clipboard.writeText("https://cancerbriefs-frontend.vercel.app/");
     setLinkCopied(true);
     setTimeout(() => setLinkCopied(false), 2000);
   };
 
   const handleCopyEmbed = () => {
-    const embedCode = `<iframe src="https://cancerbrief.vercel.app/" width="680" height="120" style="border:0;" loading="lazy" title="Cancerbriefs Newsletter"></iframe>`;
+    const embedCode = `<iframe src="https://cancerbriefs-frontend.vercel.app/" width="680" height="120" style="border:0;" loading="lazy" title="Cancerbriefs Newsletter"></iframe>`;
     navigator.clipboard.writeText(embedCode);
     setEmbedCopied(true);
     setTimeout(() => setEmbedCopied(false), 2000);
