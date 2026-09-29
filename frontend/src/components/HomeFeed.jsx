@@ -28,13 +28,13 @@ const PROF_POSITIONS = [
 
 const STAFF_VOICE_PROFILES = {
   1: { gender: "male", pitch: 0.85, rate: 0.95, voiceOffset: 0 },
-  2: { gender: "female", pitch: 1.15, rate: 1.05, voiceOffset: 1 },
   3: { gender: "male", pitch: 0.70, rate: 0.90, voiceOffset: 2 },
-  4: { gender: "female", pitch: 1.25, rate: 1.00, voiceOffset: 3 },
   5: { gender: "male", pitch: 0.95, rate: 1.00, voiceOffset: 4 },
-  6: { gender: "female", pitch: 1.05, rate: 0.95, voiceOffset: 2 },
   7: { gender: "male", pitch: 0.80, rate: 1.05, voiceOffset: 1 },
-  8: { gender: "female", pitch: 1.20, rate: 0.90, voiceOffset: 0 }
+  8: { gender: "female", pitch: 1.20, rate: 0.90, voiceOffset: 0 },
+  2: { gender: "female", pitch: 1.15, rate: 1.05, voiceOffset: 1 },
+  4: { gender: "female", pitch: 1.25, rate: 1.00, voiceOffset: 3 },
+  6: { gender: "female", pitch: 1.05, rate: 0.95, voiceOffset: 2 }
 };
 
 const getProfName = (id) => PROF_NAMES[(parseInt(id) || 1) - 1] || PROF_NAMES[0];
