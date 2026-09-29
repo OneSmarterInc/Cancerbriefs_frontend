@@ -21,13 +21,13 @@ const getProfName = (id) => {
 
 const STAFF_VOICE_PROFILES = {
   1: { gender: "male", pitch: 0.85, rate: 0.95, voiceOffset: 0 },
-  3: { gender: "male", pitch: 0.70, rate: 0.90, voiceOffset: 2 },
-  5: { gender: "male", pitch: 0.95, rate: 1.00, voiceOffset: 4 },
-  7: { gender: "male", pitch: 0.80, rate: 1.05, voiceOffset: 1 },
-  8: { gender: "female", pitch: 1.20, rate: 0.90, voiceOffset: 0 },
-  2: { gender: "female", pitch: 1.15, rate: 1.05, voiceOffset: 1 },
-  4: { gender: "female", pitch: 1.25, rate: 1.00, voiceOffset: 3 },
-  6: { gender: "female", pitch: 1.05, rate: 0.95, voiceOffset: 2 }
+  2: { gender: "male", pitch: 0.70, rate: 0.90, voiceOffset: 2 },
+  3: { gender: "male", pitch: 0.95, rate: 1.00, voiceOffset: 4 },
+  4: { gender: "male", pitch: 0.80, rate: 1.05, voiceOffset: 1 },
+  5: { gender: "female", pitch: 1.20, rate: 0.90, voiceOffset: 0 },
+  6: { gender: "female", pitch: 1.15, rate: 1.05, voiceOffset: 1 },
+  7: { gender: "female", pitch: 1.25, rate: 1.00, voiceOffset: 3 },
+  8: { gender: "female", pitch: 1.05, rate: 0.95, voiceOffset: 2 }
 };
 
 const getRelativeTime = (dateString) => {
@@ -122,6 +122,8 @@ export default function NewsCard({ article, index, onArticleClick }) {
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
 
     const profile = STAFF_VOICE_PROFILES[profId] || STAFF_VOICE_PROFILES[1];
+    
+    // Set base pitch and rate from profile
     utterance.pitch = profile.pitch;
     utterance.rate = profile.rate;
 
@@ -129,26 +131,37 @@ export default function NewsCard({ article, index, onArticleClick }) {
     if (voices.length > 0) {
       const englishVoices = voices.filter(v => v.lang.startsWith("en"));
       
-      let genderFilteredVoices = englishVoices.filter(v => {
-        const name = v.name.toLowerCase();
-        if (profile.gender === "female") {
-          return name.includes("female") || /zira|samantha|karen|victoria|moira|susan|hazel|amelia|olivia|tessa|ava|siri|melina|veena/i.test(name);
-        } else {
-          return name.includes("male") || /david|mark|george|daniel|oliver|james|ryan|arthur|alex|fred|bruce|albert|aaron|eddy|floyd|reed|rocko/i.test(name);
-        }
-      });
+      // Strict keyword matching for distinct genders
+      const femaleKeywords = ["female", "zira", "samantha", "karen", "victoria", "moira", "susan", "hazel", "amelia", "olivia", "tessa", "ava", "siri", "melina", "veena", "luciana"];
+      const maleKeywords = ["male", "david", "mark", "george", "daniel", "oliver", "james", "ryan", "arthur", "alex", "fred", "bruce", "albert", "aaron", "eddy", "floyd", "reed", "rocko", "brian"];
 
-      // MOBILE FALLBACK: If we want a male voice but the phone only has female voices available
-      if (genderFilteredVoices.length === 0 && profile.gender === "male") {
-        // Artificially lower the pitch to simulate a male voice
-        utterance.pitch = Math.max(0.1, profile.pitch - 0.4); 
+      const isFemaleVoice = (v) => femaleKeywords.some(kw => v.name.toLowerCase().includes(kw));
+      const isMaleVoice = (v) => maleKeywords.some(kw => v.name.toLowerCase().includes(kw));
+
+      let genderVoices = englishVoices.filter(v => 
+        profile.gender === "female" ? isFemaleVoice(v) : isMaleVoice(v)
+      );
+
+      // FALLBACK: If device lacks distinct gender voices, force a heavy pitch shift
+      if (genderVoices.length === 0) {
+        genderVoices = englishVoices; 
+        if (profile.gender === "female") {
+          utterance.pitch = 1.4; // High pitch to simulate female
+        } else {
+          utterance.pitch = 0.5; // Low pitch to simulate male
+        }
       }
 
-      let pool = genderFilteredVoices.length > 0 ? genderFilteredVoices : englishVoices;
-      
-      if (pool.length > 0) {
-        const selectedIndex = profile.voiceOffset % pool.length;
-        utterance.voice = pool[selectedIndex];
+      if (genderVoices.length > 0) {
+        const selectedIndex = profile.voiceOffset % genderVoices.length;
+        utterance.voice = genderVoices[selectedIndex];
+      }
+    } else {
+      // If voices array is totally empty, enforce simulation via pitch
+      if (profile.gender === "female") {
+        utterance.pitch = 1.4; 
+      } else {
+        utterance.pitch = 0.5; 
       }
     }
 
