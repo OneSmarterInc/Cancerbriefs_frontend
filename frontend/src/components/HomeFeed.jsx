@@ -798,7 +798,7 @@ export default function HomeFeed({
           >
             <div style={{ display: "flex", alignItems: "center", gap: "15px", flexWrap: "wrap" }}>
               <span style={{ color: "#8F7118", letterSpacing: "2px", fontSize: "12px", fontWeight: "bold", textTransform: "uppercase" }}>
-                Clinical Volunteer / Internship seats now open
+                Cancerbriefs Volunteer / Internship seats now open
               </span>
               <span style={{ color: "#8F7118", display: window.innerWidth < 600 ? "none" : "inline" }}>—</span>
               <span style={{ color: "#161412", fontFamily: "Georgia, serif", fontSize: "24px", fontWeight: "bold" }}>

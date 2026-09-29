@@ -389,7 +389,7 @@ export default function App() {
               </>
             ) : (
               <>
-                <div style={{ fontSize: "12px", color: "#C9A227", fontWeight: "bold", letterSpacing: "1px", marginBottom: "10px" }}>GET THE CLINICAL BRIEFING</div>
+                <div style={{ fontSize: "12px", color: "#C9A227", fontWeight: "bold", letterSpacing: "1px", marginBottom: "10px" }}>GET CANCERBRIEFS BRIEFING</div>
                 <h2 style={{ fontFamily: "Georgia, serif", color: "#161412", fontSize: "32px", margin: "0 0 15px 0", lineHeight: "1.1" }}>Your daily desk,<br/>delivered.</h2>
                 <p style={{ color: "#5E574C", fontSize: "15px", marginBottom: "25px" }}>Subscribe to receive the top 5 Oncology stories formatted perfectly for your inbox.</p>
                 <form onSubmit={handleSubscribe} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
