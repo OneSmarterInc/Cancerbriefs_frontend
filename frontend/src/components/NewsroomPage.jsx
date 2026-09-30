@@ -203,9 +203,46 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
   };
 
   return (
-    <div className="newsroom-page-wrapper" style={{ minHeight: "100vh", backgroundColor: "#F3EEE3", position: "relative" }}>
+    <div className="newsroom-page-wrapper" style={{ minHeight: "100vh", backgroundColor: "var(--nr-bg)", position: "relative", transition: "background-color 0.3s" }}>
       
       <style>{`
+        /* Dynamic Theme Variables */
+        :root {
+          --nr-bg: #F3EEE3;
+          --nr-card-bg: #FFFFFF;
+          --nr-text: #161412;
+          --nr-text-muted: #5E574C;
+          --nr-border: #161412;
+          --nr-border-light: #EBE4D5;
+          --nr-border-article: #EBE4D5;
+          --nr-accent: #C9A227;
+          --nr-accent-dark: #8F7118;
+          --nr-btn-bg: #161412;
+          --nr-btn-text: #F3EEE3;
+          --nr-btn-alt-bg: #EBE4D5;
+          --nr-btn-disabled-bg: #EBE4D5;
+          --nr-btn-disabled-text: #A39E93;
+          --nr-modal-overlay: rgba(22,20,18,0.9);
+        }
+        
+        .dark-mode {
+          --nr-bg: #161412;
+          --nr-card-bg: #1e1b18;
+          --nr-text: #F3EEE3;
+          --nr-text-muted: #A39E93;
+          --nr-border: #5E574C;
+          --nr-border-light: #332F2C;
+          --nr-border-article: #332F2C;
+          --nr-accent: #C9A227;
+          --nr-accent-dark: #C9A227;
+          --nr-btn-bg: #F3EEE3;
+          --nr-btn-text: #161412;
+          --nr-btn-alt-bg: #332F2C;
+          --nr-btn-disabled-bg: #332F2C;
+          --nr-btn-disabled-text: #5E574C;
+          --nr-modal-overlay: rgba(0,0,0,0.8);
+        }
+
         .newsroom-page-wrapper {
           padding: 40px 20px;
         }
@@ -213,10 +250,11 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
         .newsroom-main-card {
           max-width: 1000px;
           margin: 0 auto;
-          background-color: #FFFFFF;
-          border: 1px solid #EBE4D5;
+          background-color: var(--nr-card-bg);
+          border: 1px solid var(--nr-border-light);
           box-shadow: 0 4px 15px rgba(0,0,0,0.05);
           padding: 60px;
+          transition: background-color 0.3s, border-color 0.3s;
         }
 
         .newsroom-hero-img {
@@ -224,25 +262,28 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
           height: 500px;
           object-fit: cover;
           object-position: top;
-          border-bottom: 4px solid #161412;
+          border-bottom: 4px solid var(--nr-border);
+          transition: border-color 0.3s;
         }
 
         .newsroom-title {
           font-family: Georgia, serif;
           font-size: 48px;
-          color: #161412;
+          color: var(--nr-text);
           margin: 0 0 15px 0;
           line-height: 1.1;
           letter-spacing: -1px;
+          transition: color 0.3s;
         }
 
         .newsroom-desc {
           font-family: Georgia, serif;
           font-style: italic;
           font-size: 22px;
-          color: #5E574C;
+          color: var(--nr-text-muted);
           margin: 0 0 25px 0;
           line-height: 1.5;
+          transition: color 0.3s;
         }
 
         /* Article List Items */
@@ -250,9 +291,14 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
           display: flex;
           gap: 25px;
           padding-bottom: 35px;
-          border-bottom: 1px solid #EBE4D5;
+          border-bottom: 1px solid var(--nr-border-article);
           cursor: pointer;
           flex-direction: row;
+          transition: border-color 0.3s, opacity 0.2s;
+        }
+        
+        .article-row:hover {
+          opacity: 0.85;
         }
 
         .article-img {
@@ -261,7 +307,8 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
           object-fit: cover;
           object-position: top;
           flex-shrink: 0;
-          border: 1px solid #161412;
+          border: 1px solid var(--nr-border);
+          transition: border-color 0.3s;
         }
 
         .article-content {
@@ -302,33 +349,36 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
 
         .article-author-tag {
           font-size: 10px;
-          color: #8F7118;
+          color: var(--nr-accent-dark);
           font-weight: bold;
           letter-spacing: 1px;
           text-transform: uppercase;
+          transition: color 0.3s;
         }
 
         /* Modals */
         .app-modal-overlay {
           position: fixed;
           top: 0; left: 0; right: 0; bottom: 0;
-          background-color: rgba(22,20,18,0.9);
+          background-color: var(--nr-modal-overlay);
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 9999;
           padding: 20px;
           cursor: default;
+          transition: background-color 0.3s;
         }
 
         .app-modal-content {
-          background-color: #F3EEE3;
+          background-color: var(--nr-bg);
           padding: 30px;
           width: 100%;
           max-width: 400px;
-          border: 2px solid #C9A227;
+          border: 2px solid var(--nr-accent);
           border-radius: 4px;
           box-sizing: border-box;
+          transition: background-color 0.3s;
         }
 
         /* Pagination */
@@ -338,9 +388,10 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
           align-items: center;
           margin-top: 50px;
           padding-top: 30px;
-          border-top: 2px solid #161412;
+          border-top: 2px solid var(--nr-border);
           flex-wrap: wrap;
           gap: 15px;
+          transition: border-color 0.3s;
         }
 
         .page-btn {
@@ -351,23 +402,24 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
         }
 
         .page-btn:not(:disabled) {
-          background-color: #161412;
-          color: #F3EEE3;
+          background-color: var(--nr-btn-bg);
+          color: var(--nr-btn-text);
           cursor: pointer;
         }
 
         .page-btn:disabled {
-          background-color: #EBE4D5;
-          color: #A39E93;
+          background-color: var(--nr-btn-disabled-bg);
+          color: var(--nr-btn-disabled-text);
           cursor: not-allowed;
         }
 
         .page-indicator {
           font-size: 14px;
           font-weight: bold;
-          color: #5E574C;
+          color: var(--nr-text-muted);
           letter-spacing: 1px;
           text-align: center;
+          transition: color 0.3s;
         }
 
         /* Responsive Breakpoints */
@@ -405,27 +457,27 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
       {queryArticle && (
         <div className="app-modal-overlay" onClick={(e) => { e.stopPropagation(); setQueryArticle(null); }}>
           <div className="app-modal-content" onClick={e => e.stopPropagation()}>
-            <h3 style={{ margin: "0 0 15px 0", fontFamily: "Georgia, serif", color: "#161412" }}>Submit Query to Specialist</h3>
-            <p style={{ fontSize: "12px", color: "#5E574C", marginBottom: "15px" }}>Ask a question or report an issue regarding this specific study.</p>
+            <h3 style={{ margin: "0 0 15px 0", fontFamily: "Georgia, serif", color: "var(--nr-text)", transition: "color 0.3s" }}>Submit Query to Specialist</h3>
+            <p style={{ fontSize: "12px", color: "var(--nr-text-muted)", marginBottom: "15px", transition: "color 0.3s" }}>Ask a question or report an issue regarding this specific study.</p>
             
             <textarea 
               value={queryText}
               onChange={(e) => setQueryText(e.target.value)}
               placeholder="What would you like to ask?"
-              style={{ width: "100%", height: "100px", padding: "10px", border: "1px solid #161412", backgroundColor: "#fff", outline: "none", resize: "none", marginBottom: "15px", fontFamily: "Arial", color: "#161412", boxSizing: "border-box" }}
+              style={{ width: "100%", height: "100px", padding: "10px", border: "1px solid var(--nr-border)", backgroundColor: "var(--nr-card-bg)", outline: "none", resize: "none", marginBottom: "15px", fontFamily: "Arial", color: "var(--nr-text)", boxSizing: "border-box", transition: "background-color 0.3s, color 0.3s, border-color 0.3s" }}
             />
             
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <button 
                 onClick={() => setQueryArticle(null)} 
-                style={{ padding: "8px 15px", border: "none", background: "transparent", cursor: "pointer", fontWeight: "bold", color: "#5E574C" }}
+                style={{ padding: "8px 15px", border: "none", background: "transparent", cursor: "pointer", fontWeight: "bold", color: "var(--nr-text-muted)", transition: "color 0.3s" }}
               >
                 CANCEL
               </button>
               <button 
                 onClick={submitQuery} 
                 disabled={submitStatus === "loading" || !queryText.trim()}
-                style={{ padding: "8px 15px", border: "none", background: "#161412", color: "#F3EEE3", cursor: "pointer", fontWeight: "bold", borderRadius: "3px" }}
+                style={{ padding: "8px 15px", border: "none", background: "var(--nr-btn-bg)", color: "var(--nr-btn-text)", cursor: "pointer", fontWeight: "bold", borderRadius: "3px", transition: "background-color 0.3s, color 0.3s" }}
               >
                 {submitStatus === "loading" ? "SENDING..." : submitStatus === "success" ? "SENT!" : "SUBMIT"}
               </button>
@@ -436,7 +488,7 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
 
       <div className="newsroom-main-card">
         
-        <button onClick={onBack} style={{ background: "none", border: "none", cursor: "pointer", color: "#8F7118", fontWeight: "bold", fontSize: "13px", marginBottom: "30px", display: "flex", alignItems: "center", gap: "5px", letterSpacing: "1px" }}>
+        <button onClick={onBack} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--nr-accent-dark)", fontWeight: "bold", fontSize: "13px", marginBottom: "30px", display: "flex", alignItems: "center", gap: "5px", letterSpacing: "1px", transition: "color 0.3s" }}>
           ← BACK TO FEED
         </button>
 
@@ -448,7 +500,7 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
           />
           
           <div style={{ marginTop: "35px" }}>
-            <div style={{ display: "inline-block", border: "1px solid #C9A227", color: "#C9A227", padding: "4px 10px", fontSize: "12px", fontWeight: "bold", letterSpacing: "1.5px", marginBottom: "20px", textTransform: "uppercase" }}>
+            <div style={{ display: "inline-block", border: "1px solid var(--nr-accent)", color: "var(--nr-accent)", padding: "4px 10px", fontSize: "12px", fontWeight: "bold", letterSpacing: "1.5px", marginBottom: "20px", textTransform: "uppercase", transition: "border-color 0.3s, color 0.3s" }}>
               {getProfPosition(profId)}
             </div>
             
@@ -460,14 +512,14 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
               {getProfDescription(profId)}
             </p>
             
-            <div style={{ fontSize: "11px", fontWeight: "bold", color: "#8F7118", letterSpacing: "1px", textTransform: "uppercase" }}>
+            <div style={{ fontSize: "11px", fontWeight: "bold", color: "var(--nr-accent-dark)", letterSpacing: "1px", textTransform: "uppercase", transition: "color 0.3s" }}>
               BY {getProfName(profId).toUpperCase()}, {getProfPosition(profId).toUpperCase()} LEAD
             </div>
           </div>
         </div>
 
-        <div style={{ borderBottom: "3px solid #161412", marginBottom: "40px", paddingBottom: "10px" }}>
-          <span style={{ fontSize: "14px", fontWeight: "bold", color: "#161412", letterSpacing: "2px", textTransform: "uppercase" }}>
+        <div style={{ borderBottom: "3px solid var(--nr-border)", marginBottom: "40px", paddingBottom: "10px", transition: "border-color 0.3s" }}>
+          <span style={{ fontSize: "14px", fontWeight: "bold", color: "var(--nr-text)", letterSpacing: "2px", textTransform: "uppercase", transition: "color 0.3s" }}>
             MORE FROM THE CLINICAL WIRE
           </span>
         </div>
@@ -490,14 +542,13 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
                     className="article-img"
                   />
                   <div className="article-content">
-                    {/* Replaced 'article.category' with 'article.source' to completely remove "CYBERSECURITY" */}
-                    <div style={{ fontSize: "11px", color: "#8F7118", fontWeight: "bold", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "10px" }}>
+                    <div style={{ fontSize: "11px", color: "var(--nr-accent-dark)", fontWeight: "bold", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "10px", transition: "color 0.3s" }}>
                       {article.source || "ONCOLOGY DESK"} &nbsp;•&nbsp; {formatToEST(article.published).toUpperCase()}
                     </div>
-                    <h3 style={{ fontFamily: "Georgia, serif", fontSize: "24px", margin: "0 0 12px 0", color: "#161412", lineHeight: "1.2" }}>
+                    <h3 style={{ fontFamily: "Georgia, serif", fontSize: "24px", margin: "0 0 12px 0", color: "var(--nr-text)", lineHeight: "1.2", transition: "color 0.3s" }}>
                       {article.original_title || article.title}
                     </h3>
-                    <p style={{ fontFamily: "Georgia, serif", fontStyle: "italic", fontSize: "16px", color: "#5E574C", margin: "0 0 15px 0", lineHeight: "1.5" }}>
+                    <p style={{ fontFamily: "Georgia, serif", fontStyle: "italic", fontSize: "16px", color: "var(--nr-text-muted)", margin: "0 0 15px 0", lineHeight: "1.5", transition: "color 0.3s" }}>
                       {summarySnippet}
                     </p>
                     
@@ -508,9 +559,9 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
                           className="article-btn"
                           onClick={(e) => handleListen(e, article)}
                           style={{ 
-                            backgroundColor: speakingArticleId === article.id ? "#161412" : "transparent", 
-                            color: speakingArticleId === article.id ? "#F3EEE3" : "#161412", 
-                            border: "1px solid #161412"
+                            backgroundColor: speakingArticleId === article.id ? "var(--nr-btn-bg)" : "transparent", 
+                            color: speakingArticleId === article.id ? "var(--nr-btn-text)" : "var(--nr-text)", 
+                            border: "1px solid var(--nr-border)"
                           }}
                         >
                           <span>{speakingArticleId === article.id ? "■" : "▶"}</span> 
@@ -521,7 +572,7 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
                           className="article-btn"
                           onClick={(e) => { e.stopPropagation(); setQueryArticle(article); }}
                           style={{ 
-                            backgroundColor: "#EBE4D5", color: "#161412", border: "none"
+                            backgroundColor: "var(--nr-btn-alt-bg)", color: "var(--nr-text)", border: "none"
                           }}
                         >
                           SUBMIT QUERY <span style={{ fontSize: "13px", fontWeight: "900" }}>?</span>
@@ -537,7 +588,7 @@ export default function NewsroomPage({ articles, onBack, onArticleClick }) {
               );
             })
           ) : (
-            <div style={{ textAlign: "center", padding: "60px", color: "#5E574C", fontStyle: "italic", fontSize: "18px" }}>
+            <div style={{ textAlign: "center", padding: "60px", color: "var(--nr-text-muted)", fontStyle: "italic", fontSize: "18px", transition: "color 0.3s" }}>
               No research updates are currently assigned to {getProfName(profId)}'s desk.
             </div>
           )}

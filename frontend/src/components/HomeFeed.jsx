@@ -14,7 +14,7 @@ const PROF_NAMES = [
   "Amelia Parker",
   "Isabella Morgan"
 ];
-// Updated to match the Cancer and Oncology roles
+
 const PROF_POSITIONS = [
   "Cancer Research & Oncology",
   "Cancer Types & Disease Specialties",
@@ -79,7 +79,6 @@ export default function HomeFeed({
   const [queryText, setQueryText] = useState("");
   const [submitStatus, setSubmitStatus] = useState(null);
 
-  // Filter out invalid/short/looped articles completely from current feed items
   const validArticles = useMemo(() => {
     return (currentArticles || []).filter(isValidArticle);
   }, [currentArticles]);
@@ -98,7 +97,6 @@ export default function HomeFeed({
     }
   }, []);
 
-  // GLOBAL AUDIO CONFLICT FIX: Stop speech or audio if another stream is triggered elsewhere
   useEffect(() => {
     const handleGlobalStopAudio = (e) => {
       if (e.detail !== speakingCardId && ('speechSynthesis' in window)) {
@@ -209,7 +207,6 @@ export default function HomeFeed({
       return;
     }
 
-    // Stop all other audio streams across the page
     window.dispatchEvent(new CustomEvent("stop-other-audio", { detail: article.id }));
     window.speechSynthesis.cancel();
 
@@ -233,7 +230,6 @@ export default function HomeFeed({
         }
       });
 
-      // MOBILE FALLBACK: If we want a male voice but the phone only has female voices available
       if (genderFilteredVoices.length === 0 && profile.gender === "male") {
         utterance.pitch = Math.max(0.1, profile.pitch - 0.4); 
       }
@@ -268,7 +264,6 @@ export default function HomeFeed({
       return;
     }
 
-    // Stop all other audio streams across the page
     window.dispatchEvent(new CustomEvent("stop-other-audio", { detail: "selected-article" }));
     window.speechSynthesis.cancel();
 
@@ -293,7 +288,6 @@ export default function HomeFeed({
         }
       });
 
-      // MOBILE FALLBACK: If we want a male voice but the phone only has female voices available
       if (genderFilteredVoices.length === 0 && profile.gender === "male") {
         utterance.pitch = Math.max(0.1, profile.pitch - 0.4); 
       }
@@ -315,503 +309,531 @@ export default function HomeFeed({
     window.speechSynthesis.speak(utterance);
   };
 
-  if (selectedArticle) {
-    const displayImage = getArticleImage(selectedArticle);
-    let hash = 0;
-    const sourceName = selectedArticle.source || "Updates";
-    for (let i = 0; i < sourceName.length; i++) hash = sourceName.charCodeAt(i) + ((hash << 5) - hash);
-    const avatarColor = "#" + "00000".substring(0, 6 - (hash & 0x00FFFFFF).toString(16).toUpperCase().length) + (hash & 0x00FFFFFF).toString(16).toUpperCase();
-    
-    return (
-      <div style={{ maxWidth: "950px", margin: "0 auto", padding: "40px 20px", width: "100%" }}>
-        <div style={{ backgroundColor: "#F3EEE3", borderRadius: "8px", border: "1px solid #161412", overflow: "hidden", boxShadow: "0 8px 30px rgba(0,0,0,0.08)", position: "relative" }}>
-          
-          {showQueryModal && (
-            <div 
-              onClick={(e) => e.stopPropagation()} 
-              style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(22,20,18,0.9)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999, padding: "20px", cursor: "default" }}
-            >
-              <div style={{ backgroundColor: "#F3EEE3", padding: "30px", width: "100%", maxWidth: "400px", border: "2px solid #C9A227", borderRadius: "4px" }}>
-                <h3 style={{ margin: "0 0 15px 0", fontFamily: "Georgia, serif", color: "#161412" }}>Submit Query to Specialist</h3>
-                <p style={{ fontSize: "12px", color: "#5E574C", marginBottom: "15px" }}>Ask a question or report an issue regarding this specific research update.</p>
-                
-                <textarea 
-                  value={queryText}
-                  onChange={(e) => setQueryText(e.target.value)}
-                  placeholder="What would you like to ask?"
-                  style={{ width: "100%", height: "100px", padding: "10px", border: "1px solid #161412", backgroundColor: "#fff", outline: "none", resize: "none", marginBottom: "15px", fontFamily: "Arial", color: "#161412", boxSizing: "border-box" }}
-                />
-                
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <button 
-                    onClick={() => setShowQueryModal(false)} 
-                    style={{ padding: "8px 15px", border: "none", background: "transparent", cursor: "pointer", fontWeight: "bold", color: "#5E574C" }}
-                  >
-                    CANCEL
-                  </button>
-                  <button 
-                    onClick={submitQuery} 
-                    disabled={submitStatus === "loading" || !queryText.trim()}
-                    style={{ padding: "8px 15px", border: "none", background: "#161412", color: "#F3EEE3", cursor: "pointer", fontWeight: "bold", borderRadius: "3px" }}
-                  >
-                    {submitStatus === "loading" ? "SENDING..." : submitStatus === "success" ? "SENT!" : "SUBMIT"}
-                  </button>
+  return (
+    // ENFORCING THE BACKGROUND COLOR ON THE PARENT TO OVERRIDE APP.JSX
+    <div style={{ backgroundColor: "var(--hf-bg)", minHeight: "100vh", width: "100%", transition: "background-color 0.3s" }}>
+      <style>{`
+        /* Global Theme Variables */
+        :root {
+          --hf-bg: #F3EEE3;
+          --hf-text: #161412;
+          --hf-text-muted: #5E574C;
+          --hf-accent: #C9A227;
+          --hf-accent-dark: #8F7118;
+          --hf-border: #161412;
+          --hf-border-light: #C9C1B0;
+          --hf-border-gold: #D9CBA0;
+          --hf-card-bg: #FFFFFF;
+          --hf-section-bg: #EBE4D5;
+          --hf-btn-bg: #161412;
+          --hf-btn-text: #F3EEE3;
+          --hf-btn-disabled-bg: #EBE4D5;
+          --hf-btn-disabled-text: #A39E93;
+          --hf-red: #d32f2f;
+          --hf-modal-overlay: rgba(0,0,0,0.5);
+        }
+        .dark-mode {
+          --hf-bg: #161412;
+          --hf-text: #F3EEE3;
+          --hf-text-muted: #A39E93;
+          --hf-border: #5E574C;
+          --hf-border-light: #332F2C;
+          --hf-border-gold: #4a4335;
+          --hf-card-bg: #1e1b18;
+          --hf-section-bg: #1e1b18;
+          --hf-btn-bg: #F3EEE3;
+          --hf-btn-text: #161412;
+          --hf-btn-disabled-bg: #332F2C;
+          --hf-btn-disabled-text: #5E574C;
+          --hf-modal-overlay: rgba(0,0,0,0.8);
+        }
+      `}</style>
+
+      {selectedArticle ? (
+        <div style={{ maxWidth: "950px", margin: "0 auto", padding: "40px 20px", width: "100%" }}>
+          <div style={{ backgroundColor: "var(--hf-bg)", borderRadius: "8px", border: "1px solid var(--hf-border)", overflow: "hidden", boxShadow: "0 8px 30px rgba(0,0,0,0.08)", position: "relative", transition: "background 0.3s, border 0.3s" }}>
+            
+            {showQueryModal && (
+              <div 
+                onClick={(e) => e.stopPropagation()} 
+                style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.9)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999, padding: "20px", cursor: "default" }}
+              >
+                <div style={{ backgroundColor: "var(--hf-bg)", padding: "30px", width: "100%", maxWidth: "400px", border: "2px solid var(--hf-accent)", borderRadius: "4px" }}>
+                  <h3 style={{ margin: "0 0 15px 0", fontFamily: "Georgia, serif", color: "var(--hf-text)" }}>Submit Query to Specialist</h3>
+                  <p style={{ fontSize: "12px", color: "var(--hf-text-muted)", marginBottom: "15px" }}>Ask a question or report an issue regarding this specific research update.</p>
+                  
+                  <textarea 
+                    value={queryText}
+                    onChange={(e) => setQueryText(e.target.value)}
+                    placeholder="What would you like to ask?"
+                    style={{ width: "100%", height: "100px", padding: "10px", border: "1px solid var(--hf-border)", backgroundColor: "var(--hf-card-bg)", outline: "none", resize: "none", marginBottom: "15px", fontFamily: "Arial", color: "var(--hf-text)", boxSizing: "border-box" }}
+                  />
+                  
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <button 
+                      onClick={() => setShowQueryModal(false)} 
+                      style={{ padding: "8px 15px", border: "none", background: "transparent", cursor: "pointer", fontWeight: "bold", color: "var(--hf-text-muted)" }}
+                    >
+                      CANCEL
+                    </button>
+                    <button 
+                      onClick={submitQuery} 
+                      disabled={submitStatus === "loading" || !queryText.trim()}
+                      style={{ padding: "8px 15px", border: "none", background: "var(--hf-btn-bg)", color: "var(--hf-btn-text)", cursor: "pointer", fontWeight: "bold", borderRadius: "3px" }}
+                    >
+                      {submitStatus === "loading" ? "SENDING..." : submitStatus === "success" ? "SENT!" : "SUBMIT"}
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* REFINED HERO IMAGE CONTAINER WITH PROPER SCALING & OBJECT-FIT CONTAIN + SOLID BLACK BACKGROUND */}
-          <style>{`
-            .hero-img-container {
-              position: relative;
-              width: 100%;
-              height: 480px;
-              background-color: #000000;
-              overflow: hidden;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            }
-            .hero-img {
-              width: 100%;
-              height: 100%;
-              object-fit: contain;
-              object-position: center center;
-            }
-            .hero-text-overlay {
-              position: absolute;
-              bottom: 0;
-              left: 0;
-              right: 0;
-              background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.2) 80%, transparent 100%);
-              padding: 40px 30px 25px 30px;
-              display: flex;
-              flex-direction: column;
-              justify-content: flex-end;
-            }
-            .hero-title {
-              font-family: Georgia, serif;
-              font-size: 26px;
-              color: #F3EEE3;
-              margin: 0 0 15px 0;
-              line-height: 1.25;
-              font-weight: bold;
-              text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-            }
-            @media (max-width: 768px) {
+            <style>{`
               .hero-img-container {
-                height: 320px;
+                position: relative;
+                width: 100%;
+                height: 480px;
+                background-color: #000000;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
               }
-              .hero-title {
-                font-size: 20px;
-                margin-bottom: 12px;
+              .hero-img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                object-position: center center;
               }
               .hero-text-overlay {
-                padding: 30px 15px 20px 15px;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.2) 80%, transparent 100%);
+                padding: 40px 30px 25px 30px;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
               }
-            }
-          `}</style>
-
-          <div className="hero-img-container">
-            <img src={displayImage} alt={getProfName(selectedArticle.professor_id)} className="hero-img" />
-            <div className="hero-text-overlay">
-              <h1 className="hero-title">{selectedArticle.ai_headline || selectedArticle.title}</h1>
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <div style={{ width: "36px", height: "36px", borderRadius: "50%", backgroundColor: avatarColor, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: "bold", fontSize: "16px", border: "2px solid #F3EEE3", flexShrink: 0 }}>
-                  {sourceName.charAt(0).toUpperCase()}
-                </div>
-                <div>
-                  <div style={{ fontSize: "14px", fontWeight: "bold", color: "#F3EEE3", letterSpacing: "0.5px" }}>{sourceName} • {getProfName(selectedArticle.professor_id).toUpperCase()}</div>
-                  <div style={{ fontSize: "13px", color: "#C9C1B0", marginTop: "2px" }}>{formatToEST(selectedArticle.published) || "Recently Added"}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div style={{ padding: "40px" }} className="hero-body-padding">
-            <style>{`
+              .hero-title {
+                font-family: Georgia, serif;
+                font-size: 26px;
+                color: #F3EEE3; /* Always light on dark overlay */
+                margin: 0 0 15px 0;
+                line-height: 1.25;
+                font-weight: bold;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+              }
               @media (max-width: 768px) {
+                .hero-img-container {
+                  height: 320px;
+                }
+                .hero-title {
+                  font-size: 20px;
+                  margin-bottom: 12px;
+                }
+                .hero-text-overlay {
+                  padding: 30px 15px 20px 15px;
+                }
                 .hero-body-padding {
                   padding: 20px !important;
                 }
               }
             `}</style>
-            <p style={{ fontSize: "18px", color: "#161412", lineHeight: "1.8", margin: "0 0 50px 0", fontFamily: "Arial, sans-serif" }}>
-              {cleanSummary(selectedArticle.summary)}
-            </p>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #C9C1B0", paddingTop: "25px", flexWrap: "wrap", gap: "20px" }}>
-              
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-                <a href={selectedArticle.link} target="_blank" rel="noopener noreferrer" style={{ color: "#d32f2f", textDecoration: "none", fontSize: "14px", display: "flex", alignItems: "center", gap: "6px", transition: "opacity 0.2s", fontWeight: "bold", marginRight: "10px" }}>
-                  Original Study 
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                </a>
-                
-                <button 
-                  onClick={handleListen}
-                  style={{ 
-                    backgroundColor: speaking ? "#161412" : "transparent", 
-                    color: speaking ? "#F3EEE3" : "#161412", 
-                    border: "1px solid #161412", 
-                    padding: "8px 16px", 
-                    fontWeight: "bold", 
-                    cursor: "pointer", 
-                    fontSize: "11px", 
-                    display: "flex", 
-                    alignItems: "center", 
-                    gap: "6px",
-                    textTransform: "uppercase",
-                    letterSpacing: "1px",
-                    transition: "all 0.2s"
-                  }}
-                >
-                  <span>{speaking ? "■" : "▶"}</span> {speaking ? "STOP READING" : "LISTEN"}
-                </button>
 
-                <button 
-                  onClick={() => setShowQueryModal(true)} 
-                  style={{ 
-                    backgroundColor: "#EBE4D5", 
-                    color: "#161412", 
-                    border: "none", 
-                    padding: "9px 16px", 
-                    fontWeight: "bold", 
-                    cursor: "pointer", 
-                    fontSize: "11px", 
-                    display: "flex", 
-                    alignItems: "center", 
-                    gap: "6px",
-                    textTransform: "uppercase",
-                    letterSpacing: "1px",
-                    transition: "background 0.2s" 
-                  }}
-                >
-                  SUBMIT QUERY <span style={{ fontSize: "14px", fontWeight: "900" }}>?</span>
-                </button>
-              </div>
-
-              <button onClick={handleCloseArticle} style={{ backgroundColor: "#d32f2f", color: "#ffffff", border: "none", padding: "10px 20px", fontWeight: "bold", cursor: "pointer", borderRadius: "4px", fontSize: "14px", display: "flex", alignItems: "center", gap: "8px" }}>
-                <span style={{ fontSize: "16px", marginBottom: "2px" }}>←</span> Back to Updates
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <div className="layout-container" style={{ display: "flex", maxWidth: "1550px", margin: "0 auto", width: "100%", padding: "5px 15px 20px 15px", gap: "25px", position: "relative" }}>
-        
-        {modal.show && (
-          <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
-            <div style={{ backgroundColor: "#F3EEE3", border: "2px solid #161412", padding: "30px", maxWidth: "400px", width: "100%", boxShadow: "0 10px 25px rgba(0,0,0,0.2)", borderRadius: "4px" }}>
-              <h3 style={{ fontFamily: "Georgia, serif", margin: "0 0 10px 0", color: "#161412", fontSize: "18px" }}>{modal.title}</h3>
-              <p style={{ fontSize: "14px", color: "#5E574C", lineHeight: "1.5", marginBottom: "25px" }}>{modal.message}</p>
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
-                <button onClick={() => setModal({ show: false })} style={{ padding: "8px 20px", backgroundColor: "#161412", color: "#F3EEE3", border: "none", fontWeight: "bold", cursor: "pointer", fontSize: "12px" }}>OK</button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <style>{`
-          .layout-container { flex-direction: row; align-items: flex-start; }
-          
-          .wire-sidebar { width: 420px; flex-shrink: 0; margin-top: 25px; }
-          
-          .page-content { flex: 1; min-width: 0; }
-          .most-covered-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-          .clickable-card { text-decoration: none; color: inherit; display: flex; transition: opacity 0.2s; cursor: pointer; }
-          .clickable-card:hover { opacity: 0.85; }
-          
-          .page-header {
-            border-bottom: none !important;
-            margin-bottom: 15px !important;
-            padding-bottom: 0 !important;
-            margin-top: 0 !important;
-          }
-          
-          .professors-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            max-width: 1400px;
-            margin: 0 auto 60px auto;
-          }
-
-          @media (max-width: 1200px) {
-            .professors-grid { grid-template-columns: repeat(2, 1fr); }
-          }
-          @media (max-width: 1024px) {
-            .layout-container { flex-direction: column; }
-            .wire-sidebar { width: 100%; margin-top: 15px; }
-            .most-covered-grid { grid-template-columns: repeat(2, 1fr); }
-          }
-          @media (max-width: 768px) {
-            .most-covered-grid { grid-template-columns: 1fr; }
-            .page-header h1 { font-size: 28px !important; }
-          }
-          @media (max-width: 600px) {
-            .professors-grid { grid-template-columns: 1fr; }
-          }
-        `}</style>
-
-        <main className="page page-content" style={{ padding: 0 }}>
-          
-          <section className="page-header" style={{ marginBottom: "15px", borderBottom: "none", paddingBottom: 0 }}>
-            <h1 style={{ fontFamily: "Georgia, serif", fontSize: "36px", color: "#161412", margin: 0, display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: "10px" }}>
-              <span style={{ fontFamily: "Arial, sans-serif", fontSize: "14px", fontWeight: "bold", color: "#8F7118", letterSpacing: "1.5px", textTransform: "uppercase", marginRight: "5px" }}>
-                THE CANCERBRIEFS BRIEF
-              </span>
-              {searchQuery ? `Search Results: "${searchQuery}"` : "Today’s Oncology Desk"}
-            </h1>
-          </section>
-
-          {loading ? (
-            <div className="state"><div className="loader" /><p>Loading the latest research updates...</p></div>
-          ) : error ? (
-            <div className="state">
-              <p className="error">{error}</p>
-              <button className="retry" onClick={() => fetchNews()}>TRY AGAIN</button>
-            </div>
-          ) : (
-            <section className="news-list">
-              {validArticles.length === 0 ? (
-                <div className="state"><p>{searchQuery ? "No valid studies match your search." : "No valid studies in this category."}</p></div>
-              ) : (
-                <>
-                  {mainArticles.map((article, index) => (
-                    <NewsCard key={article.id} article={article} index={index} onArticleClick={handleOpenArticle} />
-                  ))}
-
-                  {morningArticles.length > 0 && (
-                    <section style={{ marginTop: "50px", paddingTop: "30px", borderTop: "2px solid #161412" }}>
-                      <div style={{ display: "flex", alignItems: "baseline", gap: "15px", marginBottom: "25px" }}>
-                        <h2 style={{ fontFamily: "Georgia, serif", fontSize: "26px", color: "#161412", margin: 0 }}>Discover More Articles</h2>
-                        <span style={{ fontSize: "13px", color: "#5E574C" }}>ranked by how many journals are on the story</span>
-                      </div>
-                      
-                      <div className="most-covered-grid">
-                        {morningArticles.map((article) => {
-                          const randomSources = Math.floor(Math.random() * 5) + 3;
-                          const displayImage = getArticleImage(article);
-                          const cleanedSummarySnippet = cleanSummary(article.summary);
-
-                          return (
-                            <div onClick={() => handleOpenArticle(article)} key={article.id} className="clickable-card" style={{ flexDirection: "column", height: "100%" }}>
-                              
-                              <div style={{ height: "220px", marginBottom: "15px", position: "relative", overflow: "hidden", borderRadius: "6px" }}>
-                                <img src={displayImage} alt={getProfName(article.professor_id)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 15%" }} />
-                                <span style={{ position: "absolute", bottom: "10px", left: "10px", color: "#F3EEE3", fontSize: "11px", fontWeight: "bold", textShadow: "0px 2px 4px rgba(0,0,0,0.8)" }}>Generated illustration</span>
-                              </div>
-
-                              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
-                                <span style={{ color: "#C9A227", fontSize: "13px", fontWeight: "bold" }}>
-                                  {article.category || "Research"} • {getProfName(article.professor_id).toUpperCase()}
-                                </span>
-                                <button 
-                                  onClick={(e) => handleCardListen(e, article)}
-                                  title={speakingCardId === article.id ? "Stop reading" : "Listen"}
-                                  style={{ 
-                                    background: speakingCardId === article.id ? "#161412" : "transparent", 
-                                    border: "1px solid #161412", 
-                                    borderRadius: "3px", 
-                                    padding: "2px 6px", 
-                                    cursor: "pointer", 
-                                    color: speakingCardId === article.id ? "#F3EEE3" : "#161412", 
-                                    fontSize: "10px", 
-                                    fontWeight: "bold",
-                                    display: "flex", 
-                                    alignItems: "center", 
-                                    gap: "3px" 
-                                  }}
-                                >
-                                  {speakingCardId === article.id ? "■" : "▶"} <span>LISTEN</span>
-                                </button>
-                              </div>
-
-                              <h3 style={{ fontFamily: "Georgia, serif", fontSize: "18px", margin: "0 0 10px 0", lineHeight: 1.3 }}>{article.ai_headline || article.title}</h3>
-                              <p style={{ fontSize: "14px", color: "#5E574C", lineHeight: 1.5, marginBottom: "20px", flex: 1 }}>{cleanedSummarySnippet.length > 120 ? cleanedSummarySnippet.substring(0, 120) + "..." : cleanedSummarySnippet}</p>
-                              
-                              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #C9C1B0", paddingTop: "12px", marginTop: "auto" }}>
-                                <span style={{ fontSize: "12px", color: "#5E574C", display: "flex", alignItems: "center", gap: "6px" }}>
-                                  <span style={{ backgroundColor: "#161412", color: "#F3EEE3", width: "18px", height: "18px", borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "bold" }}>{randomSources}</span>
-                                  journals
-                                </span>
-                                <span style={{ fontSize: "12px", color: "#5E574C" }}>Updated {formatToEST(article.published)}</span>
-                              </div>
-
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </section>
-                  )}
-
-                  {totalPages > 1 && (
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "50px", paddingTop: "30px", borderTop: "2px solid #161412", flexWrap: "wrap", gap: "15px" }}>
-                      <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} style={{ padding: "12px 24px", backgroundColor: currentPage === 1 ? "#EBE4D5" : "#161412", color: currentPage === 1 ? "#A39E93" : "#F3EEE3", border: "none", fontWeight: "bold", cursor: currentPage === 1 ? "not-allowed" : "pointer", flex: window.innerWidth <= 768 ? "1 1 100%" : "none" }}>&larr; PREVIOUS</button>
-                      <span style={{ fontSize: "14px", fontWeight: "bold", color: "#5E574C", letterSpacing: "1px", textAlign: "center", flex: window.innerWidth <= 768 ? "1 1 100%" : "none" }}>PAGE {currentPage} OF {totalPages}</span>
-                      <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} style={{ padding: "12px 24px", backgroundColor: currentPage === totalPages ? "#EBE4D5" : "#161412", color: currentPage === totalPages ? "#A39E93" : "#F3EEE3", border: "none", fontWeight: "bold", cursor: currentPage === totalPages ? "not-allowed" : "pointer", flex: window.innerWidth <= 768 ? "1 1 100%" : "none" }}>NEXT &rarr;</button>
-                    </div>
-                  )}
-                </>
-              )}
-            </section>
-          )}
-        </main>
-
-        <div className="wire-sidebar">
-          <TheWire articles={articles} selectedCategory={selectedCategory} onArticleClick={handleOpenArticle} />
-
-          {briefArticles.length > 0 && (
-            <section style={{ marginTop: "40px", paddingTop: "10px" }}>
-              <h2 style={{ fontFamily: "Georgia, serif", fontSize: "26px", color: "#161412", margin: "0 0 10px 0" }}>In brief</h2>
-              <p style={{ fontSize: "14px", color: "#5E574C", marginBottom: "25px" }}>Studies covered by fewer journals, summarized in one line each.</p>
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                {briefArticles.map((article, idx) => (
-                  <div onClick={() => handleOpenArticle(article)} key={article.id} className="clickable-card" style={{ gap: "15px", borderBottom: "1px solid #C9C1B0", paddingBottom: "15px", marginBottom: "15px" }}>
-                    <span style={{ color: "#C9A227", fontFamily: "Georgia, serif", fontSize: "24px", fontWeight: "bold", alignSelf: "flex-start", marginTop: "-3px" }}>{idx + 1}</span>
-                    <div style={{ flex: 1 }}>
-                      <h4 style={{ margin: "0 0 6px 0", fontSize: "18px", color: "#161412", lineHeight: 1.4, fontWeight: "bold" }}>{article.ai_headline || article.title}</h4>
-                      
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "4px" }}>
-                        <span style={{ fontSize: "13px", color: "#5E574C", fontWeight: "bold" }}>
-                          {getProfName(article.professor_id).toUpperCase()}
-                        </span>
-                        
-                        <button 
-                          onClick={(e) => handleCardListen(e, article)}
-                          title={speakingCardId === article.id ? "Stop reading" : "Listen"}
-                          style={{ 
-                            background: speakingCardId === article.id ? "#161412" : "transparent", 
-                            border: "1px solid #161412", 
-                            borderRadius: "3px", 
-                            padding: "2px 8px", 
-                            cursor: "pointer", 
-                            color: speakingCardId === article.id ? "#F3EEE3" : "#161412", 
-                            fontSize: "10px", 
-                            fontWeight: "bold",
-                            display: "flex", 
-                            alignItems: "center", 
-                            gap: "4px",
-                            letterSpacing: "0.5px"
-                          }}
-                        >
-                          {speakingCardId === article.id ? "■" : "▶"} <span>LISTEN</span>
-                        </button>
-                      </div>
-
-                    </div>
+            <div className="hero-img-container">
+              <img src={getArticleImage(selectedArticle)} alt={getProfName(selectedArticle.professor_id)} className="hero-img" />
+              <div className="hero-text-overlay">
+                <h1 className="hero-title">{selectedArticle.ai_headline || selectedArticle.title}</h1>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <div style={{ width: "36px", height: "36px", borderRadius: "50%", backgroundColor: (() => {
+                      let hash = 0;
+                      const sourceName = selectedArticle.source || "Updates";
+                      for (let i = 0; i < sourceName.length; i++) hash = sourceName.charCodeAt(i) + ((hash << 5) - hash);
+                      return "#" + "00000".substring(0, 6 - (hash & 0x00FFFFFF).toString(16).toUpperCase().length) + (hash & 0x00FFFFFF).toString(16).toUpperCase();
+                    })(), display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: "bold", fontSize: "16px", border: "2px solid #F3EEE3", flexShrink: 0 }}>
+                    {(selectedArticle.source || "Updates").charAt(0).toUpperCase()}
                   </div>
-                ))}
-              </div>
-            </section>
-          )}
-        </div>
-      </div>
-
-      <section style={{ padding: "40px 20px 80px 20px", backgroundColor: "#EBE4D5", borderTop: "1px solid #C9C1B0", marginTop: "0px" }}>
-        <div style={{ maxWidth: "1450px", margin: "0 auto" }}>
-          <h2 style={{ fontFamily: "Georgia, serif", color: "#161412", textAlign: "center", marginBottom: "50px", fontSize: "36px", fontWeight: "bold" }}>
-            Meet the Oncology Board
-          </h2>
-          
-          <div className="professors-grid">
-            {professors.map(profId => (
-              <div 
-                key={profId}
-                onClick={() => handleProfClick(profId)}
-                onMouseEnter={() => setHoveredProf(profId)}
-                onMouseLeave={() => setHoveredProf(null)}
-                style={{ 
-                  cursor: "pointer", 
-                  display: "flex", 
-                  alignItems: "center", 
-                  gap: "15px",
-                  padding: "15px",
-                  backgroundColor: "#F3EEE3", 
-                  border: "1px solid #161412",
-                  borderRadius: "4px",
-                  transition: "all 0.3s ease",
-                  transform: hoveredProf === profId ? "translateY(-3px)" : "translateY(0)",
-                  boxShadow: hoveredProf === profId ? "0 8px 15px rgba(0,0,0,0.05)" : "none",
-                  opacity: hoveredProf && hoveredProf !== profId ? 0.6 : 1,
-                  filter: hoveredProf && hoveredProf !== profId ? "grayscale(80%)" : "none"
-                }}
-              >
-                <img 
-                  src={`/images/Proff_${profId}.png`} alt={getProfName(profId)} 
-                  style={{ 
-                    width: "60px", height: "60px",
-                    objectFit: "cover", objectPosition: "top", 
-                    borderRadius: "4px", 
-                    border: hoveredProf === profId ? "2px solid #C9A227" : "1px solid #161412",
-                    transition: "all 0.3s ease",
-                    flexShrink: 0
-                  }} 
-                />
-                <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: "14px", fontWeight: "bold", color: "#161412", letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: "3px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                    {getProfName(profId)}
-                  </div>
-                  <div style={{ fontSize: "11px", color: "#8F7118", fontWeight: "bold", lineHeight: "1.2" }}>
-                    {getProfPosition(profId)}
+                  <div>
+                    <div style={{ fontSize: "14px", fontWeight: "bold", color: "#F3EEE3", letterSpacing: "0.5px" }}>{selectedArticle.source || "Updates"} • {getProfName(selectedArticle.professor_id).toUpperCase()}</div>
+                    <div style={{ fontSize: "13px", color: "#C9C1B0", marginTop: "2px" }}>{formatToEST(selectedArticle.published) || "Recently Added"}</div>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-
-          <div style={{ height: "2px", backgroundColor: "#D9CBA0", width: "100%", marginBottom: "40px" }}></div>
-
-          <div 
-            onClick={() => {
-              window.history.pushState({}, "", "/join");
-              window.dispatchEvent(new PopStateEvent("popstate"));
-            }}
-            style={{ 
-              backgroundColor: "#FFFFFF", 
-              border: "1px solid #D9CBA0",
-              padding: "25px 40px", 
-              display: "flex", 
-              justifyContent: "space-between", 
-              alignItems: "center", 
-              cursor: "pointer", 
-              marginBottom: "40px",
-              boxShadow: "0 4px 15px rgba(0,0,0,0.02)",
-              transition: "transform 0.2s ease, box-shadow 0.2s ease",
-              flexWrap: "wrap",
-              gap: "15px"
-            }}
-            onMouseOver={e => {
-              e.currentTarget.style.transform = "translateY(-3px)";
-              e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.06)";
-            }}
-            onMouseOut={e => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 4px 15px rgba(0,0,0,0.02)";
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "15px", flexWrap: "wrap" }}>
-              <span style={{ color: "#8F7118", letterSpacing: "2px", fontSize: "12px", fontWeight: "bold", textTransform: "uppercase" }}>
-                Cancerbriefs Volunteer / Internship seats now open
-              </span>
-              <span style={{ color: "#8F7118", display: window.innerWidth < 600 ? "none" : "inline" }}>—</span>
-              <span style={{ color: "#161412", fontFamily: "Georgia, serif", fontSize: "24px", fontWeight: "bold" }}>
-                Join the Research Network
-              </span>
             </div>
-            <div style={{ color: "#161412", letterSpacing: "2px", fontSize: "12px", fontWeight: "bold", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "5px" }}>
-              APPLY <span style={{ color: "#8F7118", fontSize: "16px", marginBottom: "2px" }}>→</span>
+
+            <div style={{ padding: "40px" }} className="hero-body-padding">
+              <p style={{ fontSize: "18px", color: "var(--hf-text)", lineHeight: "1.8", margin: "0 0 50px 0", fontFamily: "Arial, sans-serif", transition: "color 0.3s" }}>
+                {cleanSummary(selectedArticle.summary)}
+              </p>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid var(--hf-border-light)", paddingTop: "25px", flexWrap: "wrap", gap: "20px", transition: "border 0.3s" }}>
+                
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                  <a href={selectedArticle.link} target="_blank" rel="noopener noreferrer" style={{ color: "var(--hf-red)", textDecoration: "none", fontSize: "14px", display: "flex", alignItems: "center", gap: "6px", transition: "opacity 0.2s", fontWeight: "bold", marginRight: "10px" }}>
+                    Original Study 
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                  </a>
+                  
+                  <button 
+                    onClick={handleListen}
+                    style={{ 
+                      backgroundColor: speaking ? "var(--hf-btn-bg)" : "transparent", 
+                      color: speaking ? "var(--hf-btn-text)" : "var(--hf-text)", 
+                      border: "1px solid var(--hf-border)", 
+                      padding: "8px 16px", 
+                      fontWeight: "bold", 
+                      cursor: "pointer", 
+                      fontSize: "11px", 
+                      display: "flex", 
+                      alignItems: "center", 
+                      gap: "6px",
+                      textTransform: "uppercase",
+                      letterSpacing: "1px",
+                      transition: "all 0.2s"
+                    }}
+                  >
+                    <span>{speaking ? "■" : "▶"}</span> {speaking ? "STOP READING" : "LISTEN"}
+                  </button>
+
+                  <button 
+                    onClick={() => setShowQueryModal(true)} 
+                    style={{ 
+                      backgroundColor: "var(--hf-section-bg)", 
+                      color: "var(--hf-text)", 
+                      border: "none", 
+                      padding: "9px 16px", 
+                      fontWeight: "bold", 
+                      cursor: "pointer", 
+                      fontSize: "11px", 
+                      display: "flex", 
+                      alignItems: "center", 
+                      gap: "6px",
+                      textTransform: "uppercase",
+                      letterSpacing: "1px",
+                      transition: "background 0.2s, color 0.2s" 
+                    }}
+                  >
+                    SUBMIT QUERY <span style={{ fontSize: "14px", fontWeight: "900" }}>?</span>
+                  </button>
+                </div>
+
+                <button onClick={handleCloseArticle} style={{ backgroundColor: "var(--hf-red)", color: "#ffffff", border: "none", padding: "10px 20px", fontWeight: "bold", cursor: "pointer", borderRadius: "4px", fontSize: "14px", display: "flex", alignItems: "center", gap: "8px" }}>
+                  <span style={{ fontSize: "16px", marginBottom: "2px" }}>←</span> Back to Updates
+                </button>
+              </div>
             </div>
           </div>
-
         </div>
-      </section>
-    </>
+      ) : (
+        <div className="layout-container" style={{ display: "flex", maxWidth: "1550px", margin: "0 auto", width: "100%", padding: "5px 15px 20px 15px", gap: "25px", position: "relative" }}>
+          
+          {modal.show && (
+            <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "var(--hf-modal-overlay)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
+              <div style={{ backgroundColor: "var(--hf-bg)", border: "2px solid var(--hf-border)", padding: "30px", maxWidth: "400px", width: "100%", boxShadow: "0 10px 25px rgba(0,0,0,0.2)", borderRadius: "4px" }}>
+                <h3 style={{ fontFamily: "Georgia, serif", margin: "0 0 10px 0", color: "var(--hf-text)", fontSize: "18px" }}>{modal.title}</h3>
+                <p style={{ fontSize: "14px", color: "var(--hf-text-muted)", lineHeight: "1.5", marginBottom: "25px" }}>{modal.message}</p>
+                <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+                  <button onClick={() => setModal({ show: false })} style={{ padding: "8px 20px", backgroundColor: "var(--hf-btn-bg)", color: "var(--hf-btn-text)", border: "none", fontWeight: "bold", cursor: "pointer", fontSize: "12px" }}>OK</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <style>{`
+            .layout-container { flex-direction: row; align-items: flex-start; transition: background 0.3s, color 0.3s; }
+            .wire-sidebar { width: 420px; flex-shrink: 0; margin-top: 25px; }
+            .page-content { flex: 1; min-width: 0; }
+            .most-covered-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+            .clickable-card { text-decoration: none; color: inherit; display: flex; transition: opacity 0.2s; cursor: pointer; }
+            .clickable-card:hover { opacity: 0.85; }
+            .page-header {
+              border-bottom: none !important;
+              margin-bottom: 15px !important;
+              padding-bottom: 0 !important;
+              margin-top: 0 !important;
+            }
+            .professors-grid {
+              display: grid;
+              grid-template-columns: repeat(4, 1fr);
+              gap: 20px;
+              max-width: 1400px;
+              margin: 0 auto 60px auto;
+            }
+            @media (max-width: 1200px) {
+              .professors-grid { grid-template-columns: repeat(2, 1fr); }
+            }
+            @media (max-width: 1024px) {
+              .layout-container { flex-direction: column; }
+              .wire-sidebar { width: 100%; margin-top: 15px; }
+              .most-covered-grid { grid-template-columns: repeat(2, 1fr); }
+            }
+            @media (max-width: 768px) {
+              .most-covered-grid { grid-template-columns: 1fr; }
+              .page-header h1 { font-size: 28px !important; }
+            }
+            @media (max-width: 600px) {
+              .professors-grid { grid-template-columns: 1fr; }
+            }
+          `}</style>
+
+          <main className="page page-content" style={{ padding: 0 }}>
+            
+            <section className="page-header" style={{ marginBottom: "15px", borderBottom: "none", paddingBottom: 0 }}>
+              <h1 style={{ fontFamily: "Georgia, serif", fontSize: "36px", color: "var(--hf-text)", margin: 0, display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: "10px", transition: "color 0.3s" }}>
+                <span style={{ fontFamily: "Arial, sans-serif", fontSize: "14px", fontWeight: "bold", color: "var(--hf-accent-dark)", letterSpacing: "1.5px", textTransform: "uppercase", marginRight: "5px" }}>
+                  THE CLINICAL BRIEF
+                </span>
+                {searchQuery ? `Search Results: "${searchQuery}"` : "Today’s Oncology Desk"}
+              </h1>
+            </section>
+
+            {loading ? (
+              <div className="state"><div className="loader" /><p style={{ color: "var(--hf-text-muted)" }}>Loading the latest research updates...</p></div>
+            ) : error ? (
+              <div className="state">
+                <p className="error" style={{ color: "var(--hf-red)" }}>{error}</p>
+                <button className="retry" onClick={() => fetchNews()} style={{ backgroundColor: "var(--hf-btn-bg)", color: "var(--hf-btn-text)" }}>TRY AGAIN</button>
+              </div>
+            ) : (
+              <section className="news-list">
+                {validArticles.length === 0 ? (
+                  <div className="state"><p style={{ color: "var(--hf-text-muted)" }}>{searchQuery ? "No valid studies match your search." : "No valid studies in this category."}</p></div>
+                ) : (
+                  <>
+                    {mainArticles.map((article, index) => (
+                      <NewsCard key={article.id} article={article} index={index} onArticleClick={handleOpenArticle} />
+                    ))}
+
+                    {morningArticles.length > 0 && (
+                      <section style={{ marginTop: "50px", paddingTop: "30px", borderTop: "2px solid var(--hf-border)", transition: "border 0.3s" }}>
+                        <div style={{ display: "flex", alignItems: "baseline", gap: "15px", marginBottom: "25px" }}>
+                          <h2 style={{ fontFamily: "Georgia, serif", fontSize: "26px", color: "var(--hf-text)", margin: 0, transition: "color 0.3s" }}>Discover More Articles</h2>
+                          <span style={{ fontSize: "13px", color: "var(--hf-text-muted)", transition: "color 0.3s" }}>ranked by how many journals are on the story</span>
+                        </div>
+                        
+                        <div className="most-covered-grid">
+                          {morningArticles.map((article) => {
+                            const randomSources = Math.floor(Math.random() * 5) + 3;
+                            const displayImage = getArticleImage(article);
+                            const cleanedSummarySnippet = cleanSummary(article.summary);
+
+                            return (
+                              <div onClick={() => handleOpenArticle(article)} key={article.id} className="clickable-card" style={{ flexDirection: "column", height: "100%" }}>
+                                
+                                <div style={{ height: "220px", marginBottom: "15px", position: "relative", overflow: "hidden", borderRadius: "6px" }}>
+                                  <img src={displayImage} alt={getProfName(article.professor_id)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 15%" }} />
+                                  <span style={{ position: "absolute", bottom: "10px", left: "10px", color: "#F3EEE3", fontSize: "11px", fontWeight: "bold", textShadow: "0px 2px 4px rgba(0,0,0,0.8)" }}>Generated illustration</span>
+                                </div>
+
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
+                                  <span style={{ color: "var(--hf-accent)", fontSize: "13px", fontWeight: "bold" }}>
+                                    {article.category || "Research"} • {getProfName(article.professor_id).toUpperCase()}
+                                  </span>
+                                  <button 
+                                    onClick={(e) => handleCardListen(e, article)}
+                                    title={speakingCardId === article.id ? "Stop reading" : "Listen"}
+                                    style={{ 
+                                      background: speakingCardId === article.id ? "var(--hf-btn-bg)" : "transparent", 
+                                      border: "1px solid var(--hf-border)", 
+                                      borderRadius: "3px", 
+                                      padding: "2px 6px", 
+                                      cursor: "pointer", 
+                                      color: speakingCardId === article.id ? "var(--hf-btn-text)" : "var(--hf-text)", 
+                                      fontSize: "10px", 
+                                      fontWeight: "bold",
+                                      display: "flex", 
+                                      alignItems: "center", 
+                                      gap: "3px",
+                                      transition: "all 0.2s"
+                                    }}
+                                  >
+                                    {speakingCardId === article.id ? "■" : "▶"} <span>LISTEN</span>
+                                  </button>
+                                </div>
+
+                                <h3 style={{ fontFamily: "Georgia, serif", fontSize: "18px", margin: "0 0 10px 0", lineHeight: 1.3, color: "var(--hf-text)", transition: "color 0.3s" }}>{article.ai_headline || article.title}</h3>
+                                <p style={{ fontSize: "14px", color: "var(--hf-text-muted)", lineHeight: 1.5, marginBottom: "20px", flex: 1, transition: "color 0.3s" }}>{cleanedSummarySnippet.length > 120 ? cleanedSummarySnippet.substring(0, 120) + "..." : cleanedSummarySnippet}</p>
+                                
+                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid var(--hf-border-light)", paddingTop: "12px", marginTop: "auto", transition: "border 0.3s" }}>
+                                  <span style={{ fontSize: "12px", color: "var(--hf-text-muted)", display: "flex", alignItems: "center", gap: "6px" }}>
+                                    <span style={{ backgroundColor: "var(--hf-btn-bg)", color: "var(--hf-btn-text)", width: "18px", height: "18px", borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "bold" }}>{randomSources}</span>
+                                    journals
+                                  </span>
+                                  <span style={{ fontSize: "12px", color: "var(--hf-text-muted)" }}>Updated {formatToEST(article.published)}</span>
+                                </div>
+
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </section>
+                    )}
+
+                    {totalPages > 1 && (
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "50px", paddingTop: "30px", borderTop: "2px solid var(--hf-border)", flexWrap: "wrap", gap: "15px", transition: "border 0.3s" }}>
+                        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} style={{ padding: "12px 24px", backgroundColor: currentPage === 1 ? "var(--hf-btn-disabled-bg)" : "var(--hf-btn-bg)", color: currentPage === 1 ? "var(--hf-btn-disabled-text)" : "var(--hf-btn-text)", border: "none", fontWeight: "bold", cursor: currentPage === 1 ? "not-allowed" : "pointer", flex: window.innerWidth <= 768 ? "1 1 100%" : "none", transition: "all 0.2s" }}>&larr; PREVIOUS</button>
+                        <span style={{ fontSize: "14px", fontWeight: "bold", color: "var(--hf-text-muted)", letterSpacing: "1px", textAlign: "center", flex: window.innerWidth <= 768 ? "1 1 100%" : "none" }}>PAGE {currentPage} OF {totalPages}</span>
+                        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} style={{ padding: "12px 24px", backgroundColor: currentPage === totalPages ? "var(--hf-btn-disabled-bg)" : "var(--hf-btn-bg)", color: currentPage === totalPages ? "var(--hf-btn-disabled-text)" : "var(--hf-btn-text)", border: "none", fontWeight: "bold", cursor: currentPage === totalPages ? "not-allowed" : "pointer", flex: window.innerWidth <= 768 ? "1 1 100%" : "none", transition: "all 0.2s" }}>NEXT &rarr;</button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </section>
+            )}
+          </main>
+
+          <div className="wire-sidebar">
+            <TheWire articles={articles} selectedCategory={selectedCategory} onArticleClick={handleOpenArticle} />
+
+            {briefArticles.length > 0 && (
+              <section style={{ marginTop: "40px", paddingTop: "10px" }}>
+                <h2 style={{ fontFamily: "Georgia, serif", fontSize: "26px", color: "var(--hf-text)", margin: "0 0 10px 0", transition: "color 0.3s" }}>In brief</h2>
+                <p style={{ fontSize: "14px", color: "var(--hf-text-muted)", marginBottom: "25px", transition: "color 0.3s" }}>Studies covered by fewer journals, summarized in one line each.</p>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  {briefArticles.map((article, idx) => (
+                    <div onClick={() => handleOpenArticle(article)} key={article.id} className="clickable-card" style={{ gap: "15px", borderBottom: "1px solid var(--hf-border-light)", paddingBottom: "15px", marginBottom: "15px", transition: "border 0.3s" }}>
+                      <span style={{ color: "var(--hf-accent)", fontFamily: "Georgia, serif", fontSize: "24px", fontWeight: "bold", alignSelf: "flex-start", marginTop: "-3px" }}>{idx + 1}</span>
+                      <div style={{ flex: 1 }}>
+                        <h4 style={{ margin: "0 0 6px 0", fontSize: "18px", color: "var(--hf-text)", lineHeight: 1.4, fontWeight: "bold", transition: "color 0.3s" }}>{article.ai_headline || article.title}</h4>
+                        
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "4px" }}>
+                          <span style={{ fontSize: "13px", color: "var(--hf-text-muted)", fontWeight: "bold" }}>
+                            {getProfName(article.professor_id).toUpperCase()}
+                          </span>
+                          
+                          <button 
+                            onClick={(e) => handleCardListen(e, article)}
+                            title={speakingCardId === article.id ? "Stop reading" : "Listen"}
+                            style={{ 
+                              background: speakingCardId === article.id ? "var(--hf-btn-bg)" : "transparent", 
+                              border: "1px solid var(--hf-border)", 
+                              borderRadius: "3px", 
+                              padding: "2px 8px", 
+                              cursor: "pointer", 
+                              color: speakingCardId === article.id ? "var(--hf-btn-text)" : "var(--hf-text)", 
+                              fontSize: "10px", 
+                              fontWeight: "bold",
+                              display: "flex", 
+                              alignItems: "center", 
+                              gap: "4px",
+                              letterSpacing: "0.5px",
+                              transition: "all 0.2s"
+                            }}
+                          >
+                            {speakingCardId === article.id ? "■" : "▶"} <span>LISTEN</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
+        </div>
+      )}
+
+      {!selectedArticle && (
+        <section style={{ padding: "40px 20px 80px 20px", backgroundColor: "var(--hf-section-bg)", borderTop: "1px solid var(--hf-border-light)", marginTop: "0px", transition: "background 0.3s, border 0.3s" }}>
+          <div style={{ maxWidth: "1450px", margin: "0 auto" }}>
+            <h2 style={{ fontFamily: "Georgia, serif", color: "var(--hf-text)", textAlign: "center", marginBottom: "50px", fontSize: "36px", fontWeight: "bold", transition: "color 0.3s" }}>
+              Meet the Oncology Board
+            </h2>
+            
+            <div className="professors-grid">
+              {professors.map(profId => (
+                <div 
+                  key={profId}
+                  onClick={() => handleProfClick(profId)}
+                  onMouseEnter={() => setHoveredProf(profId)}
+                  onMouseLeave={() => setHoveredProf(null)}
+                  style={{ 
+                    cursor: "pointer", 
+                    display: "flex", 
+                    alignItems: "center", 
+                    gap: "15px",
+                    padding: "15px",
+                    backgroundColor: "var(--hf-bg)", 
+                    border: hoveredProf === profId ? "2px solid var(--hf-accent)" : "1px solid var(--hf-border)",
+                    borderRadius: "4px",
+                    transition: "all 0.3s ease",
+                    transform: hoveredProf === profId ? "translateY(-3px)" : "translateY(0)",
+                    boxShadow: hoveredProf === profId ? "0 8px 15px rgba(0,0,0,0.05)" : "none",
+                    opacity: hoveredProf && hoveredProf !== profId ? 0.6 : 1,
+                    filter: hoveredProf && hoveredProf !== profId ? "grayscale(80%)" : "none"
+                  }}
+                >
+                  <img 
+                    src={`/images/Proff_${profId}.png`} alt={getProfName(profId)} 
+                    style={{ 
+                      width: "60px", height: "60px",
+                      objectFit: "cover", objectPosition: "top", 
+                      borderRadius: "4px", 
+                      border: "1px solid var(--hf-border)",
+                      transition: "all 0.3s ease",
+                      flexShrink: 0
+                    }} 
+                  />
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontSize: "14px", fontWeight: "bold", color: "var(--hf-text)", letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: "3px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", transition: "color 0.3s" }}>
+                      {getProfName(profId)}
+                    </div>
+                    <div style={{ fontSize: "11px", color: "var(--hf-accent-dark)", fontWeight: "bold", lineHeight: "1.2" }}>
+                      {getProfPosition(profId)}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ height: "2px", backgroundColor: "var(--hf-border-gold)", width: "100%", marginBottom: "40px", transition: "background 0.3s" }}></div>
+
+            <div 
+              onClick={() => {
+                window.history.pushState({}, "", "/join");
+                window.dispatchEvent(new PopStateEvent("popstate"));
+              }}
+              style={{ 
+                backgroundColor: "var(--hf-card-bg)", 
+                border: "1px solid var(--hf-border-gold)",
+                padding: "25px 40px", 
+                display: "flex", 
+                justifyContent: "space-between", 
+                alignItems: "center", 
+                cursor: "pointer", 
+                marginBottom: "40px",
+                boxShadow: "0 4px 15px rgba(0,0,0,0.02)",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease, background 0.3s, border 0.3s",
+                flexWrap: "wrap",
+                gap: "15px"
+              }}
+              onMouseOver={e => {
+                e.currentTarget.style.transform = "translateY(-3px)";
+                e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.06)";
+              }}
+              onMouseOut={e => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 4px 15px rgba(0,0,0,0.02)";
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "15px", flexWrap: "wrap" }}>
+                <span style={{ color: "var(--hf-accent-dark)", letterSpacing: "2px", fontSize: "12px", fontWeight: "bold", textTransform: "uppercase" }}>
+                  Cancerbriefs Volunteer / Internship seats now open
+                </span>
+                <span style={{ color: "var(--hf-accent-dark)", display: window.innerWidth < 600 ? "none" : "inline" }}>—</span>
+                <span style={{ color: "var(--hf-text)", fontFamily: "Georgia, serif", fontSize: "24px", fontWeight: "bold", transition: "color 0.3s" }}>
+                  Join the Research Network
+                </span>
+              </div>
+              <div style={{ color: "var(--hf-text)", letterSpacing: "2px", fontSize: "12px", fontWeight: "bold", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "5px", transition: "color 0.3s" }}>
+                APPLY <span style={{ color: "var(--hf-accent-dark)", fontSize: "16px", marginBottom: "2px" }}>→</span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+      )}
+    </div>
   );
 }

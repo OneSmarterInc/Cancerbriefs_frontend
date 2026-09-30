@@ -9,8 +9,14 @@ const feedImages = [
 ];
 
 const PROF_NAMES = [
-  "Arion Vale", "Lyra Sen", "Kael Nore", "Elara Quinn", 
-  "Dorian Kade", "Mira Solen", "Orion Blake", "Seraphina Rowe"
+  "Alexander Cole",
+  "Marcus Reed",
+  "Daniel Hayes",
+  "Ethan Brooks",
+  "Sophia Bennett",
+  "Olivia Carter",
+  "Amelia Parker",
+  "Isabella Morgan"
 ];
 const getProfName = (id) => PROF_NAMES[(parseInt(id) || 1) - 1] || PROF_NAMES[0];
 
@@ -23,13 +29,13 @@ const getArticleImage = (article) => {
 // Voice Profiles for TTS
 const STAFF_VOICE_PROFILES = {
   1: { gender: "male", pitch: 0.85, rate: 0.95, voiceOffset: 0 },
-  2: { gender: "female", pitch: 1.15, rate: 1.05, voiceOffset: 1 },
-  3: { gender: "male", pitch: 0.70, rate: 0.90, voiceOffset: 2 },
-  4: { gender: "female", pitch: 1.25, rate: 1.00, voiceOffset: 3 },
-  5: { gender: "male", pitch: 0.95, rate: 1.00, voiceOffset: 4 },
-  6: { gender: "female", pitch: 1.05, rate: 0.95, voiceOffset: 2 },
-  7: { gender: "male", pitch: 0.80, rate: 1.05, voiceOffset: 1 },
-  8: { gender: "female", pitch: 1.20, rate: 0.90, voiceOffset: 0 }
+  2: { gender: "male", pitch: 0.70, rate: 0.90, voiceOffset: 2 },
+  3: { gender: "male", pitch: 0.95, rate: 1.00, voiceOffset: 4 },
+  4: { gender: "male", pitch: 0.80, rate: 1.05, voiceOffset: 1 },
+  5: { gender: "female", pitch: 1.20, rate: 0.90, voiceOffset: 0 },
+  6: { gender: "female", pitch: 1.15, rate: 1.05, voiceOffset: 1 },
+  7: { gender: "female", pitch: 1.25, rate: 1.00, voiceOffset: 3 },
+  8: { gender: "female", pitch: 1.05, rate: 0.95, voiceOffset: 2 }
 };
 
 export default function RssFeedPage({ articles, onBack }) {
@@ -262,13 +268,49 @@ export default function RssFeedPage({ articles, onBack }) {
   return (
     <div className="rss-page-wrapper">
       <style>{`
+        /* Dynamic Theme Variables */
+        :root {
+          --hf-bg: #F3EEE3;
+          --hf-card-bg: #FFFFFF;
+          --hf-section-bg: #EBE4D5;
+          --hf-text: #161412;
+          --hf-text-muted: #5E574C;
+          --hf-border: #161412;
+          --hf-border-light: #C9C1B0;
+          --hf-accent: #C9A227;
+          --hf-accent-dark: #8F7118;
+          --hf-btn-bg: #161412;
+          --hf-btn-text: #F3EEE3;
+          --hf-btn-alt-bg: #EBE4D5;
+          --hf-red: #d32f2f;
+          --hf-modal-overlay: rgba(22,20,18,0.9);
+        }
+        
+        .dark-mode {
+          --hf-bg: #161412;
+          --hf-card-bg: #1e1b18;
+          --hf-section-bg: #332F2C;
+          --hf-text: #F3EEE3;
+          --hf-text-muted: #A39E93;
+          --hf-border: #5E574C;
+          --hf-border-light: #332F2C;
+          --hf-accent: #C9A227;
+          --hf-accent-dark: #C9A227;
+          --hf-btn-bg: #F3EEE3;
+          --hf-btn-text: #161412;
+          --hf-btn-alt-bg: #332F2C;
+          --hf-red: #ff6b6b;
+          --hf-modal-overlay: rgba(0,0,0,0.8);
+        }
+
         .rss-page-wrapper {
           min-height: 100vh;
-          background-color: #F3EEE3;
+          background-color: var(--hf-bg);
           font-family: Arial, sans-serif;
-          color: #161412;
+          color: var(--hf-text);
           padding: 40px 20px;
           position: relative;
+          transition: background-color 0.3s, color 0.3s;
         }
         
         .rss-container {
@@ -284,8 +326,8 @@ export default function RssFeedPage({ articles, onBack }) {
         }
 
         .rss-source-card {
-          background-color: #F3EEE3;
-          border: 1px solid #161412;
+          background-color: var(--hf-card-bg);
+          border: 1px solid var(--hf-border);
           border-radius: 10px;
           padding: 40px 30px;
           display: flex;
@@ -301,24 +343,26 @@ export default function RssFeedPage({ articles, onBack }) {
         .rss-source-card:hover {
           transform: translateY(-6px);
           box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+          border-color: var(--hf-accent);
         }
 
         /* Article List Card */
         .rss-article-card {
           display: flex;
           flex-direction: row;
-          background-color: #F3EEE3;
+          background-color: var(--hf-card-bg);
           border-radius: 8px;
           overflow: hidden;
           box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-          border: 1px solid #161412;
+          border: 1px solid var(--hf-border);
           cursor: pointer;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.3s, background-color 0.3s;
         }
 
         .rss-article-card:hover {
           transform: translateY(-4px);
           box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+          border-color: var(--hf-accent);
         }
 
         /* FIXED IMAGE WRAPPER WITH SOLID BLACK BACKGROUND & OBJECT-FIT CONTAIN */
@@ -376,13 +420,14 @@ export default function RssFeedPage({ articles, onBack }) {
         }
 
         .original-link {
-          color: #d32f2f;
+          color: var(--hf-red);
           text-decoration: none;
           font-size: 13px;
           display: flex;
           align-items: center;
           gap: 6px;
           font-weight: bold;
+          transition: color 0.3s;
         }
 
         .original-link:hover {
@@ -421,7 +466,7 @@ export default function RssFeedPage({ articles, onBack }) {
         .rss-detail-title {
           font-family: Georgia, serif;
           font-size: 26px;
-          color: #F3EEE3;
+          color: #F3EEE3; /* Keep light in dark mode for contrast against image */
           margin: 0 0 20px 0;
           line-height: 1.25;
           font-weight: bold;
@@ -432,33 +477,36 @@ export default function RssFeedPage({ articles, onBack }) {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-top: 1px solid #C9C1B0;
+          border-top: 1px solid var(--hf-border-light);
           padding-top: 25px;
           flex-wrap: wrap;
           gap: 20px;
+          transition: border-color 0.3s;
         }
 
         /* Modals */
         .app-modal-overlay {
           position: fixed;
           top: 0; left: 0; right: 0; bottom: 0;
-          background-color: rgba(22,20,18,0.9);
+          background-color: var(--hf-modal-overlay);
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 9999;
           padding: 20px;
           cursor: default;
+          transition: background-color 0.3s;
         }
 
         .app-modal-content {
-          background-color: #F3EEE3;
+          background-color: var(--hf-card-bg);
           padding: 30px;
           width: 100%;
           max-width: 400px;
-          border: 2px solid #C9A227;
+          border: 2px solid var(--hf-accent);
           border-radius: 4px;
           box-sizing: border-box;
+          transition: background-color 0.3s, border-color 0.3s;
         }
 
         /* Breakpoints */
@@ -501,27 +549,27 @@ export default function RssFeedPage({ articles, onBack }) {
       {queryArticle && (
         <div className="app-modal-overlay" onClick={(e) => { e.stopPropagation(); setQueryArticle(null); }}>
           <div className="app-modal-content" onClick={e => e.stopPropagation()}>
-            <h3 style={{ margin: "0 0 15px 0", fontFamily: "Georgia, serif", color: "#161412" }}>Submit Query to Specialist</h3>
-            <p style={{ fontSize: "12px", color: "#5E574C", marginBottom: "15px" }}>Ask a question or report an issue regarding this specific research update.</p>
+            <h3 style={{ margin: "0 0 15px 0", fontFamily: "Georgia, serif", color: "var(--hf-text)", transition: "color 0.3s" }}>Submit Query to Specialist</h3>
+            <p style={{ fontSize: "12px", color: "var(--hf-text-muted)", marginBottom: "15px", transition: "color 0.3s" }}>Ask a question or report an issue regarding this specific research update.</p>
             
             <textarea 
               value={queryText}
               onChange={(e) => setQueryText(e.target.value)}
               placeholder="What would you like to ask?"
-              style={{ width: "100%", height: "100px", padding: "10px", border: "1px solid #161412", backgroundColor: "#fff", outline: "none", resize: "none", marginBottom: "15px", fontFamily: "Arial", color: "#161412", boxSizing: "border-box" }}
+              style={{ width: "100%", height: "100px", padding: "10px", border: "1px solid var(--hf-border)", backgroundColor: "var(--hf-bg)", outline: "none", resize: "none", marginBottom: "15px", fontFamily: "Arial", color: "var(--hf-text)", boxSizing: "border-box", transition: "background-color 0.3s, color 0.3s, border-color 0.3s" }}
             />
             
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <button 
                 onClick={() => setQueryArticle(null)} 
-                style={{ padding: "8px 15px", border: "none", background: "transparent", cursor: "pointer", fontWeight: "bold", color: "#5E574C" }}
+                style={{ padding: "8px 15px", border: "none", background: "transparent", cursor: "pointer", fontWeight: "bold", color: "var(--hf-text-muted)", transition: "color 0.3s" }}
               >
                 CANCEL
               </button>
               <button 
                 onClick={submitQuery} 
                 disabled={submitStatus === "loading" || !queryText.trim()}
-                style={{ padding: "8px 15px", border: "none", background: "#161412", color: "#F3EEE3", cursor: "pointer", fontWeight: "bold", borderRadius: "3px" }}
+                style={{ padding: "8px 15px", border: "none", background: "var(--hf-btn-bg)", color: "var(--hf-btn-text)", cursor: "pointer", fontWeight: "bold", borderRadius: "3px", transition: "background-color 0.3s, color 0.3s" }}
               >
                 {submitStatus === "loading" ? "SENDING..." : submitStatus === "success" ? "SENT!" : "SUBMIT"}
               </button>
@@ -543,7 +591,7 @@ export default function RssFeedPage({ articles, onBack }) {
             
             return (
               <div style={{ maxWidth: "950px", margin: "0 auto", width: "100%" }}>
-                <div style={{ backgroundColor: "#F3EEE3", borderRadius: "12px", border: "1px solid #161412", overflow: "hidden", boxShadow: "0 8px 30px rgba(0,0,0,0.08)" }}>
+                <div style={{ backgroundColor: "var(--hf-card-bg)", borderRadius: "12px", border: "1px solid var(--hf-border)", overflow: "hidden", boxShadow: "0 8px 30px rgba(0,0,0,0.08)", transition: "background-color 0.3s, border-color 0.3s" }}>
                   
                   <div className="rss-detail-hero">
                     <img 
@@ -576,8 +624,8 @@ export default function RssFeedPage({ articles, onBack }) {
                     </div>
                   </div>
 
-                  <div style={{ padding: "40px", backgroundColor: "#F3EEE3" }}>
-                    <p style={{ fontSize: "18px", color: "#161412", lineHeight: "1.8", margin: "0 0 50px 0", fontFamily: "Arial, sans-serif" }}>
+                  <div style={{ padding: "40px" }}>
+                    <p style={{ fontSize: "18px", color: "var(--hf-text)", lineHeight: "1.8", margin: "0 0 50px 0", fontFamily: "Arial, sans-serif", transition: "color 0.3s" }}>
                       {cleanSummary(selectedArticle.summary)}
                     </p>
                     
@@ -588,9 +636,8 @@ export default function RssFeedPage({ articles, onBack }) {
                             href={selectedArticle.link} 
                             target="_blank" 
                             rel="noopener noreferrer" 
-                            style={{ color: "#d32f2f", textDecoration: "none", fontSize: "15px", display: "flex", alignItems: "center", gap: "6px", transition: "opacity 0.2s", fontWeight: "bold" }}
-                            onMouseOver={e => e.currentTarget.style.opacity = "0.7"}
-                            onMouseOut={e => e.currentTarget.style.opacity = "1"}
+                            onClick={(e) => e.stopPropagation()}
+                            className="original-link"
                           >
                             Original Study 
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -605,9 +652,9 @@ export default function RssFeedPage({ articles, onBack }) {
                           className="article-btn"
                           onClick={(e) => handleCardListen(e, selectedArticle)}
                           style={{ 
-                            backgroundColor: speakingArticleId === selectedArticle.id ? "#161412" : "transparent", 
-                            color: speakingArticleId === selectedArticle.id ? "#F3EEE3" : "#161412", 
-                            border: "1px solid #161412"
+                            backgroundColor: speakingArticleId === selectedArticle.id ? "var(--hf-btn-bg)" : "transparent", 
+                            color: speakingArticleId === selectedArticle.id ? "var(--hf-btn-text)" : "var(--hf-text)", 
+                            border: "1px solid var(--hf-border)"
                           }}
                         >
                           <span>{speakingArticleId === selectedArticle.id ? "■" : "▶"}</span> {speakingArticleId === selectedArticle.id ? "STOP READING" : "LISTEN"}
@@ -615,8 +662,8 @@ export default function RssFeedPage({ articles, onBack }) {
 
                         <button 
                           className="article-btn"
-                          onClick={(e) => { e.stopPropagation(); setQueryArticle(selectedArticle); }}
-                          style={{ backgroundColor: "#EBE4D5", color: "#161412", border: "none" }}
+                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); setQueryArticle(selectedArticle); }}
+                          style={{ backgroundColor: "var(--hf-btn-alt-bg)", color: "var(--hf-text)", border: "none" }}
                         >
                           SUBMIT QUERY <span style={{ fontSize: "14px", fontWeight: "900" }}>?</span>
                         </button>
@@ -625,13 +672,11 @@ export default function RssFeedPage({ articles, onBack }) {
                       <button 
                         onClick={handleBack}
                         style={{ 
-                          backgroundColor: "#d32f2f", color: "#ffffff", border: "none", 
+                          backgroundColor: "var(--hf-red)", color: "#ffffff", border: "none", 
                           padding: "12px 24px", fontWeight: "bold", cursor: "pointer", 
                           borderRadius: "6px", fontSize: "14px", display: "flex", alignItems: "center", gap: "8px",
-                          transition: "background 0.2s, transform 0.1s" 
+                          transition: "background-color 0.2s, transform 0.1s" 
                         }}
-                        onMouseOver={e => e.currentTarget.style.backgroundColor = "#b71c1c"}
-                        onMouseOut={e => e.currentTarget.style.backgroundColor = "#d32f2f"}
                       >
                         <span style={{ fontSize: "16px", marginBottom: "2px" }}>←</span> Back to Updates
                       </button>
@@ -645,8 +690,8 @@ export default function RssFeedPage({ articles, onBack }) {
         /* Render Source Grid View */
         ) : !selectedSource ? (
           uniqueSources.length === 0 ? (
-            <div style={{ textAlign: "center", padding: "50px", backgroundColor: "#F3EEE3", border: "1px solid #161412", borderRadius: "8px" }}>
-              <p style={{ color: "#5E574C", fontSize: "18px" }}>No RSS sources currently found.</p>
+            <div style={{ textAlign: "center", padding: "50px", backgroundColor: "var(--hf-card-bg)", border: "1px solid var(--hf-border)", borderRadius: "8px", transition: "background-color 0.3s, border-color 0.3s" }}>
+              <p style={{ color: "var(--hf-text-muted)", fontSize: "18px", transition: "color 0.3s" }}>No RSS sources currently found.</p>
             </div>
           ) : (
             <div className="rss-source-grid">
@@ -668,11 +713,12 @@ export default function RssFeedPage({ articles, onBack }) {
                         borderRadius: "50%", 
                         objectFit: "cover",
                         marginBottom: "20px",
-                        border: "2px solid #161412",
-                        backgroundColor: "#EBE4D5" 
+                        border: "2px solid var(--hf-border)",
+                        backgroundColor: "var(--hf-section-bg)",
+                        transition: "border-color 0.3s, background-color 0.3s"
                       }}
                     />
-                    <h3 style={{ margin: 0, fontSize: "22px", fontFamily: "Georgia, serif", fontWeight: "bold", color: "#161412", lineHeight: "1.3" }}>
+                    <h3 style={{ margin: 0, fontSize: "22px", fontFamily: "Georgia, serif", fontWeight: "bold", color: "var(--hf-text)", lineHeight: "1.3", transition: "color 0.3s" }}>
                       {source}
                     </h3>
                   </div>
@@ -685,7 +731,7 @@ export default function RssFeedPage({ articles, onBack }) {
         ) : (
           <div style={{ maxWidth: "1350px", margin: "0 auto" }}>
             
-            <h1 style={{ textAlign: "center", color: "#161412", fontFamily: "Georgia, serif", fontSize: "clamp(28px, 6vw, 42px)", fontWeight: "bold", margin: "0 0 25px 0" }}>
+            <h1 style={{ textAlign: "center", color: "var(--hf-text)", fontFamily: "Georgia, serif", fontSize: "clamp(28px, 6vw, 42px)", fontWeight: "bold", margin: "0 0 25px 0", transition: "color 0.3s" }}>
               {selectedSource}
             </h1>
 
@@ -701,18 +747,19 @@ export default function RssFeedPage({ articles, onBack }) {
                   padding: "16px 25px", 
                   fontSize: "16px", 
                   borderRadius: "4px", 
-                  border: "1px solid #161412", 
-                  background: "#F3EEE3",
-                  color: "#161412",
+                  border: "1px solid var(--hf-border)", 
+                  background: "var(--hf-bg)",
+                  color: "var(--hf-text)",
                   outline: "none",
-                  boxShadow: "inset 0 1px 3px rgba(0,0,0,0.05)"
+                  boxShadow: "inset 0 1px 3px rgba(0,0,0,0.05)",
+                  transition: "background-color 0.3s, color 0.3s, border-color 0.3s"
                 }}
               />
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "35px" }}>
               {sourceArticles.length === 0 ? (
-                <p style={{ textAlign: "center", color: "#5E574C", fontSize: "18px", marginTop: "20px" }}>No valid updates match your search or this source has not fetched studies yet.</p>
+                <p style={{ textAlign: "center", color: "var(--hf-text-muted)", fontSize: "18px", marginTop: "20px", transition: "color 0.3s" }}>No valid updates match your search or this source has not fetched studies yet.</p>
               ) : (
                 sourceArticles.map((article) => {
                   const displayImage = getArticleImage(article);
@@ -736,22 +783,23 @@ export default function RssFeedPage({ articles, onBack }) {
                         <h3 
                           style={{ 
                             textDecoration: "none", 
-                            color: "#161412", 
+                            color: "var(--hf-text)", 
                             fontSize: "22px", 
                             fontFamily: "Georgia, serif", 
                             fontWeight: "bold", 
                             lineHeight: "1.3", 
-                            margin: "0 0 10px 0"
+                            margin: "0 0 10px 0",
+                            transition: "color 0.3s"
                           }}
                         >
                           {article.original_title || article.title}
                         </h3>
                         
-                        <div style={{ fontSize: "13px", color: "#8F7118", fontWeight: "bold", marginBottom: "12px" }}>
+                        <div style={{ fontSize: "13px", color: "var(--hf-accent-dark)", fontWeight: "bold", marginBottom: "12px", transition: "color 0.3s" }}>
                           {article.published || "Recent"} • {getProfName(article.professor_id).toUpperCase()}
                         </div>
                         
-                        <p style={{ fontSize: "15px", color: "#5E574C", lineHeight: "1.6", margin: 0 }}>
+                        <p style={{ fontSize: "15px", color: "var(--hf-text-muted)", lineHeight: "1.6", margin: 0, transition: "color 0.3s" }}>
                           {summarySnippet}
                         </p>
 
@@ -777,9 +825,9 @@ export default function RssFeedPage({ articles, onBack }) {
                             className="article-btn"
                             onClick={(e) => handleCardListen(e, article)}
                             style={{ 
-                              backgroundColor: speakingArticleId === article.id ? "#161412" : "transparent", 
-                              color: speakingArticleId === article.id ? "#F3EEE3" : "#161412", 
-                              border: "1px solid #161412"
+                              backgroundColor: speakingArticleId === article.id ? "var(--hf-btn-bg)" : "transparent", 
+                              color: speakingArticleId === article.id ? "var(--hf-btn-text)" : "var(--hf-text)", 
+                              border: "1px solid var(--hf-border)"
                             }}
                           >
                             <span>{speakingArticleId === article.id ? "■" : "▶"}</span> {speakingArticleId === article.id ? "STOP READING" : "LISTEN"}
@@ -788,7 +836,7 @@ export default function RssFeedPage({ articles, onBack }) {
                           <button 
                             className="article-btn"
                             onClick={(e) => { e.preventDefault(); e.stopPropagation(); setQueryArticle(article); }}
-                            style={{ backgroundColor: "#EBE4D5", color: "#161412", border: "none" }}
+                            style={{ backgroundColor: "var(--hf-btn-alt-bg)", color: "var(--hf-text)", border: "none" }}
                           >
                             SUBMIT QUERY <span style={{ fontSize: "13px", fontWeight: "900" }}>?</span>
                           </button>

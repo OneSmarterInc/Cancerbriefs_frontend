@@ -57,6 +57,283 @@ export default function ClinicalTrials() {
 
   return (
     <section className="clinical-trials-section">
+      <style>{`
+        /* Dynamic Theme Variables */
+        :root {
+          --hf-bg: #F3EEE3;
+          --hf-card-bg: #FFFFFF;
+          --hf-section-bg: #EBE4D5;
+          --hf-text: #161412;
+          --hf-text-muted: #5E574C;
+          --hf-border: #161412;
+          --hf-border-light: #C9C1B0;
+          --hf-accent: #C9A227;
+          --hf-accent-dark: #8F7118;
+          --hf-btn-bg: #161412;
+          --hf-btn-text: #F3EEE3;
+          --hf-error-bg: #ffebee;
+          --hf-error-border: #ffcdd2;
+          --hf-red: #d32f2f;
+          --hf-shadow-light: rgba(0,0,0,0.05);
+          --hf-shadow-heavy: rgba(0,0,0,0.1);
+          --hf-shadow-accent: rgba(201,162,39,0.15);
+        }
+        
+        .dark-mode {
+          --hf-bg: #161412;
+          --hf-card-bg: #1e1b18;
+          --hf-section-bg: #332F2C;
+          --hf-text: #F3EEE3;
+          --hf-text-muted: #A39E93;
+          --hf-border: #5E574C;
+          --hf-border-light: #332F2C;
+          --hf-accent: #C9A227;
+          --hf-accent-dark: #C9A227;
+          --hf-btn-bg: #F3EEE3;
+          --hf-btn-text: #161412;
+          --hf-error-bg: #2a1111;
+          --hf-error-border: #5c2020;
+          --hf-red: #ff6b6b;
+          --hf-shadow-light: rgba(0,0,0,0.4);
+          --hf-shadow-heavy: rgba(0,0,0,0.6);
+          --hf-shadow-accent: rgba(201,162,39,0.25);
+        }
+
+        @keyframes pulse {
+          0% { opacity: 1; }
+          50% { opacity: 0.5; }
+          100% { opacity: 1; }
+        }
+
+        .clinical-trials-section {
+          padding: 60px 20px;
+          background-color: var(--hf-bg);
+          min-height: 80vh;
+          border-top: 1px solid var(--hf-border-light);
+          box-sizing: border-box;
+          width: 100%;
+          transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .clinical-trials-container {
+          max-width: 1450px;
+          margin: 0 auto;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .clinical-trials-header {
+          display: flex;
+          align-items: baseline;
+          gap: 15px;
+          margin-bottom: 40px;
+          border-bottom: 1px solid var(--hf-border-light);
+          padding-bottom: 15px;
+          flex-wrap: wrap;
+          transition: border-color 0.3s;
+        }
+
+        .clinical-trials-kicker {
+          color: var(--hf-accent);
+          font-size: 14px;
+          font-weight: bold;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          transition: color 0.3s;
+        }
+
+        .clinical-trials-title {
+          font-family: Georgia, serif;
+          color: var(--hf-text);
+          margin: 0;
+          font-size: clamp(24px, 4vw, 36px);
+          font-weight: bold;
+          transition: color 0.3s;
+        }
+
+        .clinical-trials-state {
+          text-align: center;
+          padding: 60px 20px;
+          color: var(--hf-text-muted);
+          font-weight: bold;
+          font-size: 16px;
+          transition: color 0.3s;
+        }
+
+        .clinical-trials-error {
+          text-align: center;
+          padding: 40px;
+          background-color: var(--hf-error-bg);
+          border: 1px solid var(--hf-error-border);
+          border-radius: 4px;
+          color: var(--hf-red);
+          font-weight: bold;
+          transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        .clinical-trials-empty {
+          text-align: center;
+          padding: 40px;
+          color: var(--hf-text-muted);
+          font-style: italic;
+          transition: color 0.3s;
+        }
+
+        .clinical-trials-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 25px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+        
+        .trial-card {
+          background-color: var(--hf-card-bg);
+          border-radius: 4px;
+          padding: 25px;
+          display: flex;
+          flex-direction: column;
+          transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.3s;
+          cursor: default;
+          box-sizing: border-box;
+          height: 100%;
+        }
+
+        .trial-card-top {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 15px;
+          gap: 10px;
+        }
+
+        .trial-status-badge {
+          padding: 4px 10px;
+          border-radius: 2px;
+          font-size: 11px;
+          font-weight: bold;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+          transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        .trial-status-badge.recruiting {
+          background-color: var(--hf-section-bg);
+          color: var(--hf-accent-dark);
+          border: 1px solid var(--hf-accent);
+        }
+
+        .trial-status-badge.other {
+          background-color: var(--hf-bg);
+          color: var(--hf-text-muted);
+          border: 1px solid var(--hf-border-light);
+        }
+
+        .trial-nct-id {
+          color: var(--hf-text);
+          font-size: 12px;
+          font-weight: bold;
+          font-family: monospace;
+          background-color: var(--hf-bg);
+          padding: 4px 8px;
+          border-radius: 2px;
+          white-space: nowrap;
+          transition: color 0.3s, background-color 0.3s;
+        }
+
+        .trial-title {
+          font-family: Georgia, serif;
+          font-size: 18px;
+          color: var(--hf-text);
+          margin: 0 0 12px 0;
+          line-height: 1.3;
+          transition: color 0.3s;
+        }
+
+        .trial-meta-row {
+          font-size: 12px;
+          color: var(--hf-text);
+          font-weight: bold;
+          margin-bottom: 6px;
+          word-break: break-word;
+          transition: color 0.3s;
+        }
+
+        .trial-meta-row.target-row {
+          color: var(--hf-accent);
+          margin-bottom: 15px;
+        }
+
+        .trial-meta-val {
+          color: var(--hf-text-muted);
+          font-weight: normal;
+          transition: color 0.3s;
+        }
+
+        .trial-summary {
+          font-size: 14px;
+          color: var(--hf-text-muted);
+          line-height: 1.6;
+          margin: 0 0 20px 0;
+          flex: 1;
+          transition: color 0.3s;
+        }
+
+        .trial-action-container {
+          border-top: 1px solid var(--hf-border-light);
+          padding-top: 15px;
+          margin-top: auto;
+          text-align: right;
+          transition: border-color 0.3s;
+        }
+
+        .trial-action-btn {
+          color: var(--hf-text);
+          text-decoration: none;
+          font-size: 12px;
+          font-weight: bold;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 5px;
+          padding: 8px 16px;
+          border: 1px solid var(--hf-border);
+          transition: background-color 0.2s, color 0.2s, border-color 0.3s;
+          width: 100%;
+          box-sizing: border-box;
+        }
+        
+        .trial-action-btn:hover {
+          background-color: var(--hf-text);
+          color: var(--hf-bg);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+          .clinical-trials-section {
+            padding: 30px 15px;
+          }
+          .clinical-trials-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+            margin-bottom: 25px;
+          }
+          .clinical-trials-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+          }
+          .trial-card {
+            padding: 20px;
+          }
+          .trial-title {
+            font-size: 17px;
+          }
+        }
+      `}</style>
+      
       <div className="clinical-trials-container">
         
         {/* Header */}
@@ -109,30 +386,21 @@ export default function ClinicalTrials() {
                   key={nctId} 
                   className="trial-card"
                   style={{
-                    backgroundColor: "#FFFFFF", 
-                    border: isRecruiting ? "2px solid #C9A227" : "2px solid #161412", 
-                    borderRadius: "4px", 
-                    padding: "25px", 
-                    display: "flex", 
-                    flexDirection: "column",
-                    boxShadow: isRecruiting ? "0 10px 25px rgba(201,162,39,0.15)" : "0 8px 20px rgba(0,0,0,0.05)",
-                    transition: "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
-                    cursor: "default",
-                    boxSizing: "border-box",
-                    height: "100%"
+                    border: isRecruiting ? "2px solid var(--hf-accent)" : "2px solid var(--hf-border)",
+                    boxShadow: isRecruiting ? "0 10px 25px var(--hf-shadow-accent)" : "0 8px 20px var(--hf-shadow-light)"
                   }}
                   onMouseOver={(e) => {
                     if (window.innerWidth > 768) {
                       e.currentTarget.style.transform = "translateY(-4px)";
-                      e.currentTarget.style.boxShadow = "0 12px 30px rgba(0,0,0,0.1)";
-                      e.currentTarget.style.borderColor = "#C9A227";
+                      e.currentTarget.style.boxShadow = "0 12px 30px var(--hf-shadow-heavy)";
+                      e.currentTarget.style.borderColor = "var(--hf-accent)";
                     }
                   }}
                   onMouseOut={(e) => {
                     if (window.innerWidth > 768) {
                       e.currentTarget.style.transform = "translateY(0)";
-                      e.currentTarget.style.boxShadow = isRecruiting ? "0 10px 25px rgba(201,162,39,0.15)" : "0 8px 20px rgba(0,0,0,0.05)";
-                      e.currentTarget.style.borderColor = isRecruiting ? "#C9A227" : "#161412";
+                      e.currentTarget.style.boxShadow = isRecruiting ? "0 10px 25px var(--hf-shadow-accent)" : "0 8px 20px var(--hf-shadow-light)";
+                      e.currentTarget.style.borderColor = isRecruiting ? "var(--hf-accent)" : "var(--hf-border)";
                     }
                   }}
                 >
@@ -173,14 +441,6 @@ export default function ClinicalTrials() {
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="trial-action-btn"
-                      onMouseOver={(e) => {
-                        e.currentTarget.style.backgroundColor = "#161412";
-                        e.currentTarget.style.color = "#F3EEE3";
-                      }}
-                      onMouseOut={(e) => {
-                        e.currentTarget.style.backgroundColor = "transparent";
-                        e.currentTarget.style.color = "#161412";
-                      }}
                     >
                       View on ClinicalTrials.gov <span>→</span>
                     </a>
@@ -191,215 +451,6 @@ export default function ClinicalTrials() {
           </div>
         )}
       </div>
-
-      <style>{`
-        @keyframes pulse {
-          0% { opacity: 1; }
-          50% { opacity: 0.5; }
-          100% { opacity: 1; }
-        }
-
-        .clinical-trials-section {
-          padding: 60px 20px;
-          background-color: #F3EEE3;
-          min-height: 80vh;
-          border-top: 1px solid #C9C1B0;
-          box-sizing: border-box;
-          width: 100%;
-        }
-
-        .clinical-trials-container {
-          max-width: 1450px;
-          margin: 0 auto;
-          width: 100%;
-          box-sizing: border-box;
-        }
-
-        .clinical-trials-header {
-          display: flex;
-          align-items: baseline;
-          gap: 15px;
-          margin-bottom: 40px;
-          border-bottom: 1px solid #C9C1B0;
-          padding-bottom: 15px;
-          flex-wrap: wrap;
-        }
-
-        .clinical-trials-kicker {
-          color: #C9A227;
-          font-size: 14px;
-          font-weight: bold;
-          letter-spacing: 2px;
-          text-transform: uppercase;
-        }
-
-        .clinical-trials-title {
-          font-family: Georgia, serif;
-          color: #161412;
-          margin: 0;
-          font-size: clamp(24px, 4vw, 36px);
-          font-weight: bold;
-        }
-
-        .clinical-trials-state {
-          text-align: center;
-          padding: 60px 20px;
-          color: #5E574C;
-          font-weight: bold;
-          font-size: 16px;
-        }
-
-        .clinical-trials-error {
-          text-align: center;
-          padding: 40px;
-          background-color: #ffebee;
-          border: 1px solid #ffcdd2;
-          border-radius: 4px;
-          color: #D32F2F;
-          font-weight: bold;
-        }
-
-        .clinical-trials-empty {
-          text-align: center;
-          padding: 40px;
-          color: #5E574C;
-          font-style: italic;
-        }
-
-        .clinical-trials-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-          gap: 25px;
-          width: 100%;
-          box-sizing: border-box;
-        }
-
-        .trial-card-top {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 15px;
-          gap: 10px;
-        }
-
-        .trial-status-badge {
-          padding: 4px 10px;
-          border-radius: 2px;
-          font-size: 11px;
-          font-weight: bold;
-          letter-spacing: 0.5px;
-          text-transform: uppercase;
-        }
-
-        .trial-status-badge.recruiting {
-          background-color: #EBE4D5;
-          color: #8F7118;
-          border: 1px solid #C9A227;
-        }
-
-        .trial-status-badge.other {
-          background-color: #F3EEE3;
-          color: #5E574C;
-          border: 1px solid #C9C1B0;
-        }
-
-        .trial-nct-id {
-          color: #161412;
-          font-size: 12px;
-          font-weight: bold;
-          font-family: monospace;
-          background-color: #F3EEE3;
-          padding: 4px 8px;
-          border-radius: 2px;
-          white-space: nowrap;
-        }
-
-        .trial-title {
-          font-family: Georgia, serif;
-          font-size: 18px;
-          color: #161412;
-          margin: 0 0 12px 0;
-          line-height: 1.3;
-        }
-
-        .trial-meta-row {
-          font-size: 12px;
-          color: #161412;
-          font-weight: bold;
-          margin-bottom: 6px;
-          word-break: break-word;
-        }
-
-        .trial-meta-row.target-row {
-          color: #C9A227;
-          margin-bottom: 15px;
-        }
-
-        .trial-meta-val {
-          color: #5E574C;
-          font-weight: normal;
-        }
-
-        .trial-summary {
-          font-size: 14px;
-          color: #5E574C;
-          line-height: 1.6;
-          margin: 0 0 20px 0;
-          flex: 1;
-        }
-
-        .trial-action-container {
-          border-top: 1px solid #C9C1B0;
-          padding-top: 15px;
-          margin-top: auto;
-          text-align: right;
-        }
-
-        .trial-action-btn {
-          color: #161412;
-          text-decoration: none;
-          font-size: 12px;
-          font-weight: bold;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 5px;
-          padding: 8px 16px;
-          border: 1px solid #161412;
-          transition: background-color 0.2s, color 0.2s;
-          width: 100%;
-          box-sizing: border-box;
-        }
-
-        /* Responsive Breakpoints */
-        @media (max-width: 768px) {
-          .clinical-trials-section {
-            padding: 30px 15px;
-          }
-
-          .clinical-trials-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 5px;
-            margin-bottom: 25px;
-          }
-
-          .clinical-trials-grid {
-            grid-template-columns: 1fr;
-            gap: 20px;
-          }
-
-          .trial-card {
-            padding: 20px;
-          }
-
-          .trial-title {
-            font-size: 17px;
-          }
-        }
-      `}</style>
     </section>
   );
 }

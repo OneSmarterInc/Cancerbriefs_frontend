@@ -45,6 +45,42 @@ export default function Navbar({
   const [linkCopied, setLinkCopied] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  // --- THEME TOGGLE LOGIC ---
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("app_theme");
+    if (savedTheme) setTheme(savedTheme);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("app_theme", theme);
+    document.body.style.transition = "background-color 0.3s ease, color 0.3s ease";
+    if (theme === "dark") {
+      document.body.style.backgroundColor = "#161412";
+      document.body.style.color = "#F3EEE3";
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.style.backgroundColor = "#F3EEE3";
+      document.body.style.color = "#161412";
+      document.body.classList.remove("dark-mode");
+    }
+  }, [theme]);
+
+  const isDark = theme === "dark";
+  const colors = {
+    bg: isDark ? "#161412" : "#F3EEE3",
+    text: isDark ? "#F3EEE3" : "#161412",
+    bgAlt: isDark ? "#1e1b18" : "#EBE4D5",
+    textMuted: isDark ? "#A39E93" : "#5E574C",
+    border: isDark ? "#5E574C" : "#161412",
+    borderLight: isDark ? "#332F2C" : "#C9C1B0",
+    accent: "#C9A227",
+    btnBg: isDark ? "#F3EEE3" : "#161412",
+    btnText: isDark ? "#161412" : "#F3EEE3",
+  };
+  // --------------------------
+
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 60000);
     return () => clearInterval(timer);
@@ -220,67 +256,66 @@ export default function Navbar({
   return (
     <header className="aggregate-clone">
       <style>{`
-        .aggregate-clone { background: #F3EEE3; color: #161412; width: 100%; font-family: Arial, Helvetica, sans-serif; }
+        .aggregate-clone { background: ${colors.bg}; color: ${colors.text}; width: 100%; font-family: Arial, Helvetica, sans-serif; transition: background 0.3s, color 0.3s; }
         .aggregate-clone * { box-sizing: border-box; }
         .aggregate-wrap { width: 100%; max-width: 1455px; margin: 0 auto; padding: 0 20px; }
  
         /* TOPBAR */
-        .aggregate-topbar { min-height: 42px; border-top: 1px solid #161412; border-bottom: 1px solid #161412; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; color: #5E574C; font-size: 14px; width: 100%; flex-wrap: wrap; background: #F3EEE3; position: relative; z-index: 50; }
+        .aggregate-topbar { min-height: 42px; border-top: 1px solid ${colors.border}; border-bottom: 1px solid ${colors.border}; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; color: ${colors.textMuted}; font-size: 14px; width: 100%; flex-wrap: wrap; background: ${colors.bg}; position: relative; z-index: 50; transition: border 0.3s, background 0.3s, color 0.3s; }
         .aggregate-top-left { display: flex; align-items: center; gap: 12px; padding: 10px 0; flex: 1; }
         .aggregate-top-left-text { line-height: 1.4; }
         .aggregate-live-dot { width: 8px; height: 8px; border-radius: 50%; background: #1F3A2E; display: inline-block; flex: none; }
  
-        .hamburger-icon { background: transparent; border: none; color: #161412; font-size: 24px; cursor: pointer; display: flex; align-items: center; padding: 0 12px 0 0; transition: color 0.2s ease; }
-        .hamburger-icon:hover { color: #C9A227; }
+        .hamburger-icon { background: transparent; border: none; color: ${colors.text}; font-size: 24px; cursor: pointer; display: flex; align-items: center; padding: 0; transition: color 0.2s ease; }
+        .hamburger-icon:hover { color: ${colors.accent}; }
 
-        .aggregate-top-right { display: flex; align-items: stretch; height: 42px; }
-        .aggregate-top-link { position: relative; color: #5E574C; text-decoration: none; display: flex; align-items: center; padding: 0 13px; font-size: 14px; cursor: pointer; transition: color .2s ease, background-color .2s ease; }
-        .aggregate-top-link::after { content: ""; position: absolute; left: 13px; right: 13px; bottom: 6px; height: 2px; background: #C9A227; transform: scaleX(0); transform-origin: center; transition: transform .2s ease; }
-        .aggregate-top-link:focus-visible, .aggregate-top-link:hover { color: #161412; background: rgba(201,162,39,.08); outline: 0; }
+        .aggregate-top-right { display: flex; align-items: stretch; height: 42px; gap: 6px; }
+        .aggregate-top-link { position: relative; color: ${colors.textMuted}; text-decoration: none; display: flex; align-items: center; padding: 0 13px; font-size: 14px; cursor: pointer; transition: color .2s ease, background-color .2s ease; }
+        .aggregate-top-link::after { content: ""; position: absolute; left: 13px; right: 13px; bottom: 6px; height: 2px; background: ${colors.accent}; transform: scaleX(0); transform-origin: center; transition: transform .2s ease; }
+        .aggregate-top-link:focus-visible, .aggregate-top-link:hover { color: ${colors.text}; background: rgba(201,162,39,.08); outline: 0; }
         .aggregate-top-link:focus-visible::after, .aggregate-top-link:hover::after { transform: scaleX(1); }
  
-        .aggregate-subscribe { border: 0; background: #C9A227; color: #161412; font-weight: 700; padding: 0 16px; cursor: pointer; font-size: 14px; transition: background-color .2s ease, color .2s ease, transform .15s ease; display: inline-flex; align-items: center; justify-content: center; }
+        .aggregate-subscribe { border: 0; background: ${colors.accent}; color: #161412; font-weight: 700; padding: 0 16px; cursor: pointer; font-size: 14px; transition: background-color .2s ease, color .2s ease, transform .15s ease; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px; }
         .aggregate-subscribe:focus-visible, .aggregate-subscribe:hover { background: #8F7118; color: #F3EEE3; outline: 0; }
         .aggregate-subscribe:active { transform: translateY(1px); }
  
         /* MASTHEAD */
-        .aggregate-masthead { padding: 25px 20px; border-bottom: 1px solid #161412; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .aggregate-masthead { padding: 25px 20px; border-bottom: 1px solid ${colors.border}; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transition: border 0.3s; }
         .aggregate-brand-container { border: 0; background: transparent; padding: 0; margin: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 16px; transition: opacity .2s ease, transform .2s ease; }
         .aggregate-brand-container:hover { opacity: 0.9; }
         .aggregate-brand-container:active { transform: scale(.995); }
  
-        .aggregate-brand { font-family: Georgia, "Times New Roman", serif; font-size: clamp(38px, 6vw, 78px); line-height: .83; font-weight: 900; letter-spacing: -2px; color: #161412; margin: 0; }
+        .aggregate-brand { font-family: Georgia, "Times New Roman", serif; font-size: clamp(38px, 6vw, 78px); line-height: .83; font-weight: 900; letter-spacing: -2px; color: ${colors.text}; margin: 0; transition: color 0.3s; }
         
-        /* Adjusted logo dimensions to a balanced intermediate size */
         .aggregate-logo-img { width: clamp(48px, 6.5vw, 92px); height: clamp(48px, 6.5vw, 92px); object-fit: contain; border-radius: 8px; }
 
         /* BRIEFING */
-        .aggregate-briefing { padding: 14px 0; background: #EBE4D5; border-bottom: 1px solid #161412; }
+        .aggregate-briefing { padding: 14px 0; background: ${colors.bgAlt}; border-bottom: 1px solid ${colors.border}; transition: background 0.3s, border 0.3s; }
         .aggregate-briefing-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 35px; align-items: start; }
-        .aggregate-briefing-label { color: #8F7118; font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px; }
-        .aggregate-briefing-meta { color: #5E574C; font-weight: 400; }
-        .aggregate-briefing-title { font-family: Georgia, "Times New Roman", serif; font-size: 23px; line-height: 1.2; font-weight: 700; margin: 5px 0; max-width: 760px; }
-        .aggregate-briefing-summary { color: #5E574C; font-size: 14px; line-height: 1.5; max-width: 760px; }
+        .aggregate-briefing-label { color: ${colors.accent}; font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px; }
+        .aggregate-briefing-meta { color: ${colors.textMuted}; font-weight: 400; transition: color 0.3s; }
+        .aggregate-briefing-title { font-family: Georgia, "Times New Roman", serif; font-size: 23px; line-height: 1.2; font-weight: 700; margin: 5px 0; max-width: 760px; color: ${colors.text}; transition: color 0.3s; }
+        .aggregate-briefing-summary { color: ${colors.textMuted}; font-size: 14px; line-height: 1.5; max-width: 760px; transition: color 0.3s; }
         
         .aggregate-briefing-link-wrapper { text-decoration: none; color: inherit; display: block; transition: opacity 0.2s; cursor: pointer; }
         .aggregate-briefing-link-wrapper:hover { opacity: 0.75; }
  
         .aggregate-player-container { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 530px; }
         
-        .aggregate-player { border: 1px solid #161412; padding: 6px 12px; display: flex; align-items: center; gap: 11px; background: #F3EEE3; min-height: 40px; width: 100%; }
-        .aggregate-play { width: 30px; height: 30px; border-radius: 50%; border: 0; background: #161412; color: #F3EEE3; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none; font-size: 12px; }
-        .aggregate-play.active, .aggregate-play:hover { background: #8F7118; }
+        .aggregate-player { border: 1px solid ${colors.border}; padding: 6px 12px; display: flex; align-items: center; gap: 11px; background: ${colors.bg}; min-height: 40px; width: 100%; transition: border 0.3s, background 0.3s; }
+        .aggregate-play { width: 30px; height: 30px; border-radius: 50%; border: 0; background: ${colors.btnBg}; color: ${colors.btnText}; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none; font-size: 12px; transition: background 0.2s, color 0.2s; }
+        .aggregate-play.active, .aggregate-play:hover { background: ${colors.accent}; color: #161412; }
  
         @keyframes spin { 100% { transform: rotate(360deg); } }
         .buffering-icon { display: inline-block; animation: spin 2s linear infinite; font-size: 11px; }
 
         .aggregate-player-main { flex: 1; min-width: 0; display: flex; align-items: center; gap: 11px; }
-        .aggregate-progress { flex: 1; height: 4px; background: #C9C1B0; position: relative; border-radius: 2px; overflow: hidden; width: 100%; }
-        .aggregate-progress-fill { height: 100%; background: #161412; }
+        .aggregate-progress { flex: 1; height: 4px; background: ${colors.borderLight}; position: relative; border-radius: 2px; overflow: hidden; width: 100%; transition: background 0.3s; }
+        .aggregate-progress-fill { height: 100%; background: ${colors.text}; transition: background 0.3s; }
 
         .action-buttons-row { display: flex; gap: 10px; margin-top: 4px; flex-wrap: wrap; }
-        .action-btn { border: 1px solid #C9A227; background: transparent; color: #5E574C; padding: 7px 12px; font-size: 11px; font-weight: bold; letter-spacing: 0.8px; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; text-align: center; display: inline-flex; justify-content: center; align-items: center; flex: 1; min-width: 100px; }
-        .action-btn:hover { background: #C9A227; color: #161412; }
+        .action-btn { border: 1px solid ${colors.accent}; background: transparent; color: ${colors.textMuted}; padding: 7px 12px; font-size: 11px; font-weight: bold; letter-spacing: 0.8px; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; text-align: center; display: inline-flex; justify-content: center; align-items: center; flex: 1; min-width: 100px; }
+        .action-btn:hover { background: ${colors.accent}; color: #161412; }
 
         .side-drawer-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 9998; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         .side-drawer-overlay.open { opacity: 1; pointer-events: auto; }
@@ -318,7 +353,7 @@ export default function Navbar({
           .aggregate-topbar { padding: 8px 14px; min-height: 44px; flex-wrap: nowrap; }
           .aggregate-top-left { font-size: 13px; align-items: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; width: 100%; flex-wrap: nowrap; gap: 8px; padding: 0; }
           .aggregate-top-left-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-          .hamburger-icon { padding-right: 8px; margin: 0; font-size: 24px; } 
+          .hamburger-icon { margin: 0; font-size: 24px; } 
           .aggregate-top-right { display: none; }
           
           .aggregate-masthead { padding: 16px 15px; }
@@ -383,10 +418,37 @@ export default function Navbar({
           </>
         )}
 
-        <div style={{ marginTop: "auto", paddingTop: "30px", paddingBottom: "20px" }}>
+        <div style={{ marginTop: "auto", paddingTop: "30px", paddingBottom: "20px", display: "flex", flexDirection: "column", gap: "15px" }}>
+          
+          {/* MOBILE THEME SEGMENTED TOGGLE */}
+          <div style={{ display: "flex", width: "100%", border: "1px solid #5E574C", borderRadius: "6px", overflow: "hidden" }}>
+            <button 
+              onClick={() => setTheme("dark")} 
+              style={{ 
+                flex: 1, padding: "12px", border: "none", 
+                backgroundColor: isDark ? "#161412" : "transparent", 
+                color: isDark ? "#C9A227" : "#A39E93", 
+                fontWeight: "bold", cursor: "pointer", transition: "all 0.2s"
+              }}
+            >
+              Dark
+            </button>
+            <button 
+              onClick={() => setTheme("light")} 
+              style={{ 
+                flex: 1, padding: "12px", border: "none", 
+                backgroundColor: !isDark ? "#F3EEE3" : "transparent", 
+                color: !isDark ? "#161412" : "#A39E93", 
+                fontWeight: "bold", cursor: "pointer", transition: "all 0.2s"
+              }}
+            >
+              Light
+            </button>
+          </div>
+
           <button 
             className="aggregate-subscribe" 
-            style={{ width: "100%", padding: "14px", fontSize: "16px" }} 
+            style={{ width: "100%", padding: "14px", fontSize: "16px", border: "none" }} 
             onClick={(e) => { e.preventDefault(); setDrawerOpen(false); if (onSubscribe) onSubscribe(); }}
           >
             Subscribe
@@ -396,7 +458,8 @@ export default function Navbar({
  
       <div className="aggregate-topbar">
         <div className="aggregate-top-left">
-          <button className="hamburger-icon" onClick={() => setDrawerOpen(true)}>☰</button>
+          <button className="hamburger-icon" style={{ paddingRight: "10px" }} onClick={() => setDrawerOpen(true)}>☰</button>
+          
           <span className="aggregate-top-left-text">
             {currentDate} · {totalStories} stories compiled today from {totalSources} sources
           </span>
@@ -413,7 +476,7 @@ export default function Navbar({
           {user && (
             <div style={{ display: "flex", alignItems: "center", gap: "10px", paddingLeft: "13px", paddingRight: "13px" }}>
               <span 
-                style={{ fontSize: "13px", fontWeight: "bold", color: "#161412", display: "flex", alignItems: "center", gap: "6px", cursor: "help" }}
+                style={{ fontSize: "13px", fontWeight: "bold", color: colors.text, display: "flex", alignItems: "center", gap: "6px", cursor: "help", transition: "color 0.3s" }}
                 title="now you are capable to use our ai agent to help you"
               >
                 {/* Professional User Silhouette Icon SVG */}
@@ -425,7 +488,7 @@ export default function Navbar({
               </span>
               <button 
                 onClick={onLogout} 
-                style={{ background: "none", border: "1px solid #161412", padding: "4px 8px", fontSize: "11px", fontWeight: "bold", cursor: "pointer", color: "#161412" }}
+                style={{ background: "none", border: `1px solid ${colors.text}`, padding: "4px 8px", fontSize: "11px", fontWeight: "bold", cursor: "pointer", color: colors.text, transition: "color 0.3s, border 0.3s" }}
               >
                 SIGN OUT
               </button>
@@ -433,6 +496,40 @@ export default function Navbar({
           )}
 
           <button className="aggregate-subscribe" type="button" onClick={(e) => { e.preventDefault(); if (onSubscribe) onSubscribe(); }}>Subscribe</button>
+          
+          {/* DESKTOP THEME SEGMENTED TOGGLE */}
+          <div style={{ display: "flex", alignItems: "center", border: `1px solid ${colors.borderLight}`, borderRadius: "6px", overflow: "hidden", marginLeft: "8px", backgroundColor: colors.bgAlt }}>
+            <button 
+              onClick={() => setTheme("dark")}
+              style={{
+                padding: "6px 14px",
+                border: "none",
+                backgroundColor: isDark ? "#161412" : "transparent",
+                color: isDark ? "#C9A227" : colors.textMuted,
+                fontWeight: "bold",
+                fontSize: "12px",
+                cursor: "pointer",
+                transition: "all 0.2s"
+              }}
+            >
+              Dark
+            </button>
+            <button 
+              onClick={() => setTheme("light")}
+              style={{
+                padding: "6px 14px",
+                border: "none",
+                backgroundColor: !isDark ? "#F3EEE3" : "transparent",
+                color: !isDark ? "#161412" : colors.textMuted,
+                fontWeight: "bold",
+                fontSize: "12px",
+                cursor: "pointer",
+                transition: "all 0.2s"
+              }}
+            >
+              Light
+            </button>
+          </div>
         </div>
       </div>
 
@@ -475,11 +572,11 @@ export default function Navbar({
                     className="aggregate-progress-fill" 
                     style={{ 
                       width: `${progress}%`, 
-                      transition: "width 0.1s linear" 
+                      transition: "width 0.1s linear, background 0.3s" 
                     }} 
                   />
                 </div>
-                <div style={{ fontSize: "12px", color: "#5E574C", fontWeight: "bold", whiteSpace: "nowrap", fontFamily: "Arial, sans-serif" }}>
+                <div style={{ fontSize: "12px", color: colors.textMuted, fontWeight: "bold", whiteSpace: "nowrap", fontFamily: "Arial, sans-serif", transition: "color 0.3s" }}>
                   {formatTimeSeconds(currentTime)} / {duration ? formatTimeSeconds(duration) : "0:00"}
                 </div>
               </div>
@@ -492,13 +589,13 @@ export default function Navbar({
                 onChange={(e) => setSearch(e.target.value)} 
                 placeholder="Search stories..." 
                 aria-label="Search stories"
-                style={{ flex: 1, border: "1px solid #C9C1B0", borderRight: "none", background: "#F3EEE3", color: "#161412", padding: "0 15px", fontSize: "14px", outline: "none", borderRadius: 0 }}
+                style={{ flex: 1, border: `1px solid ${colors.borderLight}`, borderRight: "none", background: colors.bg, color: colors.text, padding: "0 15px", fontSize: "14px", outline: "none", borderRadius: 0, transition: "background 0.3s, color 0.3s, border 0.3s" }}
               />
               <button 
                 type="submit"
-                style={{ backgroundColor: "#161412", color: "#F3EEE3", border: "none", padding: "0 20px", fontWeight: "bold", cursor: "pointer", fontSize: "12px", transition: "background 0.2s", borderRadius: 0 }}
-                onMouseOver={(e) => e.target.style.backgroundColor = "#8F7118"}
-                onMouseOut={(e) => e.target.style.backgroundColor = "#161412"}
+                style={{ backgroundColor: colors.btnBg, color: colors.btnText, border: "none", padding: "0 20px", fontWeight: "bold", cursor: "pointer", fontSize: "12px", transition: "background 0.2s, color 0.2s", borderRadius: 0 }}
+                onMouseOver={(e) => e.target.style.backgroundColor = colors.accent}
+                onMouseOut={(e) => e.target.style.backgroundColor = colors.btnBg}
               >
                 SEARCH
               </button>

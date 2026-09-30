@@ -2,30 +2,161 @@ import React from "react";
 
 export default function AboutDesk({ onBack }) {
   return (
-    <main className="page">
-      <section className="page-header">
+    <main className="page about-page-wrapper">
+      <style>{`
+        /* Dynamic Theme Variables */
+        :root {
+          --hf-bg: #F3EEE3;
+          --hf-card-bg: #FFFFFF;
+          --hf-text: #161412;
+          --hf-text-muted: #5E574C;
+          --hf-border: #161412;
+          --hf-border-light: #D8D1C4;
+          --hf-accent: #C9A227;
+          --hf-accent-dark: #8F7118;
+          --hf-btn-bg: transparent;
+        }
+        
+        .dark-mode {
+          --hf-bg: #161412;
+          --hf-card-bg: #1e1b18;
+          --hf-text: #F3EEE3;
+          --hf-text-muted: #A39E93;
+          --hf-border: #5E574C;
+          --hf-border-light: #332F2C;
+          --hf-accent: #C9A227;
+          --hf-accent-dark: #C9A227;
+          --hf-btn-bg: transparent;
+        }
+
+        .about-page-wrapper {
+          background-color: var(--hf-bg);
+          min-height: 100vh;
+          transition: background-color 0.3s, color 0.3s;
+        }
+
+        .about-page-header {
+          border-bottom: 1px solid var(--hf-border-light);
+          margin-bottom: 15px;
+          padding: 40px 30px;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          flex-wrap: wrap;
+          gap: 20px;
+          transition: border-color 0.3s;
+        }
+
+        .about-kicker {
+          font-family: Arial, sans-serif;
+          font-size: 14px;
+          font-weight: bold;
+          color: var(--hf-accent-dark);
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          margin-bottom: 5px;
+          transition: color 0.3s;
+        }
+
+        .about-title {
+          font-family: Georgia, serif;
+          font-size: 36px;
+          color: var(--hf-text);
+          margin: 0 0 10px 0;
+          transition: color 0.3s;
+        }
+
+        .about-subtitle {
+          color: var(--hf-text-muted);
+          font-size: 16px;
+          margin: 0;
+          transition: color 0.3s;
+        }
+
+        .about-back-btn {
+          background: var(--hf-btn-bg);
+          border: none;
+          cursor: pointer;
+          color: var(--hf-accent-dark);
+          font-weight: bold;
+          font-size: 13px;
+          letter-spacing: 1px;
+          transition: color 0.3s;
+        }
+
+        .about-content {
+          max-width: 1100px;
+          margin: 40px auto;
+          padding: 0 30px 80px 30px;
+          line-height: 1.8;
+          color: var(--hf-text);
+          font-size: 17px;
+          transition: color 0.3s;
+        }
+
+        .about-content p {
+          margin-bottom: 25px;
+          color: var(--hf-text);
+          transition: color 0.3s;
+        }
+
+        .about-heading {
+          margin-top: 50px;
+          margin-bottom: 20px;
+          font-family: Georgia, serif;
+          font-size: 28px;
+          color: var(--hf-text);
+          transition: color 0.3s;
+        }
+
+        .about-list {
+          padding-left: 25px;
+          margin-top: 15px;
+          margin-bottom: 35px;
+          color: var(--hf-text);
+          transition: color 0.3s;
+        }
+
+        .about-list li {
+          margin-bottom: 15px;
+        }
+
+        .about-footer {
+          margin-top: 60px;
+          padding-top: 25px;
+          border-top: 1px solid var(--hf-border-light);
+          color: var(--hf-text-muted);
+          font-size: 14px;
+          line-height: 1.7;
+          transition: border-color 0.3s, color 0.3s;
+        }
+
+        @media (max-width: 768px) {
+          .about-page-header {
+            padding: 30px 20px;
+          }
+          .about-content {
+            padding: 0 20px 60px 20px;
+          }
+          .about-title {
+            font-size: 28px;
+          }
+        }
+      `}</style>
+
+      <section className="about-page-header">
         <div>
-          <div className="kicker">BEHIND THE SCENES</div>
-          <h1 style={{ fontFamily: "Georgia, serif", color: "#161412" }}>About Cancerbriefs</h1>
-          <p>Your daily desk for clinical oncology and cancer research updates.</p>
+          <div className="about-kicker">BEHIND THE SCENES</div>
+          <h1 className="about-title">About Cancerbriefs</h1>
+          <p className="about-subtitle">Your daily desk for clinical oncology and cancer research updates.</p>
         </div>
 
-        <button className="refresh" onClick={onBack}>
+        <button className="about-back-btn" onClick={onBack}>
           ← BACK TO NEWS
         </button>
       </section>
 
-      <section
-        className="about-content"
-        style={{
-          maxWidth: "1100px",
-          margin: "40px auto",
-          padding: "0 30px",
-          lineHeight: "1.8",
-          color: "#161412",
-          fontSize: "17px",
-        }}
-      >
+      <section className="about-content">
         <p>
           <strong>Cancerbriefs</strong> is a modern clinical news discovery platform
           designed to help medical professionals, researchers, and patients follow the rapidly changing worlds of
@@ -41,13 +172,7 @@ export default function AboutDesk({ onBack }) {
           what is happening and decide which studies deserve a deeper read.
         </p>
 
-        <h2
-          style={{
-            marginTop: "40px",
-            marginBottom: "15px",
-            fontFamily: "Georgia, serif",
-          }}
-        >
+        <h2 className="about-heading">
           A Focused Clinical Desk
         </h2>
 
@@ -69,13 +194,7 @@ export default function AboutDesk({ onBack }) {
           and continue to the original publisher or journal.
         </p>
 
-        <h2
-          style={{
-            marginTop: "40px",
-            marginBottom: "15px",
-            fontFamily: "Georgia, serif",
-          }}
-        >
+        <h2 className="about-heading">
           RSS-Powered Clinical Aggregation
         </h2>
 
@@ -93,13 +212,7 @@ export default function AboutDesk({ onBack }) {
           data, and full context.
         </p>
 
-        <h2
-          style={{
-            marginTop: "40px",
-            marginBottom: "15px",
-            fontFamily: "Georgia, serif",
-          }}
-        >
+        <h2 className="about-heading">
           AI-Powered Study Summaries
         </h2>
 
@@ -118,13 +231,7 @@ export default function AboutDesk({ onBack }) {
           authoritative medical source.
         </p>
 
-        <h2
-          style={{
-            marginTop: "40px",
-            marginBottom: "15px",
-            fontFamily: "Georgia, serif",
-          }}
-        >
+        <h2 className="about-heading">
           Understanding Why It Matters
         </h2>
 
@@ -140,13 +247,7 @@ export default function AboutDesk({ onBack }) {
           preventative care, and other complex oncological developments.
         </p>
 
-        <h2
-          style={{
-            marginTop: "40px",
-            marginBottom: "15px",
-            fontFamily: "Georgia, serif",
-          }}
-        >
+        <h2 className="about-heading">
           Accessibility First
         </h2>
 
@@ -162,13 +263,7 @@ export default function AboutDesk({ onBack }) {
           devices, screen sizes, and accessibility needs within the medical community.
         </p>
 
-        <h2
-          style={{
-            marginTop: "40px",
-            marginBottom: "15px",
-            fontFamily: "Georgia, serif",
-          }}
-        >
+        <h2 className="about-heading">
           Built for Signal, Not Noise
         </h2>
 
@@ -184,61 +279,43 @@ export default function AboutDesk({ onBack }) {
           and more time understanding the breakthroughs that matter.
         </p>
 
-        <h2
-          style={{
-            marginTop: "40px",
-            marginBottom: "15px",
-            fontFamily: "Georgia, serif",
-          }}
-        >
+        <h2 className="about-heading">
           Our Technology
         </h2>
 
-        <ul
-          style={{
-            paddingLeft: "25px",
-            marginTop: "15px",
-            marginBottom: "25px",
-          }}
-        >
-          <li style={{ marginBottom: "12px" }}>
+        <ul className="about-list">
+          <li>
             <strong>Backend:</strong> Django and Python support the APIs, data
             processing, and server-side workflows.
           </li>
 
-          <li style={{ marginBottom: "12px" }}>
+          <li>
             <strong>Frontend:</strong> React and JavaScript provide the
             interactive clinical interface.
           </li>
 
-          <li style={{ marginBottom: "12px" }}>
+          <li>
             <strong>AI processing:</strong> Local language models running through
             Ollama may support automated summarization and medical content processing.
           </li>
 
-          <li style={{ marginBottom: "12px" }}>
+          <li>
             <strong>News sources:</strong> RSS and publisher-provided feeds
             supply headlines and study metadata.
           </li>
 
-          <li style={{ marginBottom: "12px" }}>
+          <li>
             <strong>Content processing:</strong> Automated workflows organize
             incoming studies and prepare them for presentation.
           </li>
 
-          <li style={{ marginBottom: "12px" }}>
+          <li>
             <strong>Text-to-speech:</strong> Native browser speech synthesis
             allows users to listen to available summaries and briefings.
           </li>
         </ul>
 
-        <h2
-          style={{
-            marginTop: "40px",
-            marginBottom: "15px",
-            fontFamily: "Georgia, serif",
-          }}
-        >
+        <h2 className="about-heading">
           Independent Sources, One Unified Desk
         </h2>
 
@@ -254,13 +331,7 @@ export default function AboutDesk({ onBack }) {
           complete data, methodology, and additional clinical context.
         </p>
 
-        <h2
-          style={{
-            marginTop: "40px",
-            marginBottom: "15px",
-            fontFamily: "Georgia, serif",
-          }}
-        >
+        <h2 className="about-heading">
           What Cancerbriefs Is Not
         </h2>
 
@@ -275,13 +346,7 @@ export default function AboutDesk({ onBack }) {
           decisions should always be based on verified information from healthcare providers and appropriate authoritative sources.
         </p>
 
-        <h2
-          style={{
-            marginTop: "40px",
-            marginBottom: "15px",
-            fontFamily: "Georgia, serif",
-          }}
-        >
+        <h2 className="about-heading">
           Our Vision
         </h2>
 
@@ -296,16 +361,7 @@ export default function AboutDesk({ onBack }) {
           clinical source.</strong>
         </p>
 
-        <div
-          style={{
-            marginTop: "50px",
-            paddingTop: "25px",
-            borderTop: "1px solid #D8D1C4",
-            color: "#5E574C",
-            fontSize: "14px",
-            lineHeight: "1.7",
-          }}
-        >
+        <div className="about-footer">
           <strong>Cancerbriefs</strong>
           <br />
           Oncology, Research & Clinical Trial News

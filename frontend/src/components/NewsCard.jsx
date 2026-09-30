@@ -212,8 +212,26 @@ export default function NewsCard({ article, index, onArticleClick }) {
 
   return (
     <>
-      {/* Responsive Styles scoped for NewsCard */}
       <style>{`
+        /* Dynamic Theme Support for NewsCard */
+        .news-card {
+          background-color: var(--hf-card-bg);
+          border-color: var(--hf-border-light);
+          transition: background-color 0.3s, border-color 0.3s, opacity 0.2s;
+        }
+        .news-card h2 {
+          color: var(--hf-text);
+          transition: color 0.3s;
+        }
+        .news-card p {
+          color: var(--hf-text);
+          transition: color 0.3s;
+        }
+        .news-card .rule {
+          background-color: var(--hf-border-light);
+          transition: background-color 0.3s;
+        }
+
         @media (max-width: 850px) {
           .news-card {
             flex-direction: column !important;
@@ -252,7 +270,7 @@ export default function NewsCard({ article, index, onArticleClick }) {
 
       <article 
         className={`news-card ${index % 2 ? "reverse" : ""}`} 
-        style={{ position: "relative", cursor: "pointer", transition: "opacity 0.2s" }}
+        style={{ position: "relative", cursor: "pointer" }}
         onClick={handleCardClick}
         onMouseOver={(e) => e.currentTarget.style.opacity = "0.9"}
         onMouseOut={(e) => e.currentTarget.style.opacity = "1"}
@@ -260,13 +278,13 @@ export default function NewsCard({ article, index, onArticleClick }) {
         {modal.show && (
           <div 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} 
-            style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 20, padding: "20px" }}
+            style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "var(--hf-modal-overlay, rgba(0,0,0,0.8))", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 20, padding: "20px" }}
           >
-            <div style={{ backgroundColor: "#F3EEE3", border: "2px solid #161412", padding: "25px", maxWidth: "350px", width: "100%", boxSizing: "border-box", boxShadow: "0 10px 25px rgba(0,0,0,0.2)", borderRadius: "4px", textAlign: "left", cursor: "default" }}>
-              <h3 style={{ fontFamily: "Georgia, serif", margin: "0 0 10px 0", color: "#161412", fontSize: "17px" }}>{modal.title}</h3>
-              <p style={{ fontSize: "13px", color: "#5E574C", lineHeight: "1.5", marginBottom: "20px" }}>{modal.message}</p>
+            <div style={{ backgroundColor: "var(--hf-bg)", border: "2px solid var(--hf-border)", padding: "25px", maxWidth: "350px", width: "100%", boxSizing: "border-box", boxShadow: "0 10px 25px rgba(0,0,0,0.2)", borderRadius: "4px", textAlign: "left", cursor: "default" }}>
+              <h3 style={{ fontFamily: "Georgia, serif", margin: "0 0 10px 0", color: "var(--hf-text)", fontSize: "17px" }}>{modal.title}</h3>
+              <p style={{ fontSize: "13px", color: "var(--hf-text-muted)", lineHeight: "1.5", marginBottom: "20px" }}>{modal.message}</p>
               <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); setModal({ show: false }); }} style={{ padding: "6px 16px", backgroundColor: "#161412", color: "#F3EEE3", border: "none", fontWeight: "bold", cursor: "pointer", fontSize: "11px" }}>OK</button>
+                <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); setModal({ show: false }); }} style={{ padding: "6px 16px", backgroundColor: "var(--hf-btn-bg)", color: "var(--hf-btn-text)", border: "none", fontWeight: "bold", cursor: "pointer", fontSize: "11px" }}>OK</button>
               </div>
             </div>
           </div>
@@ -276,12 +294,11 @@ export default function NewsCard({ article, index, onArticleClick }) {
 
         <div className="news-content">
           <div className="meta">
-            {/* REMOVED the .category span that displayed "CYBERSECURITY" */}
-            <span style={{ fontWeight: "bold", color: "#161412" }}>{article?.source || "CLINICAL DESK"}</span><i />
+            <span style={{ fontWeight: "bold", color: "var(--hf-text)", transition: "color 0.3s" }}>{article?.source || "CLINICAL DESK"}</span><i />
             
-            <span style={{ color: "#C9A227", fontWeight: "bold" }}>{fullName.toUpperCase()}</span><i />
+            <span style={{ color: "var(--hf-accent)", fontWeight: "bold", transition: "color 0.3s" }}>{fullName.toUpperCase()}</span><i />
             
-            <span>{getRelativeTime(article?.published).toUpperCase()}</span>
+            <span style={{ color: "var(--hf-text-muted)", transition: "color 0.3s" }}>{getRelativeTime(article?.published).toUpperCase()}</span>
           </div>
 
           <h2>{article?.title || article?.original_title || "Untitled Article"}</h2>
@@ -299,9 +316,9 @@ export default function NewsCard({ article, index, onArticleClick }) {
                 handleListen(); 
               }}
               style={{ 
-                backgroundColor: speaking ? "#161412" : "transparent", 
-                color: speaking ? "#F3EEE3" : "#161412", 
-                border: "1px solid #161412", 
+                backgroundColor: speaking ? "var(--hf-btn-bg)" : "transparent", 
+                color: speaking ? "var(--hf-btn-text)" : "var(--hf-text)", 
+                border: "1px solid var(--hf-border)", 
                 padding: "8px 16px", 
                 fontWeight: "bold", 
                 cursor: "pointer", 
@@ -310,7 +327,8 @@ export default function NewsCard({ article, index, onArticleClick }) {
                 alignItems: "center", 
                 gap: "6px",
                 textTransform: "uppercase",
-                letterSpacing: "1px"
+                letterSpacing: "1px",
+                transition: "background 0.3s, color 0.3s, border 0.3s"
               }}
             >
               <span>{speaking ? "■" : "▶"}</span> {speaking ? "STOP READING" : "LISTEN"}
@@ -324,8 +342,8 @@ export default function NewsCard({ article, index, onArticleClick }) {
                 setShowModal(true); 
               }} 
               style={{ 
-                backgroundColor: "#EBE4D5", 
-                color: "#161412", 
+                backgroundColor: "var(--hf-section-bg)", 
+                color: "var(--hf-text)", 
                 border: "none", 
                 padding: "9px 16px", 
                 fontWeight: "bold", 
@@ -335,7 +353,8 @@ export default function NewsCard({ article, index, onArticleClick }) {
                 alignItems: "center",
                 gap: "6px",
                 textTransform: "uppercase",
-                letterSpacing: "1px"
+                letterSpacing: "1px",
+                transition: "background 0.3s, color 0.3s"
               }}
             >
               SUBMIT QUERY <span style={{ fontSize: "14px", fontWeight: "900" }}>?</span>
@@ -352,7 +371,7 @@ export default function NewsCard({ article, index, onArticleClick }) {
                 marginLeft: "auto", 
                 background: "transparent", 
                 border: "none", 
-                color: "#8F7118", 
+                color: "var(--hf-accent-dark)", 
                 fontWeight: "bold", 
                 fontSize: "11px", 
                 cursor: "pointer",
@@ -360,7 +379,8 @@ export default function NewsCard({ article, index, onArticleClick }) {
                 alignItems: "center",
                 gap: "4px",
                 textTransform: "uppercase",
-                letterSpacing: "1px"
+                letterSpacing: "1px",
+                transition: "color 0.3s"
               }}
             >
               VIEW DETAILS <span style={{ fontSize: "14px" }}>→</span>
@@ -371,30 +391,30 @@ export default function NewsCard({ article, index, onArticleClick }) {
         {showModal && (
           <div 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} 
-            style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(22,20,18,0.9)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, padding: "20px", cursor: "default" }}
+            style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "var(--hf-modal-overlay, rgba(0,0,0,0.8))", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, padding: "20px", cursor: "default" }}
           >
-            <div style={{ backgroundColor: "#F3EEE3", padding: "30px", width: "100%", maxWidth: "400px", border: "2px solid #C9A227", borderRadius: "4px", boxSizing: "border-box" }}>
-              <h3 style={{ margin: "0 0 15px 0", fontFamily: "Georgia, serif", color: "#161412" }}>Submit Query to Editor</h3>
-              <p style={{ fontSize: "12px", color: "#5E574C", marginBottom: "15px" }}>Ask a question or report an issue regarding this specific story.</p>
+            <div style={{ backgroundColor: "var(--hf-bg)", padding: "30px", width: "100%", maxWidth: "400px", border: "2px solid var(--hf-accent)", borderRadius: "4px", boxSizing: "border-box" }}>
+              <h3 style={{ margin: "0 0 15px 0", fontFamily: "Georgia, serif", color: "var(--hf-text)" }}>Submit Query to Editor</h3>
+              <p style={{ fontSize: "12px", color: "var(--hf-text-muted)", marginBottom: "15px" }}>Ask a question or report an issue regarding this specific story.</p>
               
               <textarea 
                 value={queryText}
                 onChange={(e) => setQueryText(e.target.value)}
                 placeholder="What would you like to ask?"
-                style={{ width: "100%", height: "100px", padding: "10px", border: "1px solid #161412", backgroundColor: "#fff", outline: "none", resize: "none", marginBottom: "15px", fontFamily: "Arial", color: "#161412", boxSizing: "border-box" }}
+                style={{ width: "100%", height: "100px", padding: "10px", border: "1px solid var(--hf-border)", backgroundColor: "var(--hf-card-bg)", outline: "none", resize: "none", marginBottom: "15px", fontFamily: "Arial", color: "var(--hf-text)", boxSizing: "border-box" }}
               />
               
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <button 
                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowModal(false); }} 
-                  style={{ padding: "8px 15px", border: "none", background: "transparent", cursor: "pointer", fontWeight: "bold", color: "#5E574C" }}
+                  style={{ padding: "8px 15px", border: "none", background: "transparent", cursor: "pointer", fontWeight: "bold", color: "var(--hf-text-muted)" }}
                 >
                   CANCEL
                 </button>
                 <button 
                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); submitQuery(); }} 
                   disabled={submitStatus === "loading" || !queryText.trim()}
-                  style={{ padding: "8px 15px", border: "none", background: "#161412", color: "#F3EEE3", cursor: "pointer", fontWeight: "bold", borderRadius: "3px" }}
+                  style={{ padding: "8px 15px", border: "none", background: "var(--hf-btn-bg)", color: "var(--hf-btn-text)", cursor: "pointer", fontWeight: "bold", borderRadius: "3px" }}
                 >
                   {submitStatus === "loading" ? "SENDING..." : submitStatus === "success" ? "SENT!" : "SUBMIT"}
                 </button>

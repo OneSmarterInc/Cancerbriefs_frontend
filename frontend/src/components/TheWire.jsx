@@ -35,18 +35,63 @@ export default function TheWire({ articles, selectedCategory = "All", onArticleC
   }, [articles, selectedCategory]);
 
   return (
-    <aside style={{ backgroundColor: "#1F3A2E", color: "#F3EEE3", padding: "30px 25px", fontFamily: "Arial, Helvetica, sans-serif", height: "100%" }}>
+    <aside className="wire-sidebar-container" style={{ padding: "30px 25px", fontFamily: "Arial, Helvetica, sans-serif", height: "100%", transition: "background 0.3s, color 0.3s" }}>
       
-      {/* Add a quick hover effect for the links */}
+      {/* CSS for Dark Mode transitions and hover effects */}
       <style>{`
-        .wire-clickable { text-decoration: none; color: inherit; display: flex; transition: opacity 0.2s; cursor: pointer; }
-        .wire-clickable:hover { opacity: 0.75; }
+        .wire-sidebar-container {
+          background-color: #1F3A2E; 
+          color: #F3EEE3;
+        }
+        .wire-title {
+          color: #F3EEE3;
+        }
+        .wire-meta, .wire-prof, .wire-source, .wire-empty {
+          color: #C9C1B0;
+        }
+        .wire-border {
+          border-bottom: 1px solid rgba(243, 238, 227, 0.2);
+        }
+        .wire-item-border {
+          border-bottom: 1px solid rgba(243, 238, 227, 0.1);
+        }
+
+        /* Dark Mode Overrides */
+        .dark-mode .wire-sidebar-container {
+          background-color: #161412;
+          color: #EBE4D5;
+          border: 1px solid #332F2C;
+          border-radius: 4px;
+        }
+        .dark-mode .wire-title {
+          color: #EBE4D5;
+        }
+        .dark-mode .wire-meta, .dark-mode .wire-prof, .dark-mode .wire-source, .dark-mode .wire-empty {
+          color: #A39E93;
+        }
+        .dark-mode .wire-border {
+          border-bottom: 1px solid #332F2C;
+        }
+        .dark-mode .wire-item-border {
+          border-bottom: 1px solid #332F2C;
+        }
+
+        .wire-clickable { 
+          text-decoration: none; 
+          color: inherit; 
+          display: flex; 
+          transition: opacity 0.2s, border-color 0.3s; 
+          cursor: pointer; 
+        }
+        .wire-clickable:hover { 
+          opacity: 0.75; 
+        }
       `}</style>
 
       {/* Header section */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(243, 238, 227, 0.2)", paddingBottom: "20px", marginBottom: "20px" }}>
-        <h2 style={{ fontFamily: "Georgia, serif", fontSize: "36px", margin: 0, color: "#F3EEE3", letterSpacing: "-0.5px" }}>The wire</h2>
-        <div style={{ fontSize: "13px", color: "#C9C1B0", display: "flex", alignItems: "center", gap: "8px" }}>
+      <div className="wire-border" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "20px", marginBottom: "20px", transition: "border 0.3s" }}>
+        <h2 className="wire-title" style={{ fontFamily: "Georgia, serif", fontSize: "36px", margin: 0, letterSpacing: "-0.5px", transition: "color 0.3s" }}>The wire</h2>
+        <div className="wire-meta" style={{ fontSize: "13px", display: "flex", alignItems: "center", gap: "8px", transition: "color 0.3s" }}>
           <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#C9A227", display: "inline-block" }}></span>
           Live · {selectedCategory}
         </div>
@@ -65,27 +110,27 @@ export default function TheWire({ articles, selectedCategory = "All", onArticleC
                 }
               }}
               key={article.id || i} 
-              className="wire-clickable"
-              style={{ gap: "15px", paddingBottom: "20px", marginBottom: "20px", borderBottom: "1px solid rgba(243, 238, 227, 0.1)" }}
+              className="wire-clickable wire-item-border"
+              style={{ gap: "15px", paddingBottom: "20px", marginBottom: "20px" }}
             >
               {/* Left Column: Professor Name (Normal size) */}
-              <div style={{ color: "#C9C1B0", fontSize: "13px", width: "85px", flexShrink: 0, marginTop: "2px", fontWeight: "bold" }}>
+              <div className="wire-prof" style={{ fontSize: "13px", width: "85px", flexShrink: 0, marginTop: "2px", fontWeight: "bold", transition: "color 0.3s" }}>
                 {getProfName(article.professor_id)}
               </div>
               
               {/* Right Column: Smaller Headline, Source Only */}
               <div style={{ flex: 1 }}>
-                <h4 style={{ margin: "0 0 6px 0", fontSize: "13.5px", lineHeight: "1.35", color: "#F3EEE3", fontWeight: "bold" }}>
+                <h4 style={{ margin: "0 0 6px 0", fontSize: "13.5px", lineHeight: "1.35", fontWeight: "bold" }}>
                   {article.ai_headline || article.title}
                 </h4>
-                <div style={{ fontSize: "13px", color: "#C9C1B0" }}>
+                <div className="wire-source" style={{ fontSize: "13px", transition: "color 0.3s" }}>
                   {article.source || "News Source"}
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <div style={{ color: "#C9C1B0", fontSize: "14px", fontStyle: "italic" }}>
+          <div className="wire-empty" style={{ fontSize: "14px", fontStyle: "italic", transition: "color 0.3s" }}>
             No stories currently available for {selectedCategory}.
           </div>
         )}
