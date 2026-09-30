@@ -58,10 +58,11 @@ export default function Navbar({
     document.body.style.transition = "background-color 0.3s ease, color 0.3s ease";
     if (theme === "dark") {
       document.body.style.backgroundColor = "#161412";
-      document.body.style.color = "#F3EEE3";
+      document.body.style.color = "#FCFBF8";
       document.body.classList.add("dark-mode");
     } else {
-      document.body.style.backgroundColor = "#F3EEE3";
+      // Very subtle, comfortable warm off-white (less yellow than before, warmer than pure white)
+      document.body.style.backgroundColor = "#FCFBF8";
       document.body.style.color = "#161412";
       document.body.classList.remove("dark-mode");
     }
@@ -69,15 +70,15 @@ export default function Navbar({
 
   const isDark = theme === "dark";
   const colors = {
-    bg: isDark ? "#161412" : "#F3EEE3",
-    text: isDark ? "#F3EEE3" : "#161412",
-    bgAlt: isDark ? "#1e1b18" : "#EBE4D5",
+    bg: isDark ? "#161412" : "#FCFBF8",
+    text: isDark ? "#FCFBF8" : "#161412",
+    bgAlt: isDark ? "#1e1b18" : "#F5F3EB", // Slightly darker warm tone for contrast sections
     textMuted: isDark ? "#A39E93" : "#5E574C",
     border: isDark ? "#5E574C" : "#161412",
-    borderLight: isDark ? "#332F2C" : "#C9C1B0",
+    borderLight: isDark ? "#332F2C" : "#E2DAC6",
     accent: "#C9A227",
-    btnBg: isDark ? "#F3EEE3" : "#161412",
-    btnText: isDark ? "#161412" : "#F3EEE3",
+    btnBg: isDark ? "#FCFBF8" : "#161412",
+    btnText: isDark ? "#161412" : "#FCFBF8",
   };
   // --------------------------
 
@@ -276,7 +277,7 @@ export default function Navbar({
         .aggregate-top-link:focus-visible::after, .aggregate-top-link:hover::after { transform: scaleX(1); }
  
         .aggregate-subscribe { border: 0; background: ${colors.accent}; color: #161412; font-weight: 700; padding: 0 16px; cursor: pointer; font-size: 14px; transition: background-color .2s ease, color .2s ease, transform .15s ease; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px; }
-        .aggregate-subscribe:focus-visible, .aggregate-subscribe:hover { background: #8F7118; color: #F3EEE3; outline: 0; }
+        .aggregate-subscribe:focus-visible, .aggregate-subscribe:hover { background: #8F7118; color: #FCFBF8; outline: 0; }
         .aggregate-subscribe:active { transform: translateY(1px); }
  
         /* MASTHEAD */
@@ -287,7 +288,8 @@ export default function Navbar({
  
         .aggregate-brand { font-family: Georgia, "Times New Roman", serif; font-size: clamp(38px, 6vw, 78px); line-height: .83; font-weight: 900; letter-spacing: -2px; color: ${colors.text}; margin: 0; transition: color 0.3s; }
         
-        .aggregate-logo-img { width: clamp(48px, 6.5vw, 92px); height: clamp(48px, 6.5vw, 92px); object-fit: contain; border-radius: 8px; }
+        /* Adjusted logo sizing for a cleaner, compact feel across all devices */
+        .aggregate-logo-img { width: clamp(35px, 4vw, 55px); height: clamp(35px, 4vw, 55px); object-fit: contain; border-radius: 6px; }
 
         /* BRIEFING */
         .aggregate-briefing { padding: 14px 0; background: ${colors.bgAlt}; border-bottom: 1px solid ${colors.border}; transition: background 0.3s, border 0.3s; }
@@ -328,7 +330,7 @@ export default function Navbar({
           height: 100vh; 
           height: 100dvh; 
           background: #161412; 
-          color: #F3EEE3; 
+          color: #FCFBF8; 
           z-index: 9999; 
           transition: left 0.3s ease; 
           padding: 35px 25px 40px 25px; 
@@ -338,10 +340,10 @@ export default function Navbar({
           overflow-y: auto; 
         }
         .side-drawer.open { left: 0; }
-        .drawer-close { align-self: flex-end; background: transparent; border: none; color: #C9C1B0; font-size: 24px; cursor: pointer; padding: 0; margin-bottom: 30px; transition: color 0.2s; }
+        .drawer-close { align-self: flex-end; background: transparent; border: none; color: #E5E5E5; font-size: 24px; cursor: pointer; padding: 0; margin-bottom: 30px; transition: color 0.2s; }
         .drawer-close:hover { color: #C9A227; }
  
-        .drawer-link { display: block; color: #F3EEE3; text-decoration: none; font-size: 21px; font-family: Georgia, serif; padding: 14px 0; border-bottom: 1px solid #332F2C; cursor: pointer; transition: color 0.2s ease, padding-left 0.2s ease; }
+        .drawer-link { display: block; color: #FCFBF8; text-decoration: none; font-size: 21px; font-family: Georgia, serif; padding: 14px 0; border-bottom: 1px solid #332F2C; cursor: pointer; transition: color 0.2s ease, padding-left 0.2s ease; }
         .drawer-link:hover { color: #C9A227; padding-left: 9px; }
  
         @media (max-width: 980px) {
@@ -358,7 +360,7 @@ export default function Navbar({
           
           .aggregate-masthead { padding: 16px 15px; }
           .aggregate-brand { font-size: clamp(32px, 9vw, 48px); letter-spacing: -1.5px; }
-          .aggregate-logo-img { width: 55px; height: 55px; }
+          .aggregate-logo-img { width: 35px; height: 35px; }
           
           .aggregate-briefing { padding: 12px 0; }
           .aggregate-briefing-inner { gap: 12px; }
@@ -437,7 +439,7 @@ export default function Navbar({
               onClick={() => setTheme("light")} 
               style={{ 
                 flex: 1, padding: "12px", border: "none", 
-                backgroundColor: !isDark ? "#F3EEE3" : "transparent", 
+                backgroundColor: !isDark ? "#FCFBF8" : "transparent", 
                 color: !isDark ? "#161412" : "#A39E93", 
                 fontWeight: "bold", cursor: "pointer", transition: "all 0.2s"
               }}
@@ -519,7 +521,7 @@ export default function Navbar({
               style={{
                 padding: "6px 14px",
                 border: "none",
-                backgroundColor: !isDark ? "#F3EEE3" : "transparent",
+                backgroundColor: !isDark ? "#FCFBF8" : "transparent",
                 color: !isDark ? "#161412" : colors.textMuted,
                 fontWeight: "bold",
                 fontSize: "12px",
