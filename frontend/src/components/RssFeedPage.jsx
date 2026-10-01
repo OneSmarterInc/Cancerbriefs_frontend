@@ -9,14 +9,8 @@ const feedImages = [
 ];
 
 const PROF_NAMES = [
-  "Alexander Cole",
-  "Marcus Reed",
-  "Daniel Hayes",
-  "Ethan Brooks",
-  "Sophia Bennett",
-  "Olivia Carter",
-  "Amelia Parker",
-  "Isabella Morgan"
+  "Arion Vale", "Lyra Sen", "Kael Nore", "Elara Quinn", 
+  "Dorian Kade", "Mira Solen", "Orion Blake", "Seraphina Rowe"
 ];
 const getProfName = (id) => PROF_NAMES[(parseInt(id) || 1) - 1] || PROF_NAMES[0];
 
@@ -26,16 +20,33 @@ const getArticleImage = (article) => {
   return `/images/Proff_${profId}.png`; 
 };
 
+// Date Formatter: Converts raw strings to MM-DD-YYYY
+const formatDateMMDDYYYY = (dateString) => {
+  if (!dateString) return "Recent";
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    
+    return `${mm}-${dd}-${yyyy}`;
+  } catch (e) {
+    return dateString;
+  }
+};
+
 // Voice Profiles for TTS
 const STAFF_VOICE_PROFILES = {
   1: { gender: "male", pitch: 0.85, rate: 0.95, voiceOffset: 0 },
-  2: { gender: "male", pitch: 0.70, rate: 0.90, voiceOffset: 2 },
-  3: { gender: "male", pitch: 0.95, rate: 1.00, voiceOffset: 4 },
-  4: { gender: "male", pitch: 0.80, rate: 1.05, voiceOffset: 1 },
-  5: { gender: "female", pitch: 1.20, rate: 0.90, voiceOffset: 0 },
-  6: { gender: "female", pitch: 1.15, rate: 1.05, voiceOffset: 1 },
-  7: { gender: "female", pitch: 1.25, rate: 1.00, voiceOffset: 3 },
-  8: { gender: "female", pitch: 1.05, rate: 0.95, voiceOffset: 2 }
+  2: { gender: "female", pitch: 1.15, rate: 1.05, voiceOffset: 1 },
+  3: { gender: "male", pitch: 0.70, rate: 0.90, voiceOffset: 2 },
+  4: { gender: "female", pitch: 1.25, rate: 1.00, voiceOffset: 3 },
+  5: { gender: "male", pitch: 0.95, rate: 1.00, voiceOffset: 4 },
+  6: { gender: "female", pitch: 1.05, rate: 0.95, voiceOffset: 2 },
+  7: { gender: "male", pitch: 0.80, rate: 1.05, voiceOffset: 1 },
+  8: { gender: "female", pitch: 1.20, rate: 0.90, voiceOffset: 0 }
 };
 
 export default function RssFeedPage({ articles, onBack }) {
@@ -617,7 +628,7 @@ export default function RssFeedPage({ articles, onBack }) {
                             {sourceName} • {getProfName(selectedArticle.professor_id).toUpperCase()}
                           </div>
                           <div style={{ fontSize: "13px", color: "#C9C1B0", marginTop: "2px" }}>
-                            {selectedArticle.published || "Recently Added"}
+                            {formatDateMMDDYYYY(selectedArticle.published)}
                           </div>
                         </div>
                       </div>
@@ -796,7 +807,7 @@ export default function RssFeedPage({ articles, onBack }) {
                         </h3>
                         
                         <div style={{ fontSize: "13px", color: "var(--hf-accent-dark)", fontWeight: "bold", marginBottom: "12px", transition: "color 0.3s" }}>
-                          {article.published || "Recent"} • {getProfName(article.professor_id).toUpperCase()}
+                          {formatDateMMDDYYYY(article.published)} • {getProfName(article.professor_id).toUpperCase()}
                         </div>
                         
                         <p style={{ fontSize: "15px", color: "var(--hf-text-muted)", lineHeight: "1.6", margin: 0, transition: "color 0.3s" }}>
