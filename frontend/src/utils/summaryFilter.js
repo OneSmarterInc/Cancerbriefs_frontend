@@ -2,6 +2,7 @@
  * Cleans, validates, and filters article summaries.
  * - Removes repeating date loops and repetitive phrases.
  * - Prevents any string/number from repeating consecutively more than 2 times.
+ * - Strips AI-generated markdown bolding and inline list numbers.
  * - Enforces a minimum length of 50 words.
  */
 export function cleanSummary(text) {
@@ -25,11 +26,15 @@ export function cleanSummary(text) {
   const repetitiveSentenceRegex = /([^.!?]+[.!?])\s*(?:\1\s*){2,}/gi;
   cleaned = cleaned.replace(repetitiveSentenceRegex, "$1");
 
-  // 4. Clean up trailing fragments and normalize spacing
+  // 4. Remove AI-generated list formatting (e.g., "1. **Topic**:" -> "Topic:")
+  cleaned = cleaned.replace(/\*\*/g, ""); // Strip markdown bolding
+  cleaned = cleaned.replace(/(?:\s|^)\d+\.\s+(?=[A-Z])/g, " "); // Strip inline list numbers
+
+  // 5. Clean up trailing fragments and normalize spacing
   cleaned = cleaned.replace(/(?:\b\d{4}\s\d{2}\s\d{2}\.?\s*)+$/g, "");
   cleaned = cleaned.replace(/\s+/g, " ").trim();
 
-  // 5. VALIDATION: Check minimum word count (must be at least 50 words)
+  // 6. VALIDATION: Check minimum word count (must be at least 50 words)
   const words = cleaned.split(/\s+/).filter(Boolean);
   if (words.length < 50) {
     return fallbackMessage;
